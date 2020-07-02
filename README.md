@@ -1,2 +1,3 @@
 # UselessChess
-JavaFX chess game
+
+JavaFX chess game, current WIP

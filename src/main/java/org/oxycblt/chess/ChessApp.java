@@ -4,18 +4,17 @@ package org.oxycblt.chess;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
 import javafx.scene.Group;
+import org.oxycblt.chess.game.ChessScene;
 
 public class ChessApp extends Application {
 
     public void start(final Stage primaryStage) {
 
-        // Configure given stage
         primaryStage.setTitle("UselessChess");
         primaryStage.setResizable(false);
 
-        primaryStage.setScene(new Scene(new Group(), 500, 500));
+        primaryStage.setScene(new ChessScene(new Group()));
         primaryStage.show();
 
     }
