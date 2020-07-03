@@ -14,12 +14,14 @@ import org.oxycblt.chess.media.images.TextureAtlas;
 
 public abstract class ChessPiece extends Pane {
 
-    public final ChessType type;
-    public final ChessType color;
-    private ChessList list;
+    protected final ChessType type;
+    protected final ChessType color;
+    protected ChessList list;
 
-    public int x;
-    public int y;
+    protected int x;
+    protected int y;
+
+    protected boolean hasMoved;
 
     private ImageView chessView;
     private Rectangle selectRect;
@@ -87,13 +89,18 @@ public abstract class ChessPiece extends Pane {
 
     public void confirmMove(final int targetX, final int targetY) {
 
-        System.out.println("Confirming move");
+        x = targetX;
+        y = targetY;
+
+        hasMoved = true;
+
+        relocate(x * 32, y * 32);
 
         setSelected(false);
 
     }
 
-    public abstract boolean validateMove();
+    public abstract boolean validateMove(int targetX, int targetY);
     public abstract void update();
 
     // Return true if all characteristics of piece are correct

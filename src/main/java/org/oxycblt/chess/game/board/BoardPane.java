@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.pieces.Pawn;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
@@ -19,6 +20,11 @@ public class BoardPane extends Pane {
 
     private Rectangle2D mouseRect;
     private ChessPiece selectedPiece;
+    private Rectangle selectRect;
+    private boolean selectionIsValid;
+
+    private int cacheSimpleX = -1;
+    private int cacheSimpleY = -1;
 
     public BoardPane() {
 
@@ -26,6 +32,7 @@ public class BoardPane extends Pane {
         relocate(33, 49);
         setPrefSize(256, 256);
         setOnMouseClicked(mouseClickHandler);
+        setOnMouseMoved(mouseHoverHandler);
         setStyle(
               "-fx-border-style: solid outside;"
             + "-fx-border-width: 6px;"
@@ -67,7 +74,10 @@ public class BoardPane extends Pane {
                 // ------------
                 // and select that if there is one
 
-                ChessPiece piece = pieces.findEntity(ChessType.WHITE, x / 32, y / 32);
+                int simpleX = x / 32;
+                int simpleY = y / 32;
+
+                ChessPiece piece = pieces.findEntity(ChessType.WHITE, simpleX, simpleY);
 
                 if (piece != null && piece != selectedPiece) {
 
@@ -76,27 +86,34 @@ public class BoardPane extends Pane {
                     if (selectedPiece == null) {
 
                         piece.setSelected(true);
+                        selectedPiece = piece;
+
+                        updateSelectionRect(simpleX, simpleY);
+
+                        getChildren().add(selectRect);
 
                     } else {
 
                         selectedPiece.setSelected(false);
                         piece.setSelected(true);
 
+                        selectedPiece = piece;
+
                     }
 
-                    selectedPiece = piece;
+                // If clicked again while on an empty square with a piece selected,
+                // then confirm the move as long as its valid, do nothing if it isnt.
+                } else if (piece == null && selectedPiece != null) {
 
-                } else if (selectedPiece != null) {
+                    if (selectionIsValid) {
 
-                    // --- TODO ---
-                    // If an empty square is pressed while a piece is selected,
-                    // confirm the last valid move as long as the mouse hasnt
-                    // strayed *too far* from the destination square
-                    // ------------
+                        selectedPiece.confirmMove(simpleX, simpleY);
 
-                    selectedPiece.confirmMove(x, y);
+                        selectedPiece = null;
 
-                    selectedPiece = null;
+                        getChildren().remove(selectRect);
+
+                    }
 
                 }
 
@@ -108,9 +125,82 @@ public class BoardPane extends Pane {
 
             selectedPiece = null;
 
+            getChildren().remove(selectRect);
+
         }
 
     };
+
+    EventHandler<MouseEvent> mouseHoverHandler = event -> {
+
+        // Ignore if nothing is selected
+        if (selectedPiece != null) {
+
+            int x = (int) (event.getSceneX() - getLayoutX());
+            int y = (int) (event.getSceneY() - getLayoutY());
+
+            if (x > 0 && x < getPrefWidth() && y > 0 && y < getPrefHeight()) {
+
+                int simpleX = x / 32;
+                int simpleY = y / 32;
+
+                // Check if the mouse pointer has actually meaningfully changed
+                // E.G it went from one square to another
+                if (simpleX != cacheSimpleX || simpleY != cacheSimpleY) {
+
+                    updateSelectionRect(simpleX, simpleY);
+
+                    cacheSimpleX = simpleX;
+                    cacheSimpleY = simpleY;
+
+                }
+
+            }
+
+        }
+
+    };
+
+    private void updateSelectionRect(final int simpleX, final int simpleY) {
+
+       // Add the selection rectangle now that a chess piece
+       // has been selected, creating it if its not created already
+        if (selectRect == null) {
+
+            selectRect = new Rectangle(32, 32);
+            selectRect.setFill(Color.TRANSPARENT);
+            selectRect.setStrokeType(StrokeType.INSIDE);
+            selectRect.setStrokeWidth(2);
+        }
+
+        // If the move is valid, show the selection color respective
+        // -- TODO --
+        // to the current player turn
+        // ----------
+        // Otherwise, mark it as invalid w/a red color
+
+        selectionIsValid = selectedPiece.validateMove(simpleX, simpleY);
+
+        if (selectionIsValid) {
+
+            selectRect.setStroke(Color.valueOf("WHITE"));
+
+        } else {
+
+            selectRect.setStroke(Color.RED);
+
+        }
+
+        // If theres a piece of the same color where the selection box should be, dont show it.
+        if (pieces.findEntity(ChessType.WHITE, simpleX, simpleY) != null) {
+
+            selectRect.setStroke(Color.TRANSPARENT);
+
+        }
+
+        selectRect.relocate(simpleX * 32, simpleY * 32);
+
+    }
 
     // Generate the decorative checker rectangles
     private void generateCheckerBoard() {

@@ -16,7 +16,7 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    public boolean validateMove() {
+    public boolean validateMove(final int targetX, final int targetY) {
 
         return true;
 
