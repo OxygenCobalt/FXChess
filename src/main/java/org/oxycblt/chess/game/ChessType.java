@@ -1,6 +1,6 @@
-// Enum of all chess piece types
+// Enum of all chess piece types, chess colors, and player turns.
 
-package org.oxycblt.chess.game.board.pieces;
+package org.oxycblt.chess.game;
 
 public enum ChessType {
 

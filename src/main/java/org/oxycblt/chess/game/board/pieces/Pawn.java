@@ -2,11 +2,12 @@
 
 package org.oxycblt.chess.game.board.pieces;
 
-import java.util.ArrayList;
+import org.oxycblt.chess.game.ChessType;
+import org.oxycblt.chess.game.board.ChessList;
 
 public class Pawn extends ChessPiece {
 
-    public Pawn(final ArrayList<ChessPiece> list,
+    public Pawn(final ChessList list,
                 final ChessType color,
                 final int x, final int y) {
 
@@ -15,14 +16,14 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    boolean validateMove() {
+    public boolean validateMove() {
 
         return true;
 
     }
 
     @Override
-    void update() {
+    public void update() {
 
 
 
