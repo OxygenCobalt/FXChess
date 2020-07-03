@@ -15,8 +15,8 @@ public class ChessScene extends Scene {
 
     public ChessScene(final Group root) {
 
-        super(root, 500, 500);
-        setFill(Color.rgb(192, 192, 192));
+        super(root, 300, 300);
+        setFill(Color.rgb(140, 140, 140));
 
         this.root = root;
 

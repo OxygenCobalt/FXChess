@@ -1,4 +1,4 @@
-// Main UselessChess window
+// Main FXChess window
 
 package org.oxycblt.chess;
 
@@ -11,7 +11,7 @@ public class ChessApp extends Application {
 
     public void start(final Stage primaryStage) {
 
-        primaryStage.setTitle("UselessChess");
+        primaryStage.setTitle("FXChess");
         primaryStage.setResizable(false);
 
         primaryStage.setScene(new ChessScene(new Group()));
