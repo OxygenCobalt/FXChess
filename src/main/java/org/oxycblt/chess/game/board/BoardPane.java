@@ -2,19 +2,32 @@
 
 package org.oxycblt.chess.game.board;
 
+import java.util.ArrayList;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.oxycblt.chess.game.board.pieces.Pawn;
 import org.oxycblt.chess.game.board.pieces.ChessType;
+import org.oxycblt.chess.game.board.pieces.ChessPiece;
 
-public class ChessPane extends Pane {
+public class BoardPane extends Pane {
 
-    public ChessPane() {
+    private final ArrayList<ChessPiece> pieces;
+
+    public BoardPane() {
 
         // W/H/X/Y are static
-        relocate(22, 22);
+        relocate(33, 49);
         setPrefSize(256, 256);
+        setStyle(
+
+              "-fx-border-style: solid outside;"
+            + "-fx-border-width: 6px;"
+            + "-fx-border-color: #8F8F8F"
+
+        );
+
+        pieces = new ArrayList<ChessPiece>();
 
         generateCheckerBoard();
         generateChessPieces();
@@ -59,7 +72,10 @@ public class ChessPane extends Pane {
 
     private void generateChessPieces() {
 
-        getChildren().add(new Pawn(ChessType.BLACK, 0, 0));
+        Pawn pawn1 = new Pawn(pieces, ChessType.BLACK, 0, 1);
+        Pawn pawn2 = new Pawn(pieces, ChessType.WHITE, 0, 6);
+
+        getChildren().addAll(pawn1, pawn2);
 
     }
 

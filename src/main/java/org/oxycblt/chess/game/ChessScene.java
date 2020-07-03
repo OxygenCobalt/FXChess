@@ -5,22 +5,22 @@ package org.oxycblt.chess.game;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import org.oxycblt.chess.game.board.ChessPane;
+import org.oxycblt.chess.game.board.BoardPane;
 
 public class ChessScene extends Scene {
 
     private final Group root;
 
-    private final ChessPane chess;
+    private final BoardPane chess;
 
     public ChessScene(final Group root) {
 
-        super(root, 300, 300);
-        setFill(Color.rgb(140, 140, 140));
+        super(root, 322, 354);
+        setFill(Color.rgb(50, 50, 50));
 
         this.root = root;
 
-        chess = new ChessPane();
+        chess = new BoardPane();
 
         root.getChildren().addAll(chess);
 

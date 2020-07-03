@@ -2,11 +2,15 @@
 
 package org.oxycblt.chess.game.board.pieces;
 
+import java.util.ArrayList;
+
 public class Pawn extends ChessPiece {
 
-    public Pawn(final ChessType color, final int x, final int y) {
+    public Pawn(final ArrayList<ChessPiece> list,
+                final ChessType color,
+                final int x, final int y) {
 
-        super(ChessType.PAWN, color, x, y);
+        super(list, ChessType.PAWN, color, x, y);
 
     }
 

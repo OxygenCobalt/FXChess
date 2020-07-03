@@ -2,8 +2,12 @@
 
 package org.oxycblt.chess.game.board.pieces;
 
+import java.util.ArrayList;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.ImageView;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.MouseButton;
 import org.oxycblt.chess.media.images.TextureAtlas;
 import org.oxycblt.chess.media.images.Texture;
 
@@ -15,9 +19,18 @@ public abstract class ChessPiece extends Pane {
     public int x;
     public int y;
 
-    private final ImageView chessView;
+    private boolean isSelected;
+    private ArrayList<ChessPiece> list;
 
-    public ChessPiece(final ChessType type, final ChessType color, final int x, final int y) {
+    private ImageView chessView;
+
+    public ChessPiece(final ArrayList<ChessPiece> list,
+                      final ChessType type,
+                      final ChessType color,
+                      final int x, final int y) {
+
+        list.add(this);
+        this.list = list;
 
         this.type = type;
         this.color = color;
@@ -31,6 +44,7 @@ public abstract class ChessPiece extends Pane {
 
         setPrefSize(32, 32);
         relocate(x * 32, y * 32);
+        setOnMouseClicked(mouseClickHandler);
 
         // Add the correct chess piece image to use from TextureAtlas
         chessView = TextureAtlas.getTexture(
@@ -45,6 +59,20 @@ public abstract class ChessPiece extends Pane {
 
     }
 
+    EventHandler<MouseEvent> mouseClickHandler = event -> {
+
+        MouseButton button = event.getButton();
+
+        if (button == MouseButton.PRIMARY && !isSelected) {
+
+            isSelected = true;
+
+            System.out.println(list.size());
+
+        }
+
+    };
+
     private void onMove() {
 
 
@@ -53,5 +81,14 @@ public abstract class ChessPiece extends Pane {
 
     abstract boolean validateMove();
     abstract void update();
+
+    // Remove any loaded media
+    public void destroy() {
+
+        getChildren().remove(chessView);
+
+        chessView = null;
+
+    }
 
 }
