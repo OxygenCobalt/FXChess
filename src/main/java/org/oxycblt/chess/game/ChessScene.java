@@ -11,7 +11,7 @@ public class ChessScene extends Scene {
 
     private final Group root;
 
-    private final BoardPane chess;
+    private BoardPane chess;
 
     public ChessScene(final Group root) {
 

@@ -10,7 +10,7 @@ import org.oxycblt.chess.game.board.pieces.ChessPiece;
 
 public class ChessList {
 
-    private final ArrayList<ChessPiece> pieces;
+    private ArrayList<ChessPiece> pieces;
 
     public ChessList() {
 
@@ -18,6 +18,7 @@ public class ChessList {
 
     }
 
+    // Basic entity management
     public void addEntity(final ChessPiece entity) {
 
         pieces.add(entity);
@@ -30,6 +31,7 @@ public class ChessList {
 
     }
 
+    // Search for a chess piece based on the pieces color and coordinates
     public ChessPiece findEntity(final ChessType color, final int x, final int y) {
 
         for (ChessPiece piece : pieces) {
@@ -43,12 +45,6 @@ public class ChessList {
         }
 
         return null;
-
-    }
-
-    public int size() {
-
-        return pieces.size();
 
     }
 

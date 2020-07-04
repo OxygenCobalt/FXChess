@@ -1,4 +1,4 @@
-// Abstract chess piece
+// Base class for all chess pieces
 
 package org.oxycblt.chess.game.board.pieces;
 
@@ -14,22 +14,26 @@ import org.oxycblt.chess.media.images.TextureAtlas;
 
 public abstract class ChessPiece extends Pane {
 
-    protected final ChessType type;
-    protected final ChessType color;
+    protected ChessType type;
+    protected ChessType color;
     protected ChessList list;
-
-    protected int x;
-    protected int y;
-
-    protected boolean hasMoved;
 
     private ImageView chessView;
     private Rectangle selectRect;
+
+    protected int x = 0;
+    protected int y = 0;
+
+    protected boolean hasMoved = false;
+    protected boolean moveIsValid = false;
 
     public ChessPiece(final ChessList list,
                       final ChessType type,
                       final ChessType color,
                       final int x, final int y) {
+
+        setPrefSize(32, 32);
+        relocate(x * 32, y * 32);
 
         this.type = type;
         this.color = color;
@@ -37,7 +41,7 @@ public abstract class ChessPiece extends Pane {
         this.y = y;
 
         this.list = list;
-        list.addEntity(this);
+        this.list.addEntity(this);
 
         // Chess piece color should not be black
         if (color != ChessType.BLACK && color != ChessType.WHITE) {
@@ -45,9 +49,6 @@ public abstract class ChessPiece extends Pane {
             throw new IllegalArgumentException("Chess color is not BLACK or WHITE");
 
         }
-
-        setPrefSize(32, 32);
-        relocate(x * 32, y * 32);
 
         // Add the correct chess piece image to use from TextureAtlas
         chessView = TextureAtlas.getTexture(
@@ -73,7 +74,7 @@ public abstract class ChessPiece extends Pane {
                 selectRect.setFill(Color.TRANSPARENT);
                 selectRect.setStroke(Color.valueOf(color.toString()));
                 selectRect.setStrokeType(StrokeType.INSIDE);
-                selectRect.setStrokeWidth(2);
+                selectRect.setStrokeWidth(3);
 
             }
 
@@ -100,7 +101,7 @@ public abstract class ChessPiece extends Pane {
 
     }
 
-    public abstract boolean validateMove(int targetX, int targetY);
+    public abstract void validateMove(int targetX, int targetY);
     public abstract void update();
 
     // Return true if all characteristics of piece are correct
@@ -115,6 +116,13 @@ public abstract class ChessPiece extends Pane {
         }
 
         return matchColor == color && matchX == x && matchY == y;
+
+    }
+
+    // Getters
+    public boolean getValid() {
+
+        return moveIsValid;
 
     }
 
