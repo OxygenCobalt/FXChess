@@ -23,7 +23,7 @@ public class BoardPane extends Pane {
     private ChessPiece selectedPiece = null;
     private Rectangle selectRect = null;
 
-    private ChessType turn = ChessType.WHITE;
+    private ChessType turn = ChessType.BLACK;
 
     private int mouseX = 0;
     private int mouseY = 0;
@@ -265,8 +265,7 @@ public class BoardPane extends Pane {
     // Generate the chess pieces
     private void generateChessPieces() {
 
-        // First, randomly determine which turn will be first,
-        // and therefore the order of the two sets of chess pieces
+        // First, randomly determine which turn will be first.
 
         // TODO: Readd once the board fully generates
         /*

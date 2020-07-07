@@ -30,7 +30,7 @@ public enum ChessType {
 
         if (color != ChessType.BLACK && color != ChessType.WHITE) {
 
-            throw new IllegalArgumentException("Chess color is not BLACK or WHITE");
+            throw new IllegalArgumentException("Given color is not BLACK or WHITE");
 
         }
 

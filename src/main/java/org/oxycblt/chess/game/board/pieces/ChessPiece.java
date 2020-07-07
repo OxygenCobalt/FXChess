@@ -18,14 +18,17 @@ public abstract class ChessPiece extends Pane {
     protected ChessType color;
     protected ChessList list;
 
-    private ImageView chessView;
-    private Rectangle selectRect;
-
     protected int x = 0;
     protected int y = 0;
 
+    protected int xDist = 0;
+    protected int yDist = 0;
+
     protected boolean hasMoved = false;
     protected boolean moveIsValid = false;
+
+    private ImageView chessView;
+    private Rectangle selectRect;
 
     public ChessPiece(final ChessList list,
                       final ChessType type,
@@ -63,6 +66,14 @@ public abstract class ChessPiece extends Pane {
 
     }
 
+    // Calculate the distance the from the current position to the new position.
+    protected void calculateDistance(final int targetX, final int targetY) {
+
+        xDist = x - targetX;
+        yDist = y - targetY;
+
+    }
+
     // Select/Deselect a chess piece
     public void setSelected(final boolean selected) {
 
@@ -90,10 +101,7 @@ public abstract class ChessPiece extends Pane {
     }
 
     // Confirm a move
-    public void confirmMove(final int targetX, final int targetY) {
-
-        // Remove a chess piece from the EntityList, if it exists
-        list.removeEntity(list.findChessPiece(ChessType.inverseOf(color), targetX, targetY));
+    protected void doMove(final int targetX, final int targetY, final ChessPiece toKill) {
 
         x = targetX;
         y = targetY;
@@ -101,16 +109,23 @@ public abstract class ChessPiece extends Pane {
         hasMoved = true;
 
         relocate(x * 32, y * 32);
-
         setSelected(false);
 
+        if (toKill != null) {
+
+            list.removeEntity(toKill);
+
+        }
+
+        list.removeEntity(list.findChessPiece(ChessType.inverseOf(color), x, y));
         list.pushChange(this);
 
     }
 
-    // Validate a move & update a piece of the last changed piece,
-    // both are unique for every implementation for chesspiece
+    // Validate a move, confirm a move, and update a piece of the last
+    // changed piece, all are unique for every implementation for chesspiece
     public abstract void validateMove(int targetX, int targetY);
+    public abstract void confirmMove(int targetX, int targetY);
     public abstract void update(ChessPiece changedPiece);
 
     // Return true if all characteristics of piece are correct
@@ -129,6 +144,36 @@ public abstract class ChessPiece extends Pane {
     }
 
     // Getters
+    public ChessType getType() {
+
+        return type;
+
+    }
+
+    public ChessType getColor() {
+
+        return color;
+
+    }
+
+    public int getX() {
+
+        return x;
+
+    }
+
+    public int getY() {
+
+        return y;
+
+    }
+
+    public int getYDist() {
+
+        return yDist;
+
+    }
+
     public boolean getValid() {
 
         return moveIsValid;
