@@ -63,6 +63,7 @@ public abstract class ChessPiece extends Pane {
 
     }
 
+    // Select/Deselect a chess piece
     public void setSelected(final boolean selected) {
 
         if (selected) {
@@ -88,6 +89,7 @@ public abstract class ChessPiece extends Pane {
 
     }
 
+    // Confirm a move
     public void confirmMove(final int targetX, final int targetY) {
 
         x = targetX;
@@ -101,8 +103,10 @@ public abstract class ChessPiece extends Pane {
 
     }
 
+    // Validate a move & update a piece of the last changed piece,
+    // both are unique for every implementation for chesspiece
     public abstract void validateMove(int targetX, int targetY);
-    public abstract void update();
+    public abstract void update(ChessPiece changedPiece);
 
     // Return true if all characteristics of piece are correct
     public boolean isMatching(final ChessType matchColor,

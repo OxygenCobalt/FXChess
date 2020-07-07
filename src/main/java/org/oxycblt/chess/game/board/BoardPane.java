@@ -32,7 +32,7 @@ public class BoardPane extends Pane {
 
     public BoardPane() {
 
-        // W/H/mouseX/mouseY are static
+        // W/H/X/Y are static
         relocate(33, 49);
         setPrefSize(256, 256);
         setOnMouseClicked(mouseClickHandler);
@@ -75,7 +75,7 @@ public class BoardPane extends Pane {
 
                 updateSimpleXY();
 
-                ChessPiece piece = pieces.findEntity(ChessType.WHITE, simpleX, simpleY);
+                ChessPiece piece = pieces.findChessPiece(ChessType.WHITE, simpleX, simpleY);
 
                 if (piece != null && piece != selectedPiece) {
 
@@ -215,7 +215,7 @@ public class BoardPane extends Pane {
         }
 
         // If theres a piece of the same color where the selection box should be, dont show it.
-        if (pieces.findEntity(ChessType.WHITE, simpleX, simpleY) != null) {
+        if (pieces.findChessPiece(ChessType.WHITE, simpleX, simpleY) != null) {
 
             selectRect.setStroke(Color.TRANSPARENT);
 

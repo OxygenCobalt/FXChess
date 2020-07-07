@@ -10,8 +10,9 @@ import org.oxycblt.chess.game.board.BoardPane;
 public class ChessScene extends Scene {
 
     private final Group root;
-
     private BoardPane chess;
+
+    private ChessType turn;
 
     public ChessScene(final Group root) {
 
@@ -23,6 +24,9 @@ public class ChessScene extends Scene {
         chess = new BoardPane();
 
         root.getChildren().addAll(chess);
+
+        // TODO: Determine the first turn randomly
+        turn = ChessType.BLACK;
 
     }
 

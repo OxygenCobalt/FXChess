@@ -2,12 +2,10 @@
 
 package org.oxycblt.chess.media.images;
 
+import java.util.HashMap;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import javafx.geometry.Rectangle2D;
-
-import java.util.HashMap;
 
 public final class TextureAtlas {
 
