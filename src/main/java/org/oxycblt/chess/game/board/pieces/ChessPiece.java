@@ -43,7 +43,7 @@ public abstract class ChessPiece extends Pane {
         this.list = list;
         this.list.addEntity(this);
 
-        // Chess piece color should not be black
+        // Color should not be anything other than BLACK or WHITE
         if (color != ChessType.BLACK && color != ChessType.WHITE) {
 
             throw new IllegalArgumentException("Chess color is not BLACK or WHITE");
@@ -92,6 +92,9 @@ public abstract class ChessPiece extends Pane {
     // Confirm a move
     public void confirmMove(final int targetX, final int targetY) {
 
+        // Remove a chess piece from the EntityList, if it exists
+        list.removeEntity(list.findChessPiece(ChessType.inverseOf(color), targetX, targetY));
+
         x = targetX;
         y = targetY;
 
@@ -100,6 +103,8 @@ public abstract class ChessPiece extends Pane {
         relocate(x * 32, y * 32);
 
         setSelected(false);
+
+        list.pushChange(this);
 
     }
 

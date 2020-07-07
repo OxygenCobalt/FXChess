@@ -13,6 +13,7 @@ import javafx.scene.shape.StrokeType;
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.pieces.Pawn;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
+import org.oxycblt.chess.entity.EntityRemovalListener;
 
 public class BoardPane extends Pane {
 
@@ -21,6 +22,8 @@ public class BoardPane extends Pane {
 
     private ChessPiece selectedPiece = null;
     private Rectangle selectRect = null;
+
+    private ChessType turn = ChessType.WHITE;
 
     private int mouseX = 0;
     private int mouseY = 0;
@@ -43,7 +46,7 @@ public class BoardPane extends Pane {
             + "-fx-border-color: #8F8F8F"
         );
 
-        pieces = new ChessList();
+        pieces = new ChessList(chessRemovalListener);
         mouseRect = new Rectangle2D(
             getLayoutX(),
             getLayoutY(),
@@ -67,15 +70,12 @@ public class BoardPane extends Pane {
 
             if (validateXY()) {
 
-                // Find a chess piece that matches the coordinates
-                // --- TODO ---
-                // and the current player turn,
-                // ------------
-                // and select that if there is one
+                // Find a chess piece that matches the coordinates and the
+                // current player turn, and select that if there is one
 
                 updateSimpleXY();
 
-                ChessPiece piece = pieces.findChessPiece(ChessType.WHITE, simpleX, simpleY);
+                ChessPiece piece = pieces.findChessPiece(turn, simpleX, simpleY);
 
                 if (piece != null && piece != selectedPiece) {
 
@@ -102,7 +102,7 @@ public class BoardPane extends Pane {
                     }
 
                 // If clicked again while on an empty square with a piece selected,
-                // confirm the move as long as its valid, deselecting it in the process as well
+                // confirm the move as long as its valid, deselecting it and changing the turn
                 } else if (piece == null && selectedPiece != null) {
 
                     if (selectedPiece.getValid()) {
@@ -112,6 +112,8 @@ public class BoardPane extends Pane {
                         selectedPiece = null;
 
                         getChildren().remove(selectRect);
+
+                        turn = ChessType.inverseOf(turn);
 
                     }
 
@@ -163,6 +165,12 @@ public class BoardPane extends Pane {
 
     };
 
+    EntityRemovalListener<ChessPiece> chessRemovalListener = removed -> {
+
+        getChildren().remove(removed);
+
+    };
+
     // Normalize a mouse pointer so that the coordinates are solely within the bounds of BoardPane
     private void normalizePointer(final MouseEvent event) {
 
@@ -175,7 +183,7 @@ public class BoardPane extends Pane {
     private boolean validateXY() {
 
         return mouseX > 0 && mouseX < getPrefWidth()
-               && mouseY > 0 && mouseY < getPrefHeight();
+            && mouseY > 0 && mouseY < getPrefHeight();
 
     }
 
@@ -199,14 +207,11 @@ public class BoardPane extends Pane {
 
         }
 
-        // If the move is valid, show the selection color respective
-        // -- TODO --
-        // to the current player turn
-        // ----------
-        // Otherwise, mark it as invalid w/a red color
+        // If the move is valid, show the selection color respective to the
+        // current player turn, otherwise mark it as invalid w/a red color
         if (selectedPiece.getValid()) {
 
-            selectRect.setStroke(Color.valueOf("WHITE"));
+            selectRect.setStroke(Color.valueOf(turn.toString()));
 
         } else {
 
@@ -215,7 +220,7 @@ public class BoardPane extends Pane {
         }
 
         // If theres a piece of the same color where the selection box should be, dont show it.
-        if (pieces.findChessPiece(ChessType.WHITE, simpleX, simpleY) != null) {
+        if (pieces.findChessPiece(turn, simpleX, simpleY) != null) {
 
             selectRect.setStroke(Color.TRANSPARENT);
 
@@ -260,11 +265,28 @@ public class BoardPane extends Pane {
     // Generate the chess pieces
     private void generateChessPieces() {
 
-        Pawn pawn1 = new Pawn(pieces, ChessType.BLACK, 0, 1);
-        Pawn pawn2 = new Pawn(pieces, ChessType.WHITE, 0, 6);
-        Pawn pawn3 = new Pawn(pieces, ChessType.WHITE, 1, 6);
+        // First, randomly determine which turn will be first,
+        // and therefore the order of the two sets of chess pieces
 
-        getChildren().addAll(pawn1, pawn2, pawn3);
+        // TODO: Readd once the board fully generates
+        /*
+        if (new Random().nextBoolean()) {
+
+            turn = ChessType.WHITE;
+
+        } else {
+
+            turn = ChessType.BLACK;
+
+        }
+        */
+
+        Pawn pawn1 = new Pawn(pieces, ChessType.BLACK, 0, 1);
+        Pawn pawn2 = new Pawn(pieces, ChessType.BLACK, 1, 1);
+        Pawn pawn3 = new Pawn(pieces, ChessType.WHITE, 0, 6);
+        Pawn pawn4 = new Pawn(pieces, ChessType.WHITE, 1, 6);
+
+        getChildren().addAll(pawn1, pawn2, pawn3, pawn4);
 
     }
 

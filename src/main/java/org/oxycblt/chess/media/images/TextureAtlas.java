@@ -27,9 +27,7 @@ public final class TextureAtlas {
         ImageView view = new ImageView(loadFullTexture(tex));
 
         view.setViewport(new Rectangle2D(
-
             x * DEF_WIDTH, y * DEF_HEIGHT, DEF_WIDTH, DEF_HEIGHT
-
         ));
 
         return view;
@@ -40,29 +38,16 @@ public final class TextureAtlas {
     private static Image loadFullTexture(final Texture tex) {
 
         // Check if image is loaded, load it if not
-        if (loadedImages.containsKey(tex)) {
-
-            return loadedImages.get(tex);
-
-        } else {
-
-            Image img = new Image(
-
-                TextureAtlas.class.getResource(tex.getPath()).toString()
-
-            );
+        if (!loadedImages.containsKey(tex)) {
 
             loadedImages.put(
-
                 tex,
-
-                img
-
+                new Image(TextureAtlas.class.getResource(tex.getPath()).toString())
             );
 
-            return img;
-
         }
+
+        return loadedImages.get(tex);
 
     }
 

@@ -25,9 +25,6 @@ public class ChessScene extends Scene {
 
         root.getChildren().addAll(chess);
 
-        // TODO: Determine the first turn randomly
-        turn = ChessType.BLACK;
-
     }
 
 }

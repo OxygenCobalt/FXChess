@@ -25,4 +25,16 @@ public enum ChessType {
 
     }
 
+    // Return the opposite of the given color
+    public static ChessType inverseOf(final ChessType color) {
+
+        if (color != ChessType.BLACK && color != ChessType.WHITE) {
+
+            throw new IllegalArgumentException("Chess color is not BLACK or WHITE");
+
+        }
+
+        return color == WHITE ? BLACK : WHITE;
+    }
+
 }

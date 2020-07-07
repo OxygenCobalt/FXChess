@@ -8,13 +8,15 @@ public abstract class EntityList<T> {
 
     protected ArrayList<T> entities;
 
+    protected EntityRemovalListener<T> removeListener = null;
+
     public EntityList() {
 
         entities = new ArrayList<T>();
 
     }
 
-    // Basic entity management
+    // Entity management
     public void addEntity(final T entity) {
 
         entities.add(entity);
@@ -23,7 +25,13 @@ public abstract class EntityList<T> {
 
     public void removeEntity(final T entity) {
 
-        entities.remove(entity);
+        // Notify any listeners of the entity removal as long
+        // as the entity was actually removed
+        if (entities.remove(entity) && removeListener != null) {
+
+            removeListener.onRemoved(entity);
+
+        }
 
     }
 
