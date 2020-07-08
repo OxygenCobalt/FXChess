@@ -98,8 +98,54 @@ public abstract class ChessPiece extends Pane {
     // Calculate the distance the from the current position to the new position.
     protected void calculateDistance(final int targetX, final int targetY) {
 
-        xDist = x - targetX;
-        yDist = y - targetY;
+        xDist = targetX - x;
+        yDist = targetY - y;
+
+    }
+
+    // Search for any pieces that may be blocking the path to a destination coordinate
+    protected boolean findBlockingPieces(final int targetX, final int targetY) {
+
+        iterX = x;
+        iterY = y;
+
+        while (iterX != targetX || iterY != targetY) {
+
+            if (iterX > targetX) {
+
+                iterX--;
+
+            } else if (iterX < targetX) {
+
+                iterX++;
+
+            }
+
+            if (iterY > targetY) {
+
+                iterY--;
+
+            } else if (iterY < targetY) {
+
+                iterY++;
+
+            }
+
+            // Make sure that any chess pieces at the end arent
+            // counted. The if statement is redundant but oh well
+            if (iterX != targetX || iterY != targetY) {
+
+                if (list.findChessPiece(iterX, iterY) != null) {
+
+                    return true;
+
+                }
+
+            }
+
+        }
+
+        return false;
 
     }
 

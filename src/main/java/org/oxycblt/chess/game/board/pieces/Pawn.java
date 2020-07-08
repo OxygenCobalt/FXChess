@@ -31,7 +31,6 @@ public class Pawn extends ChessPiece {
         | during their move.
         */
 
-        // TODO: Dont validate this if a chess piece is in the way!
         // TODO: Also add promotion later on
 
         moveIsValid = false;
@@ -60,15 +59,19 @@ public class Pawn extends ChessPiece {
 
         }
 
-        // Due to being on opposite sides of the board,
-        // white pieces and black pieces have seperate logic
+        /*
+        | Due to being on opposite sides of the board, white pieces and black pieces have
+        | seperate logic, one to make sure the piece is always going up, and another to
+        | make sure the piece is always going down.
+        */
+
         if (color == ChessType.WHITE) {
 
-            if (yDist > 1 || yDist < 0) {
+            if (yDist < -1 || yDist > 0) {
 
                 yValid = false;
 
-                if (yDist == 2 && !hasMoved) {
+                if (yDist == -2 && !hasMoved) {
 
                     if (list.findChessPiece(x, y - 1) == null
                     && list.findChessPiece(x, y - 2) == null) {
@@ -83,11 +86,11 @@ public class Pawn extends ChessPiece {
 
         } else {
 
-            if (yDist < -1 || yDist > 0) {
+            if (yDist > 1 || yDist < 0) {
 
                 yValid = false;
 
-                if (yDist == -2 && !hasMoved) {
+                if (yDist == 2 && !hasMoved) {
 
                     if (list.findChessPiece(x, y + 1) == null
                     && list.findChessPiece(x, y + 2) == null) {
