@@ -13,6 +13,8 @@ import javafx.scene.shape.StrokeType;
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.pieces.Pawn;
 import org.oxycblt.chess.game.board.pieces.Rook;
+import org.oxycblt.chess.game.board.pieces.Knight;
+import org.oxycblt.chess.game.board.pieces.Bishop;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
 import org.oxycblt.chess.entity.EntityRemovalListener;
 
@@ -287,7 +289,13 @@ public class BoardPane extends Pane {
         Rook rook1 = new Rook(pieces, ChessType.BLACK, 1, 1);
         Rook rook2 = new Rook(pieces, ChessType.WHITE, 1, 6);
 
-        getChildren().addAll(pawn1, pawn2, rook1, rook2);
+        Knight knight1 = new Knight(pieces, ChessType.BLACK, 2, 1);
+        Knight knight2 = new Knight(pieces, ChessType.WHITE, 2, 6);
+
+        Bishop bishop1 = new Bishop(pieces, ChessType.BLACK, 3, 1);
+        Bishop bishop2 = new Bishop(pieces, ChessType.WHITE, 3, 6);
+
+        getChildren().addAll(pawn1, pawn2, rook1, rook2, knight1, knight2, bishop1, bishop2);
 
     }
 

@@ -1,34 +1,35 @@
-// Rook chess piece
+// Bishop Chess Piece
 
 package org.oxycblt.chess.game.board.pieces;
 
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.ChessList;
 
-public class Rook extends ChessPiece {
+public class Bishop extends ChessPiece {
 
-    public Rook(final ChessList list,
-                final ChessType color,
-                final int x, final int y) {
+    public Bishop(final ChessList list,
+                  final ChessType color,
+                  final int x, final int y) {
 
-        super(list, ChessType.ROOK, color, x, y);
+        super(list, ChessType.BISHOP, color, x, y);
 
     }
 
     public void validateMove(final int targetX, final int targetY) {
 
         /*
-        | Rooks can move straight in all directions, but not diagonally. They also cannot hop over
-        | other pieces. // TODO// Rooks can perform a move called Castling once per game with the
-        | king piece, where the rook will move to the square the king just crossed during the
-        | maneuver.
+        | Bishops can only move diagonally, and cannot jump over
+        | other pieces. They have no special moves.
         */
 
         moveIsValid = false;
 
         calculateDistance(targetX, targetY);
 
-        if (xDist == 0 ^ yDist == 0) {
+        xDist = Math.abs(xDist);
+        yDist = Math.abs(yDist);
+
+        if (xDist == yDist) {
 
             if (!findBlockingPieces(targetX, targetY)) {
 
@@ -48,7 +49,7 @@ public class Rook extends ChessPiece {
 
     public void update(final ChessPiece changedPiece) {
 
-        // TODO: Add castling
+        // The bishop does not need to be notified of any change
 
     }
 
