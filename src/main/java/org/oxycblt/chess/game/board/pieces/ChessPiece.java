@@ -28,7 +28,6 @@ public abstract class ChessPiece extends Pane {
     private int iterY = 0;
 
     protected boolean hasMoved = false;
-    protected boolean moveIsValid = false;
 
     private ImageView chessView;
     private Rectangle selectRect;
@@ -173,7 +172,7 @@ public abstract class ChessPiece extends Pane {
 
     // Validate a move, confirm a move, and update a piece of the last
     // changed piece, all are unique for every implementation for chesspiece
-    public abstract void validateMove(int targetX, int targetY);
+    public abstract boolean validateMove(int targetX, int targetY);
     public abstract void confirmMove(int targetX, int targetY);
     public abstract void update(ChessPiece changedPiece);
 
@@ -205,12 +204,6 @@ public abstract class ChessPiece extends Pane {
     public int getYDist() {
 
         return yDist;
-
-    }
-
-    public boolean getValid() {
-
-        return moveIsValid;
 
     }
 

@@ -1,34 +1,41 @@
-// Rook chess piece
+// King Chess Piece
 
 package org.oxycblt.chess.game.board.pieces;
 
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.ChessList;
 
-public class Rook extends ChessPiece {
+public class King extends ChessPiece {
 
-    public Rook(final ChessList list,
+    public King(final ChessList list,
                 final ChessType color,
                 final int x, final int y) {
 
-        super(list, ChessType.ROOK, color, x, y);
+        super(list, ChessType.KING, color, x, y);
 
     }
 
     public boolean validateMove(final int targetX, final int targetY) {
 
         /*
-        | Rooks can move straight in all directions, but not diagonally. They also cannot hop over
-        | other pieces. // TODO// Rooks can perform a move called Castling once per game with the
-        | king piece, where the rook will move to the square the king just crossed during the
-        | maneuver.
+        | Kings can move in all directions, as long as the distance moved is one.
+        | // TODO // Kings can also perform a move called castling with a rook,
+        | which involve the king moving two spaces, and the rook moving to the space
+        | that the king passed.
         */
 
         calculateDistance(targetX, targetY);
 
-        if (xDist == 0 ^ yDist == 0) {
+        xDist = Math.abs(xDist);
+        yDist = Math.abs(yDist);
 
-            if (!findBlockingPieces(targetX, targetY)) {
+        if (xDist + yDist < 2) {
+
+            return true;
+
+        } else if (xDist + yDist == 2) {
+
+            if (xDist == yDist) {
 
                 return true;
 
@@ -49,6 +56,7 @@ public class Rook extends ChessPiece {
     public void update(final ChessPiece changedPiece) {
 
         // TODO: Add castling
+        // TODO: Add check/checkmate
 
     }
 

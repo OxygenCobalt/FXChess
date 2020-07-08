@@ -1,25 +1,25 @@
-// Knight Chess Piece
+// Queen chess piece
 
 package org.oxycblt.chess.game.board.pieces;
 
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.ChessList;
 
-public class Knight extends ChessPiece {
+public class Queen extends ChessPiece {
 
-    public Knight(final ChessList list,
-                  final ChessType color,
-                  final int x, final int y) {
+    public Queen(final ChessList list,
+                 final ChessType color,
+                 final int x, final int y) {
 
-        super(list, ChessType.KNIGHT, color, x, y);
+        super(list, ChessType.QUEEN, color, x, y);
 
     }
 
     public boolean validateMove(final int targetX, final int targetY) {
 
         /*
-        | Knights can move in an L-Shape in all directions, regardless of
-        | if any pieces are in the way. They have no special moves.
+        | Queens can move without restriction both straight and diagonally,
+        | but cannot jump over other chess pieces. They have no special abilities.
         */
 
         calculateDistance(targetX, targetY);
@@ -27,9 +27,13 @@ public class Knight extends ChessPiece {
         xDist = Math.abs(xDist);
         yDist = Math.abs(yDist);
 
-        if ((xDist == 1 && yDist == 2) || (xDist == 2 && yDist == 1)) {
+        if ((xDist == 0 ^ yDist == 0) || (xDist == yDist)) {
 
-            return true;
+            if (!findBlockingPieces(targetX, targetY)) {
+
+                return true;
+
+            }
 
         }
 
@@ -45,7 +49,7 @@ public class Knight extends ChessPiece {
 
     public void update(final ChessPiece changedPiece) {
 
-        // The knight does not need to be notified of any change
+        // The queen does not need to be notified of any change
 
     }
 

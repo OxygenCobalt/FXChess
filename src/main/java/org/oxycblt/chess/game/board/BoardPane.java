@@ -15,6 +15,8 @@ import org.oxycblt.chess.game.board.pieces.Pawn;
 import org.oxycblt.chess.game.board.pieces.Rook;
 import org.oxycblt.chess.game.board.pieces.Knight;
 import org.oxycblt.chess.game.board.pieces.Bishop;
+import org.oxycblt.chess.game.board.pieces.Queen;
+import org.oxycblt.chess.game.board.pieces.King;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
 import org.oxycblt.chess.entity.EntityRemovalListener;
 
@@ -43,6 +45,7 @@ public class BoardPane extends Pane {
         setPrefSize(256, 256);
         setOnMouseClicked(mouseClickHandler);
         setOnMouseMoved(mouseHoverHandler);
+        setOnMouseDragged(mouseHoverHandler);
         setStyle(
               "-fx-border-style: solid outside;"
             + "-fx-border-width: 6px;"
@@ -108,7 +111,7 @@ public class BoardPane extends Pane {
                 // confirm the move as long as its valid, deselecting it and changing the turn
                 } else if (piece == null && selectedPiece != null) {
 
-                    if (selectedPiece.getValid()) {
+                    if (selectedPiece.validateMove(simpleX, simpleY)) {
 
                         selectedPiece.confirmMove(simpleX, simpleY);
 
@@ -152,9 +155,7 @@ public class BoardPane extends Pane {
                 // E.G it went from one square to another
                 if (simpleX != cacheSimpleX || simpleY != cacheSimpleY) {
 
-                    // If so, check if these new coordinates are valid or not
-                    selectedPiece.validateMove(simpleX, simpleY);
-
+                    // If so, update the selection rect
                     updateSelectionRect();
 
                     cacheSimpleX = simpleX;
@@ -190,6 +191,7 @@ public class BoardPane extends Pane {
 
     }
 
+    // Update the simple coordinates from the mouse coords
     private void updateSimpleXY() {
 
         simpleX = mouseX / 32;
@@ -212,7 +214,7 @@ public class BoardPane extends Pane {
 
         // If the move is valid, show the selection color respective to the
         // current player turn, otherwise mark it as invalid w/a red color
-        if (selectedPiece.getValid()) {
+        if (selectedPiece.validateMove(simpleX, simpleY)) {
 
             selectRect.setStroke(Color.valueOf(turn.toString()));
 
@@ -270,7 +272,7 @@ public class BoardPane extends Pane {
 
         // First, randomly determine which turn will be first.
 
-        // TODO: Readd once the board fully generates
+        // TODO: Readd once the game itself is complete
         /*
         if (new Random().nextBoolean()) {
 
@@ -283,19 +285,38 @@ public class BoardPane extends Pane {
         }
         */
 
-        Pawn pawn1 = new Pawn(pieces, ChessType.BLACK, 0, 1);
-        Pawn pawn2 = new Pawn(pieces, ChessType.WHITE, 0, 6);
+        // Iterate through the 2 colors possible, BLACK or WHITE
+        for (int cY = 0; cY < 2; cY++) {
 
-        Rook rook1 = new Rook(pieces, ChessType.BLACK, 1, 1);
-        Rook rook2 = new Rook(pieces, ChessType.WHITE, 1, 6);
+            ChessType color = cY == 0 ? ChessType.BLACK : ChessType.WHITE;
 
-        Knight knight1 = new Knight(pieces, ChessType.BLACK, 2, 1);
-        Knight knight2 = new Knight(pieces, ChessType.WHITE, 2, 6);
+            // Then, generate the row of pawns,
+            // changing the Y value depending on the color
+            for (int pX = 0; pX < 8; pX++) {
 
-        Bishop bishop1 = new Bishop(pieces, ChessType.BLACK, 3, 1);
-        Bishop bishop2 = new Bishop(pieces, ChessType.WHITE, 3, 6);
+                getChildren().add(
+                    new Pawn(pieces, color, pX, 1 + (cY * 5))
+                );
 
-        getChildren().addAll(pawn1, pawn2, rook1, rook2, knight1, knight2, bishop1, bishop2);
+            }
+
+            // Then generate the back row of special pieces, using the typical order of
+            // ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, ROOK, KNIGHT
+            for (int cX = 0; cX < 8; cX++) {
+
+                switch (ChessType.PIECE_ORDER[cX]) {
+
+                    case ROOK: getChildren().add(new Rook(pieces, color, cX, cY * 7)); break;
+                    case KNIGHT: getChildren().add(new Knight(pieces, color, cX, cY * 7)); break;
+                    case BISHOP: getChildren().add(new Bishop(pieces, color, cX, cY * 7)); break;
+                    case QUEEN: getChildren().add(new Queen(pieces, color, cX, cY * 7)); break;
+                    case KING: getChildren().add(new King(pieces, color, cX, cY * 7)); break;
+
+                }
+
+            }
+
+        }
 
     }
 

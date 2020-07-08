@@ -21,7 +21,7 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    public void validateMove(final int targetX, final int targetY) {
+    public boolean validateMove(final int targetX, final int targetY) {
 
         /*
         | A pawn can only move foward, one square at a time, except for its first move,
@@ -32,8 +32,6 @@ public class Pawn extends ChessPiece {
         */
 
         // TODO: Also add promotion later on
-
-        moveIsValid = false;
 
         calculateDistance(targetX, targetY);
 
@@ -105,7 +103,7 @@ public class Pawn extends ChessPiece {
 
         }
 
-        moveIsValid = xValid && yValid;
+        return xValid && yValid;
 
     }
 
