@@ -8,6 +8,7 @@ import org.oxycblt.chess.game.board.ChessList;
 public class Pawn extends ChessPiece {
 
     private ChessPiece passPiece = null;
+
     private boolean xValid = false;
     private boolean yValid = false;
 
@@ -23,11 +24,17 @@ public class Pawn extends ChessPiece {
     public void validateMove(final int targetX, final int targetY) {
 
         /*
-         | A pawn can only move foward, one square at a time, except for its first move,
-         | where moving two squares is valid. Pawns can also perform a move
-         | called en passant, where they can capture a pawn that has just advanced
-         | two squares by moving to the square that they passed during their move.
+        | A pawn can only move foward, one square at a time, except for its first move,
+        | where moving two squares is valid as long as the entire path is unoccupied.
+        | Pawns can also perform a move called en passant, where they can capture a pawn
+        | that has just advanced two squares by moving to the square that they passed
+        | during their move.
         */
+
+        // TODO: Dont validate this if a chess piece is in the way!
+        // TODO: Also add promotion later on
+
+        moveIsValid = false;
 
         calculateDistance(targetX, targetY);
 
@@ -63,7 +70,12 @@ public class Pawn extends ChessPiece {
 
                 if (yDist == 2 && !hasMoved) {
 
-                    yValid = true;
+                    if (list.findChessPiece(x, y - 1) == null
+                    && list.findChessPiece(x, y - 2) == null) {
+
+                        yValid = true;
+
+                    }
 
                 }
 
@@ -77,7 +89,12 @@ public class Pawn extends ChessPiece {
 
                 if (yDist == -2 && !hasMoved) {
 
-                    yValid = true;
+                    if (list.findChessPiece(x, y + 1) == null
+                    && list.findChessPiece(x, y + 2) == null) {
+
+                        yValid = true;
+
+                    }
 
                 }
 
@@ -93,15 +110,15 @@ public class Pawn extends ChessPiece {
     public void confirmMove(final int targetX, final int targetY) {
 
         /*
-         | If theres a piece that can be removed via En Passant,
-         | knock that one out, otherwise just search for any chess pieces
-         | that may be on the destinartion square, and knock them out instead
+        | If theres a piece that can be removed via En Passant,
+        | knock that one out, otherwise just search for any chess pieces
+        | that may be on the destinartion square, and knock them out instead
         */
 
         if (passPiece != null) {
 
             if (passPiece.getX() == targetX
-            && passPiece.getY() == targetY) {
+            && passPiece.getY() != targetY) {
 
                 doMove(targetX, targetY, passPiece);
 
@@ -119,9 +136,9 @@ public class Pawn extends ChessPiece {
     public void update(final ChessPiece changedPiece) {
 
         /*
-         | If a pawn makes its only 2-square movement, and its the currently updated
-         | pawn shares a Y coordinate & an adjacent X position, then its possible to
-         | take the piece out w/an "En Passant" movement
+        | If a pawn makes its only 2-square movement, and its the currently updated
+        | pawn shares a Y coordinate & an adjacent X position, then its possible to
+        | take the piece out w/an "En Passant" movement
         */
 
         passPiece = null;

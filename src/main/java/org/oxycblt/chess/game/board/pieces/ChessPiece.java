@@ -24,6 +24,9 @@ public abstract class ChessPiece extends Pane {
     protected int xDist = 0;
     protected int yDist = 0;
 
+    private int iterX = 0;
+    private int iterY = 0;
+
     protected boolean hasMoved = false;
     protected boolean moveIsValid = false;
 
@@ -66,14 +69,6 @@ public abstract class ChessPiece extends Pane {
 
     }
 
-    // Calculate the distance the from the current position to the new position.
-    protected void calculateDistance(final int targetX, final int targetY) {
-
-        xDist = x - targetX;
-        yDist = y - targetY;
-
-    }
-
     // Select/Deselect a chess piece
     public void setSelected(final boolean selected) {
 
@@ -97,6 +92,14 @@ public abstract class ChessPiece extends Pane {
             getChildren().remove(selectRect);
 
         }
+
+    }
+
+    // Calculate the distance the from the current position to the new position.
+    protected void calculateDistance(final int targetX, final int targetY) {
+
+        xDist = x - targetX;
+        yDist = y - targetY;
 
     }
 
@@ -127,21 +130,6 @@ public abstract class ChessPiece extends Pane {
     public abstract void validateMove(int targetX, int targetY);
     public abstract void confirmMove(int targetX, int targetY);
     public abstract void update(ChessPiece changedPiece);
-
-    // Return true if all characteristics of piece are correct
-    public boolean isMatching(final ChessType matchColor,
-                               final int matchX,
-                               final int matchY) {
-
-        if (matchColor != ChessType.BLACK && matchColor != ChessType.WHITE) {
-
-            throw new IllegalArgumentException("Chess color is not BLACK or WHITE");
-
-        }
-
-        return matchColor == color && matchX == x && matchY == y;
-
-    }
 
     // Getters
     public ChessType getType() {

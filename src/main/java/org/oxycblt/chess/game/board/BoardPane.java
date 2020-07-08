@@ -23,7 +23,7 @@ public class BoardPane extends Pane {
     private ChessPiece selectedPiece = null;
     private Rectangle selectRect = null;
 
-    private ChessType turn = ChessType.BLACK;
+    private ChessType turn = ChessType.WHITE;
 
     private int mouseX = 0;
     private int mouseY = 0;
@@ -282,7 +282,7 @@ public class BoardPane extends Pane {
 
         Pawn pawn1 = new Pawn(pieces, ChessType.BLACK, 0, 1);
         Pawn pawn2 = new Pawn(pieces, ChessType.BLACK, 1, 1);
-        Pawn pawn3 = new Pawn(pieces, ChessType.WHITE, 0, 6);
+        Pawn pawn3 = new Pawn(pieces, ChessType.WHITE, 0, 2);
         Pawn pawn4 = new Pawn(pieces, ChessType.WHITE, 1, 6);
 
         getChildren().addAll(pawn1, pawn2, pawn3, pawn4);

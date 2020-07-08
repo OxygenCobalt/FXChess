@@ -20,7 +20,27 @@ public class ChessList extends EntityList<ChessPiece> {
 
         for (ChessPiece piece : entities) {
 
-            if (piece.isMatching(color, x, y)) {
+            if (piece.getColor() == color
+            &&  piece.getX() == x
+            &&  piece.getY() == y) {
+
+                return piece;
+
+            }
+
+        }
+
+        return null;
+
+    }
+
+    // Or search for a chess piece with just the coordinates
+    public ChessPiece findChessPiece(final int x, final int y) {
+
+        for (ChessPiece piece : entities) {
+
+            if (piece.getX() == x
+            &&  piece.getY() == y) {
 
                 return piece;
 
