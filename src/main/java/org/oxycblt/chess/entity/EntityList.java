@@ -8,6 +8,7 @@ public abstract class EntityList<T> {
 
     protected ArrayList<T> entities;
 
+    protected EntityAdditionListener<T> addListener = null;
     protected EntityRemovalListener<T> removeListener = null;
 
     public EntityList() {
@@ -20,6 +21,8 @@ public abstract class EntityList<T> {
     public void addEntity(final T entity) {
 
         entities.add(entity);
+
+        addListener.onAdded(entity);
 
     }
 

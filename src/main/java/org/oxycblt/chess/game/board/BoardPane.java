@@ -10,20 +10,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.pieces.Pawn;
-import org.oxycblt.chess.game.board.pieces.Rook;
-import org.oxycblt.chess.game.board.pieces.Knight;
-import org.oxycblt.chess.game.board.pieces.Bishop;
-import org.oxycblt.chess.game.board.pieces.Queen;
-import org.oxycblt.chess.game.board.pieces.King;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
+import org.oxycblt.chess.game.board.pieces.ChessFactory;
 import org.oxycblt.chess.game.board.ui.SelectionRect;
 import org.oxycblt.chess.game.board.ui.PromotionMenu;
 import org.oxycblt.chess.game.board.ui.PromotionEndListener;
+import org.oxycblt.chess.entity.EntityAdditionListener;
 import org.oxycblt.chess.entity.EntityRemovalListener;
 
 public class BoardPane extends Pane {
 
     private ChessList pieces;
+    private ChessFactory factory;
 
     private ChessPiece selectedPiece = null;
     private ChessPiece promotedPiece = null;
@@ -54,7 +52,8 @@ public class BoardPane extends Pane {
             + "-fx-border-color: #8F8F8F"
         );
 
-        pieces = new ChessList(chessRemovalListener);
+        pieces = new ChessList(chessAdditionListener, chessRemovalListener);
+        factory = new ChessFactory(pieces);
 
         generateCheckerBoard();
         generateChessPieces();
@@ -65,38 +64,9 @@ public class BoardPane extends Pane {
 
         // Remove the original pawn set to be promoted, and replace
         // it with the type that was chosen by the menu
+        factory.setColor(turn);
+        factory.replaceAt(promotedPiece.getX(), promotedPiece.getY(), newType);
 
-        // TODO: Jesus christ man just make a ChessFactory or something
-        switch (newType) {
-
-            case ROOK: getChildren().add(
-                new Rook(pieces,
-                         promotedPiece.getColor(),
-                         promotedPiece.getX(),
-                         promotedPiece.getY()
-                )); break;
-            case KNIGHT: getChildren().add(
-                new Knight(pieces,
-                           promotedPiece.getColor(),
-                           promotedPiece.getX(),
-                           promotedPiece.getY()
-                )); break;
-            case BISHOP: getChildren().add(
-                new Bishop(pieces,
-                           promotedPiece.getColor(),
-                           promotedPiece.getX(),
-                           promotedPiece.getY()
-                )); break;
-            case QUEEN: getChildren().add(
-                new Queen(pieces,
-                          promotedPiece.getColor(),
-                          promotedPiece.getX(),
-                          promotedPiece.getY()
-                )); break;
-
-        }
-
-        pieces.removeEntity(promotedPiece);
         promotedPiece = null;
 
         // Also end the players turn, something that didnt originally happen
@@ -250,6 +220,12 @@ public class BoardPane extends Pane {
 
     };
 
+    EntityAdditionListener<ChessPiece> chessAdditionListener = added -> {
+
+        getChildren().add(added);
+
+    };
+
     EntityRemovalListener<ChessPiece> chessRemovalListener = removed -> {
 
         getChildren().remove(removed);
@@ -363,38 +339,14 @@ public class BoardPane extends Pane {
         }
         */
 
-        // Iterate through the 2 colors possible, BLACK or WHITE
-        for (int cY = 0; cY < 2; cY++) {
+        // Generate each color's pieces
+        factory.setColor(ChessType.BLACK);
+        factory.genHomeRow(0);
+        factory.genPawnRow(1);
 
-            ChessType color = cY == 0 ? ChessType.BLACK : ChessType.WHITE;
-
-            // Then, generate the row of pawns,
-            // changing the Y value depending on the color
-            for (int pX = 0; pX < 8; pX++) {
-
-                getChildren().add(
-                    new Pawn(pieces, color, pX, 1 + (cY * 5))
-                );
-
-            }
-
-            // Then generate the back row of special pieces, using the typical order of
-            // ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, ROOK, KNIGHT
-            for (int cX = 0; cX < 8; cX++) {
-
-                switch (ChessType.PIECE_ORDER[cX]) {
-
-                    case ROOK: getChildren().add(new Rook(pieces, color, cX, cY * 7)); break;
-                    case KNIGHT: getChildren().add(new Knight(pieces, color, cX, cY * 7)); break;
-                    case BISHOP: getChildren().add(new Bishop(pieces, color, cX, cY * 7)); break;
-                    case QUEEN: getChildren().add(new Queen(pieces, color, cX, cY * 7)); break;
-                    case KING: getChildren().add(new King(pieces, color, cX, cY * 7)); break;
-
-                }
-
-            }
-
-        }
+        factory.setColor(ChessType.WHITE);
+        factory.genPawnRow(6);
+        factory.genHomeRow(7);
 
     }
 

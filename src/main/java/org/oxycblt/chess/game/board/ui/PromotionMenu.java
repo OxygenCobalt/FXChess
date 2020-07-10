@@ -85,8 +85,6 @@ public class PromotionMenu extends Pane {
 
                         getChildren().add(selectRect);
 
-                        System.out.println("h");
-
                     } else {
 
                         selectRect.relocate(simpleX, 0);

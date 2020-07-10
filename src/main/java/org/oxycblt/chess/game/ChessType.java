@@ -11,7 +11,7 @@ public enum ChessType {
     // Y values for colors
     BLACK(0), WHITE(1);
 
-    public static final ChessType[] PIECE_ORDER = {
+    public static final ChessType[] HOME_ORDER = {
         ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, ROOK, KNIGHT
     };
 

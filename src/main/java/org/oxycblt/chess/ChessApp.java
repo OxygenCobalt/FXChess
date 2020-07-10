@@ -8,7 +8,6 @@ import javafx.scene.Group;
 import org.oxycblt.chess.game.ChessScene;
 
 // TODO:
-// Add a ChessPiece factory to get rid of the hacky ways youve done promotion & generation
 // Maybe probably possible spin off the board mouse function into multiple parts
 
 public class ChessApp extends Application {

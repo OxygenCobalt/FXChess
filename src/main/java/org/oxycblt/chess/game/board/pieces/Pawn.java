@@ -33,8 +33,6 @@ public class Pawn extends ChessPiece {
         | during their move.
         */
 
-        // TODO: Also add promotion later on
-
         calculateDistance(targetX, targetY);
 
         xDist = Math.abs(xDist);
