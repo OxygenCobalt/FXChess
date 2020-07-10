@@ -16,17 +16,20 @@ public class PromotionMenu extends Pane {
     private boolean isShown = false;
 
     private PromotionEndListener listener;
-    private ImageView[] choiceViews;
     private ChessType color;
 
-    private int mouseX;
-    private int simpleX;
+    private SelectionRect selectRect = null;
+    private ImageView[] choiceViews;
+
+    private int mouseX = 0;
+    private int simpleX = 0;
+    private int cacheSimpleX = -1;
 
     public PromotionMenu(final PromotionEndListener listener,
                          final ChessType color,
                          final int x, final int y) {
 
-        setPrefSize(160, 32);
+        setPrefSize(128, 32);
         setOnMouseClicked(confirmHandler);
         setOnMouseMoved(hoverHandler);
         setOnMouseDragged(hoverHandler);
@@ -47,13 +50,13 @@ public class PromotionMenu extends Pane {
 
             normalizePointer(event);
 
-            if (validateXY()) {
+            if (validateX()) {
 
                 // Find the choice that matches the current position of the mouse and confirm
                 // that, hiding the menu in the process
                 updateSimpleX();
 
-                listener.onPromotionEnd(ChessType.PROMOTION_ORDER[simpleX - 1]);
+                listener.onPromotionEnd(ChessType.PROMOTION_ORDER[simpleX]);
 
                 hide();
 
@@ -65,19 +68,52 @@ public class PromotionMenu extends Pane {
 
     EventHandler<MouseEvent> hoverHandler = event -> {
 
-        // TODO: Add selection rect [As its own object]
+        if (isShown) {
+
+            normalizePointer(event);
+
+            if (validateX()) {
+
+                updateSimpleX();
+
+                // Make sure the mouse coordinate has meaninfully changed
+                if (simpleX != cacheSimpleX) {
+
+                    if (selectRect == null) {
+
+                        selectRect = new SelectionRect(color, simpleX, 0);
+
+                        getChildren().add(selectRect);
+
+                        System.out.println("h");
+
+                    } else {
+
+                        selectRect.relocate(simpleX, 0);
+
+                    }
+
+                    cacheSimpleX = simpleX;
+
+                }
+
+            }
+
+        }
 
     };
 
     // Normalize a mouse pointer so that the coordinates are solely within the bounds of the menu
     private void normalizePointer(final MouseEvent event) {
 
-        mouseX = (int) (event.getSceneX() - getLayoutX());
+        // The menu is positioned relative to BoardPane, so 33 must be added to the actual
+        // positon of the menu in the scene and normalize the pointer correctly
+        mouseX = (int) (event.getSceneX() - (getLayoutX() + 33));
 
     }
 
     // Validate that the X coordinate is not out of bounds
-    private boolean validateXY() {
+    private boolean validateX() {
 
         return mouseX > 0 && mouseX < getPrefWidth();
 
@@ -98,9 +134,9 @@ public class PromotionMenu extends Pane {
         // The menu is aligned differently depending on which half
         // of the board the target piece is.
         if (x < 4) {
-            setLayoutX((x * 32) - 32);
+            setLayoutX((x * 32));
         } else {
-            setLayoutX((x * 32) - 64);
+            setLayoutX((x * 32) - 96);
         }
 
         /*
@@ -154,6 +190,7 @@ public class PromotionMenu extends Pane {
     private void hide() {
 
         getChildren().removeAll(choiceViews);
+        getChildren().remove(selectRect);
         toBack();
         isShown = false;
 

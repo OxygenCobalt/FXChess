@@ -3,14 +3,12 @@
 package org.oxycblt.chess.game.board.pieces;
 
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeType;
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.ChessList;
 import org.oxycblt.chess.media.images.Texture;
 import org.oxycblt.chess.media.images.TextureAtlas;
+import org.oxycblt.chess.game.board.ui.SelectionRect;
 
 public abstract class ChessPiece extends Pane {
 
@@ -30,7 +28,7 @@ public abstract class ChessPiece extends Pane {
     protected boolean hasMoved = false;
 
     private ImageView chessView;
-    private Rectangle selectRect;
+    private SelectionRect selectRect;
 
     public ChessPiece(final ChessList list,
                       final ChessType type,
@@ -69,11 +67,7 @@ public abstract class ChessPiece extends Pane {
             // Create selection rectangle if not already created
             if (selectRect == null) {
 
-                selectRect = new Rectangle(32, 32);
-                selectRect.setFill(Color.TRANSPARENT);
-                selectRect.setStroke(Color.valueOf(color.toString()));
-                selectRect.setStrokeType(StrokeType.INSIDE);
-                selectRect.setStrokeWidth(3);
+                selectRect = new SelectionRect(color, 0, 0);
 
             }
 

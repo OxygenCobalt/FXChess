@@ -4,12 +4,10 @@ package org.oxycblt.chess.game.board;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeType;
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.pieces.Pawn;
 import org.oxycblt.chess.game.board.pieces.Rook;
@@ -18,6 +16,7 @@ import org.oxycblt.chess.game.board.pieces.Bishop;
 import org.oxycblt.chess.game.board.pieces.Queen;
 import org.oxycblt.chess.game.board.pieces.King;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
+import org.oxycblt.chess.game.board.ui.SelectionRect;
 import org.oxycblt.chess.game.board.ui.PromotionMenu;
 import org.oxycblt.chess.game.board.ui.PromotionEndListener;
 import org.oxycblt.chess.entity.EntityRemovalListener;
@@ -25,11 +24,10 @@ import org.oxycblt.chess.entity.EntityRemovalListener;
 public class BoardPane extends Pane {
 
     private ChessList pieces;
-    private Rectangle2D mouseRect;
 
     private ChessPiece selectedPiece = null;
     private ChessPiece promotedPiece = null;
-    private Rectangle selectRect = null;
+    private SelectionRect selectRect = null;
     private PromotionMenu promotionMenu = null;
 
     private ChessType turn = ChessType.WHITE;
@@ -57,12 +55,6 @@ public class BoardPane extends Pane {
         );
 
         pieces = new ChessList(chessRemovalListener);
-        mouseRect = new Rectangle2D(
-            getLayoutX(),
-            getLayoutY(),
-            getPrefWidth(),
-            getPrefHeight()
-        );
 
         generateCheckerBoard();
         generateChessPieces();
@@ -294,10 +286,7 @@ public class BoardPane extends Pane {
        // Create the selection rectangle if it hasnt already been added
         if (selectRect == null) {
 
-            selectRect = new Rectangle(32, 32);
-            selectRect.setFill(Color.TRANSPARENT);
-            selectRect.setStrokeType(StrokeType.INSIDE);
-            selectRect.setStrokeWidth(3);
+            selectRect = new SelectionRect();
 
         }
 
@@ -305,7 +294,7 @@ public class BoardPane extends Pane {
         // current player turn, otherwise mark it as invalid w/a red color
         if (selectedPiece.validateMove(simpleX, simpleY)) {
 
-            selectRect.setStroke(Color.valueOf(turn.toString()));
+            selectRect.setStroke(turn);
 
         } else {
 
@@ -320,7 +309,7 @@ public class BoardPane extends Pane {
 
         }
 
-        selectRect.relocate(simpleX * 32, simpleY * 32);
+        selectRect.relocate(simpleX, simpleY);
 
     }
 
