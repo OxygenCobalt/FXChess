@@ -48,20 +48,13 @@ public abstract class ChessPiece extends Pane {
         this.list = list;
         this.list.addEntity(this);
 
-        // Color should not be anything other than BLACK or WHITE
-        if (color != ChessType.BLACK && color != ChessType.WHITE) {
-
-            throw new IllegalArgumentException("Chess color is not BLACK or WHITE");
-
-        }
+        ChessType.validateColor(color);
 
         // Add the correct chess piece image to use from TextureAtlas
         chessView = TextureAtlas.getTexture(
-
             Texture.CHESS_PIECES,
-            type.getTextureCoordinate(),
-            color.getTextureCoordinate()
-
+            type.getCoordinate(),
+            color.getCoordinate()
         );
 
         getChildren().add(chessView);

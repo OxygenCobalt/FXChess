@@ -13,17 +13,11 @@ import org.oxycblt.chess.media.images.TextureAtlas;
 
 public class PromotionMenu extends Pane {
 
+    private boolean isShown = false;
+
     private PromotionEndListener listener;
-
-    private final ChessType[] promotionChoices = new ChessType[]{
-        ChessType.ROOK, ChessType.KNIGHT, ChessType.BISHOP, ChessType.QUEEN
-    };
-
-    private boolean isShown;
-
-    private ChessType color;
     private ImageView[] choiceViews;
-    private int i = 0;
+    private ChessType color;
 
     private int mouseX;
     private int simpleX;
@@ -55,11 +49,11 @@ public class PromotionMenu extends Pane {
 
             if (validateXY()) {
 
-                // Find the choice that matches the current
-                // position of the mouse, and confirm that
+                // Find the choice that matches the current position of the mouse and confirm
+                // that, hiding the menu in the process
                 updateSimpleX();
 
-                listener.onPromotionEnd(promotionChoices[simpleX - 1]);
+                listener.onPromotionEnd(ChessType.PROMOTION_ORDER[simpleX - 1]);
 
                 hide();
 
@@ -75,7 +69,7 @@ public class PromotionMenu extends Pane {
 
     };
 
-    // Normalize a mouse pointer so that the coordinates are solely within the bounds of the
+    // Normalize a mouse pointer so that the coordinates are solely within the bounds of the menu
     private void normalizePointer(final MouseEvent event) {
 
         mouseX = (int) (event.getSceneX() - getLayoutX());
@@ -89,7 +83,7 @@ public class PromotionMenu extends Pane {
 
     }
 
-    // Update the simple X coordinate from the mouse coords
+    // Update the simple X coordinate from the mouse X coordinate
     private void updateSimpleX() {
 
         simpleX = mouseX / 32;
@@ -97,83 +91,71 @@ public class PromotionMenu extends Pane {
     }
 
     // Show the menu
-    public void show(final ChessType newColor,
-                     final int x, final int y) {
+    public void show(final ChessType newColor, final int x, final int y) {
 
-        if (newColor != ChessType.BLACK && newColor != ChessType.WHITE) {
+        ChessType.validateColor(newColor);
 
-            throw new IllegalArgumentException("Given color is not BLACK or WHITE");
-
-        }
-
-        // Depending on which side of the board the pawn is,
-        // show a different orientation of the menu
-        if (x > 4) {
-
-            relocate((x * 32) - 64, 0);
-
+        // The menu is aligned differently depending on which half
+        // of the board the target piece is.
+        if (x < 4) {
+            setLayoutX((x * 32) - 32);
         } else {
-
-            relocate((x * 32) - 32, 0);
-
+            setLayoutX((x * 32) - 64);
         }
 
+        /*
+        | WHITE pieces are promoted when they reach the top of the
+        | board, so align the menu to be on top of them
+        | BLACK pieces are promoted when they reach the bottom of
+        | the board, so the board is aligned to be below them.
+        */
         if (newColor == ChessType.WHITE) {
-
-            relocate(getLayoutX(), (y * 32) - 34);
-
+            setLayoutY((y * 32) - 32);
         } else {
-
-            relocate(getLayoutX(), (y * 32) + 34);
-
+            setLayoutY((y * 32) + 32);
         }
 
-        if (color != newColor) {
+        // Recreate the choice views if the new color is different
+        if (newColor != color) {
 
             createViews(newColor);
 
         }
 
         isShown = true;
-        color = newColor;
 
     }
 
-    // Hide the menu
-    public void hide() {
-
-        getChildren().removeAll(choiceViews);
-
-        toBack();
-
-        isShown = false;
-
-    }
-
-    // Create the images for each choice
+    // Populate the menu with ImageViews for each choice
     private void createViews(final ChessType newColor) {
 
-        // Reset the list of views, as this function is always
-        // called when the object is either constructed or has to change color
+        // Reset the list of views
         choiceViews = new ImageView[4];
-        i = 0;
 
-        for (ChessType choice : promotionChoices) {
+        for (int i = 0; i < 4; i++) {
 
-            // For every option avalible for promotion, make an image for them
+            // Add the texture for each chess piece available
+            // in the promotion choices.
             choiceViews[i] = TextureAtlas.getTexture(
                 Texture.CHESS_PIECES,
-                choice.getTextureCoordinate(),
-                color.getTextureCoordinate()
+                ChessType.PROMOTION_ORDER[i].getCoordinate(),
+                newColor.getCoordinate()
             );
 
-            choiceViews[i].relocate(i * 32, 0);
-
-            i++;
+            choiceViews[i].setX(i * 32);
 
         }
 
         getChildren().addAll(choiceViews);
+
+    }
+
+    // Hide the menu
+    private void hide() {
+
+        getChildren().removeAll(choiceViews);
+        toBack();
+        isShown = false;
 
     }
 
