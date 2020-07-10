@@ -18,6 +18,8 @@ import org.oxycblt.chess.game.board.pieces.Bishop;
 import org.oxycblt.chess.game.board.pieces.Queen;
 import org.oxycblt.chess.game.board.pieces.King;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
+import org.oxycblt.chess.game.board.ui.PromotionMenu;
+import org.oxycblt.chess.game.board.ui.PromotionEndListener;
 import org.oxycblt.chess.entity.EntityRemovalListener;
 
 public class BoardPane extends Pane {
@@ -26,7 +28,9 @@ public class BoardPane extends Pane {
     private Rectangle2D mouseRect;
 
     private ChessPiece selectedPiece = null;
+    private ChessPiece promotedPiece = null;
     private Rectangle selectRect = null;
+    private PromotionMenu promotionMenu = null;
 
     private ChessType turn = ChessType.WHITE;
 
@@ -65,12 +69,57 @@ public class BoardPane extends Pane {
 
     }
 
+    PromotionEndListener confirmListener = newType -> {
+
+        // Remove the original pawn set to be promoted, and replace
+        // it with the type that was chosen by the menu
+
+        // TODO: Jesus christ man just make a ChessFactory or something
+        switch (newType) {
+
+            case ROOK: getChildren().add(
+                new Rook(pieces,
+                         promotedPiece.getColor(),
+                         promotedPiece.getX(),
+                         promotedPiece.getY()
+                )); break;
+            case KNIGHT: getChildren().add(
+                new Knight(pieces,
+                           promotedPiece.getColor(),
+                           promotedPiece.getX(),
+                           promotedPiece.getY()
+                )); break;
+            case BISHOP: getChildren().add(
+                new Bishop(pieces,
+                           promotedPiece.getColor(),
+                           promotedPiece.getX(),
+                           promotedPiece.getY()
+                )); break;
+            case QUEEN: getChildren().add(
+                new Queen(pieces,
+                          promotedPiece.getColor(),
+                          promotedPiece.getX(),
+                          promotedPiece.getY()
+                )); break;
+
+        }
+
+        pieces.removeEntity(promotedPiece);
+        promotedPiece = null;
+
+        // Also end the players turn, something that didnt originally happen
+        // when the move was originally confirmed
+        turn = ChessType.inverseOf(turn);
+
+    };
+
     EventHandler<MouseEvent> mouseClickHandler = event -> {
 
         MouseButton button = event.getButton();
 
-        // Left mouse button to select a chess piece/confirm chess piece movement
-        if (button == MouseButton.PRIMARY) {
+        // Left mouse button to select a chess piece/confirm chess piece movement,
+        // no selections can occur when a pawn is being promoted.
+        if (button == MouseButton.PRIMARY && promotedPiece == null) {
 
             normalizePointer(event);
 
@@ -115,11 +164,49 @@ public class BoardPane extends Pane {
 
                         selectedPiece.confirmMove(simpleX, simpleY);
 
+                        /*
+                        | If a pawn has just been promoted however, disable the entire board
+                        | and add a listener to the piece to wait until the promotion process
+                        | is done, dont change the turn if this happens.
+                        */
+                        if (selectedPiece.getType() == ChessType.PAWN) {
+
+                            if (((Pawn) selectedPiece).getPromoted()) {
+
+                                promotedPiece = selectedPiece;
+
+                                if (promotionMenu == null) {
+
+                                    promotionMenu = new PromotionMenu(
+                                        confirmListener,
+                                        promotedPiece.getColor(),
+                                        promotedPiece.getX(), promotedPiece.getY()
+                                    );
+
+                                } else {
+
+                                    promotionMenu.show(
+                                        promotedPiece.getColor(),
+                                        promotedPiece.getX(), promotedPiece.getY()
+                                    );
+
+                                }
+
+                                getChildren().add(promotionMenu);
+
+                            }
+
+                        }
+
                         selectedPiece = null;
 
                         getChildren().remove(selectRect);
 
-                        turn = ChessType.inverseOf(turn);
+                        if (promotedPiece == null) {
+
+                            turn = ChessType.inverseOf(turn);
+
+                        }
 
                     }
 
@@ -127,8 +214,10 @@ public class BoardPane extends Pane {
 
             }
 
-        // Right mouse button to deselect a chess piece, also removing the selection rect
-        } else if (button == MouseButton.SECONDARY && selectedPiece != null) {
+        // Right mouse button is used to deselect a chess piece, also removing the selection rect
+        } else if (button == MouseButton.SECONDARY
+               && selectedPiece != null
+               && promotedPiece == null) {
 
             selectedPiece.setSelected(false);
 

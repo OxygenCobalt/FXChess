@@ -15,6 +15,7 @@ public class Rook extends ChessPiece {
 
     }
 
+    @Override
     public boolean validateMove(final int targetX, final int targetY) {
 
         /*
@@ -40,12 +41,14 @@ public class Rook extends ChessPiece {
 
     }
 
+    @Override
     public void confirmMove(final int targetX, final int targetY) {
 
         doMove(targetX, targetY, list.findChessPiece(ChessType.inverseOf(color), x, y));
 
     }
 
+    @Override
     public void update(final ChessPiece changedPiece) {
 
         // TODO: Add castling

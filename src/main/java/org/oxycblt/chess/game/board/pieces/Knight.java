@@ -15,6 +15,7 @@ public class Knight extends ChessPiece {
 
     }
 
+    @Override
     public boolean validateMove(final int targetX, final int targetY) {
 
         /*
@@ -37,12 +38,14 @@ public class Knight extends ChessPiece {
 
     }
 
+    @Override
     public void confirmMove(final int targetX, final int targetY) {
 
         doMove(targetX, targetY, list.findChessPiece(ChessType.inverseOf(color), x, y));
 
     }
 
+    @Override
     public void update(final ChessPiece changedPiece) {
 
         // The knight does not need to be notified of any change

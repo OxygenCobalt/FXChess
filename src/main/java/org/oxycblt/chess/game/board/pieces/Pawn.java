@@ -12,6 +12,8 @@ public class Pawn extends ChessPiece {
     private boolean xValid = false;
     private boolean yValid = false;
 
+    private boolean isPromoted = false;
+
     public Pawn(final ChessList list,
                 final ChessType color,
                 final int x, final int y) {
@@ -131,6 +133,19 @@ public class Pawn extends ChessPiece {
 
         doMove(targetX, targetY, list.findChessPiece(ChessType.inverseOf(color), x, y));
 
+        /*
+        | If the pawn has just moved to the end of the board, it can be promoted,
+        | disabling the board  until the pawns has finished the promotion.
+        */
+
+        if (y ==  0 || y == 7) {
+
+            isPromoted = true;
+
+            setSelected(true);
+
+        }
+
     }
 
     @Override
@@ -156,6 +171,12 @@ public class Pawn extends ChessPiece {
             }
 
         }
+
+    }
+
+    public boolean getPromoted() {
+
+        return isPromoted;
 
     }
 
