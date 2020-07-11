@@ -3,6 +3,7 @@
 package org.oxycblt.chess.game.board.ui;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.image.ImageView;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -82,12 +83,12 @@ public class PromotionMenu extends Pane {
                     if (selectRect == null) {
 
                         selectRect = new SelectionRect(color, simpleX, 0);
-
                         getChildren().add(selectRect);
 
                     } else {
 
-                        selectRect.relocate(simpleX, 0);
+                        selectRect.relocate(simpleX * 32, 0);
+                        selectRect.setStroke(color);
 
                     }
 
@@ -156,6 +157,8 @@ public class PromotionMenu extends Pane {
 
         }
 
+        color = newColor;
+        cacheSimpleX = -1;
         isShown = true;
 
     }
@@ -163,7 +166,6 @@ public class PromotionMenu extends Pane {
     // Populate the menu with ImageViews for each choice
     private void createViews(final ChessType newColor) {
 
-        // Reset the list of views
         choiceViews = new ImageView[4];
 
         for (int i = 0; i < 4; i++) {
@@ -188,8 +190,9 @@ public class PromotionMenu extends Pane {
     private void hide() {
 
         getChildren().removeAll(choiceViews);
-        getChildren().remove(selectRect);
         toBack();
+
+        selectRect.setStroke(Color.TRANSPARENT);
         isShown = false;
 
     }

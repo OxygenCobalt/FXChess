@@ -9,7 +9,6 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
 import org.oxycblt.chess.game.ChessType;
-import org.oxycblt.chess.game.board.pieces.Pawn;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
 import org.oxycblt.chess.game.board.pieces.ChessFactory;
 import org.oxycblt.chess.game.board.ui.SelectionRect;
@@ -43,9 +42,9 @@ public class BoardPane extends Pane {
         // W/H/X/Y are static
         relocate(33, 49);
         setPrefSize(256, 256);
-        setOnMouseClicked(mouseClickHandler);
-        setOnMouseMoved(mouseHoverHandler);
-        setOnMouseDragged(mouseHoverHandler);
+        setOnMouseClicked(clickHandler);
+        setOnMouseMoved(hoverHandler);
+        setOnMouseDragged(hoverHandler);
         setStyle(
               "-fx-border-style: solid outside;"
             + "-fx-border-width: 6px;"
@@ -75,7 +74,7 @@ public class BoardPane extends Pane {
 
     };
 
-    EventHandler<MouseEvent> mouseClickHandler = event -> {
+    EventHandler<MouseEvent> clickHandler = event -> {
 
         MouseButton button = event.getButton();
 
@@ -127,13 +126,13 @@ public class BoardPane extends Pane {
                         selectedPiece.confirmMove(simpleX, simpleY);
 
                         /*
-                        | If a pawn has just been promoted however, disable the entire board
-                        | and add a listener to the piece to wait until the promotion process
-                        | is done, dont change the turn if this happens.
+                        | If a pawn has just been promoted however by reaching the end of the board,
+                        | disable the entire board and add a listener to the piece to wait until the
+                        | promotion process is done, dont change the turn if this happens.
                         */
                         if (selectedPiece.getType() == ChessType.PAWN) {
 
-                            if (((Pawn) selectedPiece).getPromoted()) {
+                            if (selectedPiece.getY() == 0 || selectedPiece.getY() == 7) {
 
                                 promotedPiece = selectedPiece;
 
@@ -145,6 +144,8 @@ public class BoardPane extends Pane {
                                         promotedPiece.getX(), promotedPiece.getY()
                                     );
 
+                                    getChildren().add(promotionMenu);
+
                                 } else {
 
                                     promotionMenu.show(
@@ -153,8 +154,6 @@ public class BoardPane extends Pane {
                                     );
 
                                 }
-
-                                getChildren().add(promotionMenu);
 
                             }
 
@@ -191,7 +190,7 @@ public class BoardPane extends Pane {
 
     };
 
-    EventHandler<MouseEvent> mouseHoverHandler = event -> {
+    EventHandler<MouseEvent> hoverHandler = event -> {
 
         // Ignore if nothing is selected
         if (selectedPiece != null) {
@@ -220,6 +219,7 @@ public class BoardPane extends Pane {
 
     };
 
+    // Addition/Removal managers
     EntityAdditionListener<ChessPiece> chessAdditionListener = added -> {
 
         getChildren().add(added);
@@ -285,7 +285,7 @@ public class BoardPane extends Pane {
 
         }
 
-        selectRect.relocate(simpleX, simpleY);
+        selectRect.relocate(simpleX * 32, simpleY * 32);
 
     }
 

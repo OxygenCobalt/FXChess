@@ -25,7 +25,7 @@ public class SelectionRect extends Rectangle {
 
         super(32, 32);
 
-        relocate(x, y);
+        relocate(x * 32, y * 32);
         setFill(Color.TRANSPARENT);
         setStroke(color);
         setStrokeWidth(3);
@@ -47,13 +47,6 @@ public class SelectionRect extends Rectangle {
             super.setStroke(Color.BLACK);
 
         }
-
-    }
-
-    // Variation of relocate() that takes simple coordinates
-    public void relocate(final int x, final int y) {
-
-        super.relocate(x * 32, y * 32);
 
     }
 

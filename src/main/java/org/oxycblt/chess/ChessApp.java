@@ -7,9 +7,6 @@ import javafx.stage.Stage;
 import javafx.scene.Group;
 import org.oxycblt.chess.game.ChessScene;
 
-// TODO:
-// Maybe probably possible spin off the board mouse function into multiple parts
-
 public class ChessApp extends Application {
 
     public void start(final Stage primaryStage) {
