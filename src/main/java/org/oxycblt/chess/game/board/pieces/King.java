@@ -8,12 +8,11 @@ import org.oxycblt.chess.game.board.ChessList;
 
 public class King extends ChessPiece {
 
-    private Rook leftRook;
-    private Rook rightRook;
+    private ChessPiece leftRook;
+    private ChessPiece rightRook;
 
     private ArrayList<ChessPiece> checkingPieces;
 
-    private int absXDist = 0;
     private int iterX = 0;
 
     public King(final ChessList list,
@@ -37,21 +36,20 @@ public class King extends ChessPiece {
 
         calculateDistance(targetX, targetY);
 
-        leftRook.setSelected(false);
-        rightRook.setSelected(false);
+        deselectRooks();
 
         // The absolute x distance and the normal x distance are kept as seperate variables
         // to determine which rook to use during castling
-        absXDist = Math.abs(xDist);
+        xDist = Math.abs(xDist);
         yDist = Math.abs(yDist);
 
-        if (absXDist + yDist < 2) {
+        if (xDist + yDist < 2) {
 
             return true;
 
-        } else if (absXDist + yDist == 2) {
+        } else if (xDist + yDist == 2) {
 
-            if (absXDist == yDist) {
+            if (xDist == yDist) {
 
                 return true;
 
@@ -60,45 +58,41 @@ public class King extends ChessPiece {
         }
 
         /*
+        | Castling Logic
+        |
         | The conditions for castling to be valid are:
         | - The king must not have moved or is in check
         | - The rooks must have not moved
         | - There must be no pieces in the path between the king & the rook
         | - The king must not pass through any pieces that are under attack, or result in a check
+        |
+        | Yes, I know this code is awful but it works.
         */
-        if (absXDist == 2 && yDist == 0 && !hasMoved && checkingPieces.size() == 0) {
+        if (yDist == 0 && !hasMoved && checkingPieces.size() == 0) {
 
-            if (xDist < 0) {
+            if (targetX == 2 && !leftRook.getMoved()) {
 
-                if (!leftRook.getMoved()) {
+                if (!findBlockingPieces(targetX - 2, targetY)) {
 
-                    if (!findBlockingPieces(targetX - 2, targetY)) {
+                    if (validateSafePath(targetX)) {
 
-                        if (validateSafePath(targetX)) {
+                        leftRook.setSelected(true);
 
-                            leftRook.setSelected(true);
-
-                            return true;
-
-                        }
+                        return true;
 
                     }
 
                 }
 
-            } else {
+            } else if (targetX == 6 && !rightRook.getMoved()) {
 
-                if (!rightRook.getMoved()) {
+                if (!findBlockingPieces(targetX + 1, targetY)) {
 
-                    if (!findBlockingPieces(targetX + 1, targetY)) {
+                    if (validateSafePath(targetX)) {
 
-                        if (validateSafePath(targetX)) {
+                        rightRook.setSelected(true);
 
-                            rightRook.setSelected(true);
-
-                            return true;
-
-                        }
+                        return true;
 
                     }
 
@@ -158,8 +152,6 @@ public class King extends ChessPiece {
 
                 if (entity.validateMove(targetX, targetY)) {
 
-                System.out.println(entity.getY());
-
                     return false;
 
                 }
@@ -204,11 +196,15 @@ public class King extends ChessPiece {
     // Notify king of the rooks after the home row has been generated
     public void setUpRooks() {
 
-        leftRook = (Rook) list.findChessPiece(color, 0, y);
-        rightRook = (Rook) list.findChessPiece(color, 7, y);
+        leftRook = list.findChessPiece(color, 0, y);
+        rightRook = list.findChessPiece(color, 7, y);
 
-        leftRook.setUpKing(this);
-        leftRook.setUpKing(this);
+    }
+
+    public void deselectRooks() {
+
+        leftRook.setSelected(false);
+        rightRook.setSelected(false);
 
     }
 

@@ -32,15 +32,15 @@ public class Pawn extends ChessPiece {
 
         xDist = Math.abs(xDist);
 
-        /*
-        | If a diagonal capture move is possible, return true instead of running
-        | the other logic.
-        */
         if (xDist + Math.abs(yDist) == 2) {
 
-            if (list.findChessPiece(ChessType.inverseOf(color), targetX, targetY) != null) {
+            if (color == ChessType.WHITE && yDist == -1) {
 
-                return true;
+                if (list.findChessPiece(ChessType.inverseOf(color), targetX, targetY) != null) {
+
+                    return true;
+
+                }
 
             }
 
@@ -48,10 +48,30 @@ public class Pawn extends ChessPiece {
 
         if (xDist != 0) {
 
+            // En passant checking
             if (xDist == 1 && passPiece != null) {
 
                 if (!(passPiece.getX() == targetX
                    && passPiece.getY() != targetY)) {
+
+                    return false;
+
+                }
+
+            // Diagonal capture checking
+            } else if (xDist == 1 && Math.abs(yDist) == 1) {
+
+                if (color == ChessType.WHITE && xDist != -1) {
+
+                    return false;
+
+                } else if (color == ChessType.BLACK && xDist != 1) {
+
+                    return false;
+
+                }
+
+                if (list.findChessPiece(ChessType.inverseOf(color), targetX, targetY) == null) {
 
                     return false;
 
@@ -75,6 +95,7 @@ public class Pawn extends ChessPiece {
 
             if (yDist < -1 || yDist > 0) {
 
+                // 2-Space first move checking
                 if (yDist == -2 && !hasMoved) {
 
                     if (list.findChessPiece(x, y - 2) != null) {
@@ -91,6 +112,7 @@ public class Pawn extends ChessPiece {
 
             }
 
+            // Normal move checking
             if (list.findChessPiece(x, y - 1) != null) {
 
                 return false;

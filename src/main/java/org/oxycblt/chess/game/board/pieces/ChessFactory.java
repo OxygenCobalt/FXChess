@@ -10,7 +10,7 @@ public class ChessFactory {
     private final ChessList pieces;
     private ChessType color = ChessType.WHITE;
 
-    private King king = null;
+    private King lastGenKing = null;
 
     public ChessFactory(final ChessList pieces) {
 
@@ -32,20 +32,14 @@ public class ChessFactory {
     // Generate the back row of other non-pawn pieces
     public void genHomeRow(final int y) {
 
-        /*
         for (int i = 0; i < 8; i++) {
 
             addAt(i, y, ChessType.HOME_ORDER[i]);
 
         }
-        */
-
-        addAt(0, y, ChessType.ROOK);
-        addAt(4, y, ChessType.KING);
-        addAt(7, y, ChessType.ROOK);
 
         // Also set up the king's references to the rooks for the castling move
-        king.setUpRooks();
+        lastGenKing.setUpRooks();
 
     }
 
@@ -60,7 +54,7 @@ public class ChessFactory {
             case KNIGHT: new Knight(pieces, color, x, y); break;
             case BISHOP: new Bishop(pieces, color, x, y); break;
             case QUEEN: new Queen(pieces, color, x, y); break;
-            case KING: king = new King(pieces, color, x, y); break;
+            case KING: lastGenKing = new King(pieces, color, x, y); break;
 
         }
 

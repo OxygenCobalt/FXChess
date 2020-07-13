@@ -39,7 +39,6 @@ public class PromotionMenu extends Pane {
         this.color = color;
 
         show(color, x, y);
-        createViews(color);
 
     }
 
@@ -157,12 +156,7 @@ public class PromotionMenu extends Pane {
             setLayoutY((y * 32) + 32);
         }
 
-        // Recreate the choice views if the new color is different
-        if (newColor != color) {
-
-            createViews(newColor);
-
-        }
+        createViews(newColor);
 
         color = newColor;
         cacheSimpleX = -1;
@@ -173,19 +167,25 @@ public class PromotionMenu extends Pane {
     // Populate the menu with ImageViews for each choice
     private void createViews(final ChessType newColor) {
 
-        choiceViews = new ImageView[4];
+        // If the color has changed or if the list of views hasnt been
+        // created yet, regenerate/create the imageviews using each choice
+        if (newColor != color || choiceViews == null) {
 
-        for (int i = 0; i < 4; i++) {
+            choiceViews = new ImageView[4];
 
-            // Add the texture for each chess piece available
-            // in the promotion choices.
-            choiceViews[i] = TextureAtlas.getTexture(
-                Texture.CHESS_PIECES,
-                ChessType.PROMOTION_ORDER[i].getCoordinate(),
-                newColor.getCoordinate()
-            );
+            for (int i = 0; i < 4; i++) {
 
-            choiceViews[i].setX(i * 32);
+                // Add the texture for each chess piece available
+                // in the promotion choices.
+                choiceViews[i] = TextureAtlas.getTexture(
+                    Texture.CHESS_PIECES,
+                    ChessType.PROMOTION_ORDER[i].getCoordinate(),
+                    newColor.getCoordinate()
+                );
+
+                choiceViews[i].setX(i * 32);
+
+            }
 
         }
 

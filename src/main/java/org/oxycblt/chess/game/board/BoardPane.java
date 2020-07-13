@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
 import org.oxycblt.chess.game.ChessType;
+import org.oxycblt.chess.game.board.pieces.King;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
 import org.oxycblt.chess.game.board.pieces.ChessFactory;
 import org.oxycblt.chess.game.board.ui.SelectionRect;
@@ -270,6 +271,17 @@ public class BoardPane extends Pane {
         if (pieces.findChessPiece(turn, simpleX, simpleY) != null) {
 
             selectRect.setStroke(Color.TRANSPARENT);
+
+            /*
+            | If the currently selected piece is a king, also deselect the rooks that would also
+            | be selected during castling in the case that the pointer is currently on one of
+            | the rooks
+            */
+            if (selectedPiece.getType() == ChessType.KING) {
+
+                ((King) selectedPiece).deselectRooks();
+
+            }
 
             return;
 

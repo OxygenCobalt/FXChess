@@ -7,8 +7,6 @@ import org.oxycblt.chess.game.board.ChessList;
 
 public class Rook extends ChessPiece {
 
-    private King king;
-
     public Rook(final ChessList list,
                 final ChessType color,
                 final int x, final int y) {
@@ -54,13 +52,6 @@ public class Rook extends ChessPiece {
     public void update(final ChessPiece changedPiece) {
 
         // TODO: Add castling
-
-    }
-
-    // Set up a reference to the king once the home row has been generated
-    public void setUpKing(final King mainKing) {
-
-        king = mainKing;
 
     }
 
