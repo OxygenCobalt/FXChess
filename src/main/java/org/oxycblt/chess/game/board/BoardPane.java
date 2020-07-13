@@ -266,6 +266,15 @@ public class BoardPane extends Pane {
 
         }
 
+        // If theres a piece of the same color where the selection box should be, dont show it.
+        if (pieces.findChessPiece(turn, simpleX, simpleY) != null) {
+
+            selectRect.setStroke(Color.TRANSPARENT);
+
+            return;
+
+        }
+
         // If the move is valid, show the selection color respective to the
         // current player turn, otherwise mark it as invalid w/a red color
         if (selectedPiece.validateMove(simpleX, simpleY)) {
@@ -275,13 +284,6 @@ public class BoardPane extends Pane {
         } else {
 
             selectRect.setStroke(Color.RED);
-
-        }
-
-        // If theres a piece of the same color where the selection box should be, dont show it.
-        if (pieces.findChessPiece(turn, simpleX, simpleY) != null) {
-
-            selectRect.setStroke(Color.TRANSPARENT);
 
         }
 

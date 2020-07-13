@@ -57,4 +57,11 @@ public class Rook extends ChessPiece {
 
     }
 
+    // Set up a reference to the king once the home row has been generated
+    public void setUpKing(final King mainKing) {
+
+        king = mainKing;
+
+    }
+
 }

@@ -12,7 +12,7 @@ public enum ChessType {
     BLACK(0), WHITE(1);
 
     public static final ChessType[] HOME_ORDER = {
-        ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, ROOK, KNIGHT
+        ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK
     };
 
     public static final ChessType[] PROMOTION_ORDER = {

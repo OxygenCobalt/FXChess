@@ -26,6 +26,7 @@ public abstract class ChessPiece extends Pane {
     private int iterY = 0;
 
     protected boolean hasMoved = false;
+    protected boolean isSelected = false;
 
     private ImageView chessView;
     private SelectionRect selectRect;
@@ -62,20 +63,26 @@ public abstract class ChessPiece extends Pane {
     // Select/Deselect a chess piece
     public void setSelected(final boolean selected) {
 
-        if (selected) {
+        if (isSelected != selected) {
 
-            // Create selection rectangle if not already created
-            if (selectRect == null) {
+            if (selected) {
 
-                selectRect = new SelectionRect(color, 0, 0);
+                // Create selection rectangle if not already created
+                if (selectRect == null) {
+
+                    selectRect = new SelectionRect(color, 0, 0);
+
+                }
+
+                getChildren().add(selectRect);
+
+            } else {
+
+                getChildren().remove(selectRect);
 
             }
 
-            getChildren().add(selectRect);
-
-        } else {
-
-            getChildren().remove(selectRect);
+            isSelected = selected;
 
         }
 
@@ -191,6 +198,12 @@ public abstract class ChessPiece extends Pane {
     public int getYDist() {
 
         return yDist;
+
+    }
+
+    public boolean getMoved() {
+
+        return hasMoved;
 
     }
 

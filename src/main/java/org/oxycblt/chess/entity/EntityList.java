@@ -38,4 +38,10 @@ public abstract class EntityList<T> {
 
     }
 
+    public ArrayList<T> getEntities() {
+
+        return entities;
+
+    }
+
 }
