@@ -65,8 +65,6 @@ public class King extends ChessPiece {
         | - The rooks must have not moved
         | - There must be no pieces in the path between the king & the rook
         | - The king must not pass through any pieces that are under attack, or result in a check
-        |
-        | Yes, I know this code is awful but it works.
         */
         if (yDist == 0 && !hasMoved && checkingPieces.size() == 0) {
 

@@ -9,11 +9,29 @@ public class Pawn extends ChessPiece {
 
     private ChessPiece passPiece = null;
 
+    private final int relOne;
+    private final int relTwo;
+
     public Pawn(final ChessList list,
                 final ChessType color,
                 final int x, final int y) {
 
         super(list, ChessType.PAWN, color, x, y);
+
+        // Determine which placeholder values to use in validateMove() to
+        // make sure that the pawn is always moving foward. Up for white
+        // pieces, down for black pieces.
+        if (color == ChessType.WHITE) {
+
+            relOne = -1;
+            relTwo = -2;
+
+        } else {
+
+            relOne = 1;
+            relTwo = 2;
+
+        }
 
     }
 
@@ -30,11 +48,18 @@ public class Pawn extends ChessPiece {
 
         calculateDistance(targetX, targetY);
 
-        xDist = Math.abs(xDist);
+        if (Math.abs(xDist) == 1 && yDist == relOne) {
 
-        if (xDist + Math.abs(yDist) == 2) {
+            if (passPiece != null) {
 
-            if (color == ChessType.WHITE && yDist == -1) {
+                if (passPiece.getX() == targetX
+                 && passPiece.getY() != targetY) {
+
+                    return true;
+
+                }
+
+            } else {
 
                 if (list.findChessPiece(ChessType.inverseOf(color), targetX, targetY) != null) {
 
@@ -44,110 +69,34 @@ public class Pawn extends ChessPiece {
 
             }
 
+            return false;
+
+        } else if (xDist != 0) {
+
+            return false;
+
         }
 
-        if (xDist != 0) {
+        if (yDist == relOne) {
 
-            // En passant checking
-            if (xDist == 1 && passPiece != null) {
+            if (list.findChessPiece(targetX, targetY) == null) {
 
-                if (!(passPiece.getX() == targetX
-                   && passPiece.getY() != targetY)) {
+                return true;
 
-                    return false;
+            }
 
-                }
+        } else if (yDist == relTwo && !hasMoved) {
 
-            // Diagonal capture checking
-            } else if (xDist == 1 && Math.abs(yDist) == 1) {
+            if (list.findChessPiece(targetX, targetY - relOne) == null
+            &&  list.findChessPiece(targetX, targetY) == null) {
 
-                if (color == ChessType.WHITE && xDist != -1) {
-
-                    return false;
-
-                } else if (color == ChessType.BLACK && xDist != 1) {
-
-                    return false;
-
-                }
-
-                if (list.findChessPiece(ChessType.inverseOf(color), targetX, targetY) == null) {
-
-                    return false;
-
-                }
-
-            } else {
-
-                return false;
+                return true;
 
             }
 
         }
 
-        /*
-        | Due to being on opposite sides of the board, white pieces and black pieces have
-        | seperate logic, one to make sure the piece is always going up, and another to
-        | make sure the piece is always going down.
-        */
-
-        if (color == ChessType.WHITE) {
-
-            if (yDist < -1 || yDist > 0) {
-
-                // 2-Space first move checking
-                if (yDist == -2 && !hasMoved) {
-
-                    if (list.findChessPiece(x, y - 2) != null) {
-
-                        return false;
-
-                    }
-
-                } else {
-
-                    return false;
-
-                }
-
-            }
-
-            // Normal move checking
-            if (list.findChessPiece(x, y - 1) != null) {
-
-                return false;
-
-            }
-
-        } else {
-
-            if (yDist > 1 || yDist < 0) {
-
-                if (yDist == 2 && !hasMoved) {
-
-                    if (list.findChessPiece(x, y + 2) != null) {
-
-                        return false;
-
-                    }
-
-                } else {
-
-                    return false;
-
-                }
-
-            }
-
-            if (list.findChessPiece(x, y + 1) != null) {
-
-                return false;
-
-            }
-
-        }
-
-        return true;
+        return false;
 
     }
 

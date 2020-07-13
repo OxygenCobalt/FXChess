@@ -51,7 +51,7 @@ public class Rook extends ChessPiece {
     @Override
     public void update(final ChessPiece changedPiece) {
 
-        // TODO: Add castling
+        // The bishop does not need to be notified of any change
 
     }
 
