@@ -88,7 +88,14 @@ public class PromotionMenu extends Pane {
                     } else {
 
                         selectRect.relocate(simpleX * 32, 0);
-                        selectRect.setStroke(color);
+
+                        // Change the stroke to its respective color if it has
+                        // been set to a transparent through hide()
+                        if (selectRect.getStroke() == Color.TRANSPARENT) {
+
+                            selectRect.setStroke(color);
+
+                        }
 
                     }
 

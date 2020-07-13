@@ -7,6 +7,8 @@ import org.oxycblt.chess.game.board.ChessList;
 
 public class Rook extends ChessPiece {
 
+    private King king;
+
     public Rook(final ChessList list,
                 final ChessType color,
                 final int x, final int y) {

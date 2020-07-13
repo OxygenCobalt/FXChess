@@ -9,9 +9,6 @@ public class Pawn extends ChessPiece {
 
     private ChessPiece passPiece = null;
 
-    private boolean xValid = false;
-    private boolean yValid = false;
-
     public Pawn(final ChessList list,
                 final ChessType color,
                 final int x, final int y) {
@@ -24,32 +21,45 @@ public class Pawn extends ChessPiece {
     public boolean validateMove(final int targetX, final int targetY) {
 
         /*
-        | A pawn can only move foward, one square at a time, except for its first move,
-        | where moving two squares is valid as long as the entire path is unoccupied.
-        | Pawns can also perform a move called en passant, where they can capture a pawn
-        | that has just advanced two squares by moving to the square that they passed
-        | during their move.
+        | A pawn can move foward to the unoccupied space directly in front of it, or
+        | move two spaces on their first turn. Pawns can also move diagonally to capture
+        | an opponents piece. A pawn can also perform a move called "En Passant", where
+        | a pawn can move into the space that an opponents pawn just passed during a
+        | two-space advance and capture that piece.
         */
 
         calculateDistance(targetX, targetY);
 
         xDist = Math.abs(xDist);
 
-        xValid = true;
-        yValid = true;
+        /*
+        | If a diagonal capture move is possible, return true instead of running
+        | the other logic.
+        */
+        if (xDist + Math.abs(yDist) == 2) {
+
+            if (list.findChessPiece(ChessType.inverseOf(color), targetX, targetY) != null) {
+
+                return true;
+
+            }
+
+        }
 
         if (xDist != 0) {
 
-            xValid = false;
-
             if (xDist == 1 && passPiece != null) {
 
-                if (passPiece.getX() == targetX
-                 && passPiece.getY() != targetY) {
+                if (!(passPiece.getX() == targetX
+                   && passPiece.getY() != targetY)) {
 
-                    xValid = true;
+                    return false;
 
                 }
+
+            } else {
+
+                return false;
 
             }
 
@@ -65,18 +75,25 @@ public class Pawn extends ChessPiece {
 
             if (yDist < -1 || yDist > 0) {
 
-                yValid = false;
-
                 if (yDist == -2 && !hasMoved) {
 
-                    if (list.findChessPiece(x, y - 1) == null
-                    && list.findChessPiece(x, y - 2) == null) {
+                    if (list.findChessPiece(x, y - 2) != null) {
 
-                        yValid = true;
+                        return false;
 
                     }
 
+                } else {
+
+                    return false;
+
                 }
+
+            }
+
+            if (list.findChessPiece(x, y - 1) != null) {
+
+                return false;
 
             }
 
@@ -84,24 +101,31 @@ public class Pawn extends ChessPiece {
 
             if (yDist > 1 || yDist < 0) {
 
-                yValid = false;
-
                 if (yDist == 2 && !hasMoved) {
 
-                    if (list.findChessPiece(x, y + 1) == null
-                    && list.findChessPiece(x, y + 2) == null) {
+                    if (list.findChessPiece(x, y + 2) != null) {
 
-                        yValid = true;
+                        return false;
 
                     }
+
+                } else {
+
+                    return false;
 
                 }
 
             }
 
+            if (list.findChessPiece(x, y + 1) != null) {
+
+                return false;
+
+            }
+
         }
 
-        return xValid && yValid;
+        return true;
 
     }
 
