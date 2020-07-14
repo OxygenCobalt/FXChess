@@ -20,9 +20,8 @@ public class Rook extends ChessPiece {
 
         /*
         | Rooks can move straight in all directions, but not diagonally. They also cannot hop over
-        | other pieces. // TODO// Rooks can perform a move called Castling once per game with the
-        | king piece, where the rook will move to the square the king just crossed during the
-        | maneuver.
+        | other pieces. Rooks can perform a move called Castling once per game with the king piece,
+        | where the rook will move to the square the king just crossed during the maneuver.
         */
 
         calculateDistance(targetX, targetY);

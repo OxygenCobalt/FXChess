@@ -38,6 +38,12 @@ public abstract class EntityList<T> {
 
     }
 
+    public boolean hasEntity(final T entity) {
+
+        return entities.contains(entity);
+
+    }
+
     public ArrayList<T> getEntities() {
 
         return entities;

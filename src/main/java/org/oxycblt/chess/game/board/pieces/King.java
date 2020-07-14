@@ -2,7 +2,6 @@
 
 package org.oxycblt.chess.game.board.pieces;
 
-import java.util.ArrayList;
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.ChessList;
 
@@ -11,7 +10,7 @@ public class King extends ChessPiece {
     private ChessPiece leftRook;
     private ChessPiece rightRook;
 
-    private ArrayList<ChessPiece> checkingPieces;
+    private ChessPiece checkingPiece = null;
 
     private int iterX = 0;
 
@@ -21,12 +20,20 @@ public class King extends ChessPiece {
 
         super(list, ChessType.KING, color, x, y);
 
-        checkingPieces = new ArrayList<ChessPiece>();
-
     }
 
     @Override
     public boolean validateMove(final int targetX, final int targetY) {
+
+        /*
+        [MODIFIED] RULES:
+        - King can be checked, but you can technically still make a move that does not end
+        the check.
+        - If you do not make a move that puts the king out of check, then its an automatic
+        checkmate.
+        - Despite this, the king does check for any possible legal moves from any piece,
+        if that fails, then its an auto-checkmate as well.
+        */
 
         /*
         | Kings can move in all directions, as long as the distance moved is one.
@@ -34,26 +41,11 @@ public class King extends ChessPiece {
         | the king moving two spaces, and the rook moving to the space that the king passed.
         */
 
-        calculateDistance(targetX, targetY);
-
         deselectRooks();
 
-        // The absolute x distance and the normal x distance are kept as seperate variables
-        // to determine which rook to use during castling
-        xDist = Math.abs(xDist);
-        yDist = Math.abs(yDist);
+        if (doDistanceLogic(targetX, targetY)) {
 
-        if (xDist + yDist < 2) {
-
-            return true;
-
-        } else if (xDist + yDist == 2) {
-
-            if (xDist == yDist) {
-
-                return true;
-
-            }
+            return validateSafe(targetX, targetY);
 
         }
 
@@ -66,7 +58,7 @@ public class King extends ChessPiece {
         | - There must be no pieces in the path between the king & the rook
         | - The king must not pass through any pieces that are under attack, or result in a check
         */
-        if (yDist == 0 && !hasMoved && checkingPieces.size() == 0) {
+        if (yDist == 0 && !hasMoved && checkingPiece == null) {
 
             if (targetX == 2 && !leftRook.getMoved()) {
 
@@ -104,6 +96,31 @@ public class King extends ChessPiece {
 
     }
 
+    public boolean doDistanceLogic(final int targetX, final int targetY) {
+
+        calculateDistance(targetX, targetY);
+
+        xDist = Math.abs(xDist);
+        yDist = Math.abs(yDist);
+
+        if (xDist + yDist < 2) {
+
+            return true;
+
+        } else if (xDist + yDist == 2) {
+
+            if (xDist == yDist) {
+
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
     @Override
     public void confirmMove(final int targetX, final int targetY) {
 
@@ -131,6 +148,7 @@ public class King extends ChessPiece {
         }
 
         doMove(targetX, targetY, list.findChessPiece(ChessType.inverseOf(color), x, y));
+        updateCheck();
 
     }
 
@@ -138,6 +156,53 @@ public class King extends ChessPiece {
     public void update(final ChessPiece changedPiece) {
 
         // TODO: Add check/checkmate
+
+        updateCheck();
+
+        if (checkingPiece == null) {
+
+            if (changedPiece.getColor() != color) {
+
+                if (changedPiece.validateMove(x, y)) {
+
+                    checkingPiece = changedPiece;
+
+                    System.out.println("Check.");
+
+                }
+
+            }
+
+        } else {
+
+            System.out.println("Checkmate.");
+
+        }
+
+    }
+
+    // Check if the checking piece is still valid
+    private void updateCheck() {
+
+        if (checkingPiece != null) {
+
+            if (list.hasEntity(checkingPiece)) {
+
+                if (!checkingPiece.validateMove(x, y)) {
+
+                    checkingPiece = null;
+
+                }
+
+            } else {
+
+                checkingPiece = null;
+
+                System.out.println("Unchecked.");
+
+            }
+
+        }
 
     }
 
@@ -148,9 +213,33 @@ public class King extends ChessPiece {
 
             if (entity.getColor() != color) {
 
-                if (entity.validateMove(targetX, targetY)) {
+                // Pawns need to assume that the king is already at the location
+                // it wants to go to in order to check for diagonal captures.
+                if (entity.getType() == ChessType.PAWN) {
 
-                    return false;
+                    if (((Pawn) entity).validateMoveWithPiece(targetX, targetY)) {
+
+                        return false;
+
+                    }
+
+                // If checking a king, only do the distance logic to prevent endless
+                // recursive calls to validateSafe()
+                } else if (entity.getType() == ChessType.KING) {
+
+                    if (((King) entity).doDistanceLogic(targetX, targetY)) {
+
+                        return false;
+
+                    }
+
+                } else {
+
+                    if (entity.validateMove(targetX, targetY)) {
+
+                        return false;
+
+                    }
 
                 }
 

@@ -12,6 +12,9 @@ public class Pawn extends ChessPiece {
     private final int relOne;
     private final int relTwo;
 
+    private boolean vmwpReturn = false;
+    private boolean assumePieceExists = false;
+
     public Pawn(final ChessList list,
                 final ChessType color,
                 final int x, final int y) {
@@ -40,10 +43,10 @@ public class Pawn extends ChessPiece {
 
         /*
         | A pawn can move foward to the unoccupied space directly in front of it, or
-        | move two spaces on their first turn. Pawns can also move diagonally to capture
-        | an opponents piece. A pawn can also perform a move called "En Passant", where
-        | a pawn can move into the space that an opponents pawn just passed during a
-        | two-space advance and capture that piece.
+        | move two spaces on their first turn. Pawns can however move diagonally one
+        | space at a time to capture  an opponents piece. A pawn can also perform a
+        | move called "En Passant", where a pawn can move into the space that an
+        | opponents pawn just passed during a two-space advance and capture that piece.
         */
 
         calculateDistance(targetX, targetY);
@@ -61,7 +64,8 @@ public class Pawn extends ChessPiece {
 
             } else {
 
-                if (list.findChessPiece(ChessType.inverseOf(color), targetX, targetY) != null) {
+                if (list.findChessPiece(ChessType.inverseOf(color), targetX, targetY) != null
+                    || assumePieceExists) {
 
                     return true;
 
@@ -79,7 +83,8 @@ public class Pawn extends ChessPiece {
 
         if (yDist == relOne) {
 
-            if (list.findChessPiece(targetX, targetY) == null) {
+            if (list.findChessPiece(targetX, targetY) == null
+             ^ assumePieceExists) {
 
                 return true;
 
@@ -87,8 +92,9 @@ public class Pawn extends ChessPiece {
 
         } else if (yDist == relTwo && !hasMoved) {
 
-            if (list.findChessPiece(targetX, targetY - relOne) == null
-            &&  list.findChessPiece(targetX, targetY) == null) {
+            if ((list.findChessPiece(targetX, targetY - relOne) == null
+            &&  list.findChessPiece(targetX, targetY) == null)
+             ^  assumePieceExists) {
 
                 return true;
 
@@ -97,6 +103,21 @@ public class Pawn extends ChessPiece {
         }
 
         return false;
+
+    }
+
+    // Validate a move while assuming that a piece can be captured using diagonal capture,
+    // this is used to check if a King's target destination wont result in a check through
+    // a pawn.
+    public boolean validateMoveWithPiece(final int targetX, final int targetY) {
+
+        assumePieceExists = true;
+
+        vmwpReturn = validateMove(targetX, targetY);
+
+        assumePieceExists = false;
+
+        return vmwpReturn;
 
     }
 
