@@ -22,8 +22,8 @@ public abstract class ChessPiece extends Pane {
     protected int xDist = 0;
     protected int yDist = 0;
 
-    private int iterX = 0;
-    private int iterY = 0;
+    protected int iterX = 0;
+    protected int iterY = 0;
 
     protected boolean hasMoved = false;
     protected boolean isSelected = false;

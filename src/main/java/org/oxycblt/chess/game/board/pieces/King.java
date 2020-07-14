@@ -11,8 +11,7 @@ public class King extends ChessPiece {
     private ChessPiece rightRook;
 
     private ChessPiece checkingPiece = null;
-
-    private int iterX = 0;
+    private boolean isChecked = false;
 
     public King(final ChessList list,
                 final ChessType color,
@@ -24,16 +23,6 @@ public class King extends ChessPiece {
 
     @Override
     public boolean validateMove(final int targetX, final int targetY) {
-
-        /*
-        [MODIFIED] RULES:
-        - King can be checked, but you can technically still make a move that does not end
-        the check.
-        - If you do not make a move that puts the king out of check, then its an automatic
-        checkmate.
-        - Despite this, the king does check for any possible legal moves from any piece,
-        if that fails, then its an auto-checkmate as well.
-        */
 
         /*
         | Kings can move in all directions, as long as the distance moved is one.
@@ -96,6 +85,8 @@ public class King extends ChessPiece {
 
     }
 
+    // Distance logic, seperated in order to prevent recursion errors in validateSafe().
+    // Returns true if valid, false if not
     public boolean doDistanceLogic(final int targetX, final int targetY) {
 
         calculateDistance(targetX, targetY);
@@ -121,92 +112,8 @@ public class King extends ChessPiece {
 
     }
 
-    @Override
-    public void confirmMove(final int targetX, final int targetY) {
-
-        calculateDistance(targetX, targetY);
-
-        // If a castling move is performed, also move the rook to their new location
-        if (Math.abs(xDist) == 2 && yDist == 0) {
-
-            if (xDist < 0) {
-
-                leftRook.confirmMove(targetX + 1, targetY);
-                leftRook.setSelected(false);
-
-            } else {
-
-                rightRook.confirmMove(targetX - 1, targetY);
-                rightRook.setSelected(false);
-
-            }
-
-            doMove(targetX, targetY, null);
-
-            return;
-
-        }
-
-        doMove(targetX, targetY, list.findChessPiece(ChessType.inverseOf(color), x, y));
-        updateCheck();
-
-    }
-
-    @Override
-    public void update(final ChessPiece changedPiece) {
-
-        // TODO: Add check/checkmate
-
-        updateCheck();
-
-        if (checkingPiece == null) {
-
-            if (changedPiece.getColor() != color) {
-
-                if (changedPiece.validateMove(x, y)) {
-
-                    checkingPiece = changedPiece;
-
-                    System.out.println("Check.");
-
-                }
-
-            }
-
-        } else {
-
-            System.out.println("Checkmate.");
-
-        }
-
-    }
-
-    // Check if the checking piece is still valid
-    private void updateCheck() {
-
-        if (checkingPiece != null) {
-
-            if (list.hasEntity(checkingPiece)) {
-
-                if (!checkingPiece.validateMove(x, y)) {
-
-                    checkingPiece = null;
-
-                }
-
-            } else {
-
-                checkingPiece = null;
-
-                System.out.println("Unchecked.");
-
-            }
-
-        }
-
-    }
-
     // Validate that a prospective move is safe
+    // Returns true if yes, false if no
     private boolean validateSafe(final int targetX, final int targetY) {
 
         for (ChessPiece entity : list.getEntities()) {
@@ -252,6 +159,7 @@ public class King extends ChessPiece {
     }
 
     // Validate that a path is safe and wont result in a check, used for castling
+    // Returns true if path is safe, false if not
     public boolean validateSafePath(final int targetX) {
 
         iterX = x;
@@ -280,6 +188,110 @@ public class King extends ChessPiece {
 
     }
 
+    @Override
+    public void confirmMove(final int targetX, final int targetY) {
+
+        calculateDistance(targetX, targetY);
+
+        // If a castling move is performed, also move the rook to their new location
+        if (Math.abs(xDist) == 2 && yDist == 0) {
+
+            if (xDist < 0) {
+
+                leftRook.confirmMove(targetX + 1, targetY);
+                leftRook.setSelected(false);
+
+            } else {
+
+                rightRook.confirmMove(targetX - 1, targetY);
+                rightRook.setSelected(false);
+
+            }
+
+            doMove(targetX, targetY, null);
+
+            return;
+
+        }
+
+        doMove(targetX, targetY, list.findChessPiece(ChessType.inverseOf(color), x, y));
+
+    }
+
+    @Override
+    public void update(final ChessPiece changedPiece) {
+
+        // TODO: Add check/checkmate
+
+        // WIP Rules:
+        // - Checkmate, either from one move from opposing side or failure to counter check
+        // - Stalemate, no moves possible on one sides turn.
+        // - 50-Move rule, no captures or pawn moves in 50 moves -> automatic draw
+
+        // Check if the current position of the king is safe. If not, then set the king
+        // as checked, and check if theres any way out of the check. If not, its an
+        // automatic checkmate. Is there is a way out, the player must figure it out
+        // within the next move, otherwise its still an auto-checkmate.
+        checkingPiece = findCheckingPieces();
+
+        if (checkingPiece != null) {
+
+            if (isChecked) {
+
+                System.out.println("Checkmate");
+
+            } else {
+
+                System.out.println("Checked.");
+
+                isChecked = true;
+
+            }
+
+        } else {
+
+            System.out.println("Unchecked.");
+
+            isChecked = false;
+
+        }
+
+    }
+
+    // Variant of validateSafe() that returns chesspieces instead of a boolean
+    // Returns a chesspiece that checks the king, otherwise nothing
+    private ChessPiece findCheckingPieces() {
+
+        for (ChessPiece entity : list.getEntities()) {
+
+            if (entity.getColor() != color) {
+
+                if (entity.getType() == ChessType.KING) {
+
+                    if (((King) entity).doDistanceLogic(x, y)) {
+
+                        return entity;
+
+                    }
+
+                } else {
+
+                    if (entity.validateMove(x, y)) {
+
+                        return entity;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return null;
+
+    }
+
     // Notify king of the rooks after the home row has been generated
     public void setUpRooks() {
 
@@ -288,6 +300,7 @@ public class King extends ChessPiece {
 
     }
 
+    // Deselect the stored rooks
     public void deselectRooks() {
 
         leftRook.setSelected(false);
