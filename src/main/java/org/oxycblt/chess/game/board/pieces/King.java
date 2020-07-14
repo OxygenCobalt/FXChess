@@ -13,6 +13,9 @@ public class King extends ChessPiece {
     private ChessPiece checkingPiece = null;
     private boolean isChecked = false;
 
+    private int checkX = 0;
+    private int checkY = 0;
+
     public King(final ChessList list,
                 final ChessType color,
                 final int x, final int y) {
@@ -221,7 +224,7 @@ public class King extends ChessPiece {
     @Override
     public void update(final ChessPiece changedPiece) {
 
-        // TODO: Add check/checkmate
+        // FIXME: Other pieces can check their own king, which is illegal, fix that
 
         // WIP Rules:
         // - Checkmate, either from one move from opposing side or failure to counter check
@@ -238,13 +241,21 @@ public class King extends ChessPiece {
 
             if (isChecked) {
 
-                System.out.println("Checkmate");
+                System.out.println("Checkmate.");
 
             } else {
 
-                System.out.println("Checked.");
+                if (validateCheckmate()) {
 
-                isChecked = true;
+                    System.out.println("Checkmate.");
+
+                } else {
+
+                    System.out.println("Checked.");
+
+                    isChecked = true;
+
+                }
 
             }
 
@@ -289,6 +300,93 @@ public class King extends ChessPiece {
         }
 
         return null;
+
+    }
+
+    // Check for any moves are possible if the king is checked
+    public boolean validateCheckmate() {
+
+        // First, iterate through each of the kings moves and check if any of those
+        // will result in the check ending.
+        for (int nearX = Math.max(x - 1, 0); nearX < Math.min(x + 2, 8); nearX++) {
+
+            for (int nearY = Math.max(y - 1, 0); nearY < Math.min(y + 2, 8); nearY++) {
+
+                if (list.findChessPiece(color, nearX, nearY) == null) {
+
+                    if (validateSafe(nearX, nearY)) {
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        // If that fails, check if any of the other pieces of the king's color can
+        // block the advance of the checking piece. This is only possible if the
+        // checking piece is a Rook, Bishop, or Queen
+        if (checkingPiece.getType() == ChessType.ROOK
+        ||  checkingPiece.getType() == ChessType.BISHOP
+        ||  checkingPiece.getType() == ChessType.QUEEN) {
+
+            calculateDistance(checkingPiece.getX(), checkingPiece.getY());
+
+            if (xDist + yDist != 0) {
+
+                for (ChessPiece piece : list.getEntities()) {
+
+                    iterX = x;
+                    iterY = y;
+
+                    checkX = checkingPiece.getX();
+                    checkY = checkingPiece.getY();
+
+                    while (iterX != checkX || iterY != checkY) {
+
+                        if (iterX > checkX) {
+
+                            iterX--;
+
+                        } else if (iterX < checkX) {
+
+                            iterX++;
+
+                        }
+
+                        if (iterY > checkY) {
+
+                            iterY--;
+
+                        } else if (iterY < checkY) {
+
+                            iterY++;
+
+                        }
+
+                        if (iterX != checkX || iterY != checkY) {
+
+                            if (piece.validateMove(iterX, iterY)) {
+
+                                return false;
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        // If both checks fail, theres no valid moves and a checkmate must be declared.
+        return true;
 
     }
 
