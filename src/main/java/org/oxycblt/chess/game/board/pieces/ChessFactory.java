@@ -8,13 +8,15 @@ import org.oxycblt.chess.game.board.ChessList;
 public class ChessFactory {
 
     private final ChessList pieces;
+    private final GameEndListener endListener;
     private ChessType color = ChessType.WHITE;
 
     private King lastGenKing = null;
 
-    public ChessFactory(final ChessList pieces) {
+    public ChessFactory(final ChessList pieces, final GameEndListener endListener) {
 
         this.pieces = pieces;
+        this.endListener = endListener;
 
     }
 
@@ -38,8 +40,8 @@ public class ChessFactory {
 
         }
 
-        // Also set up the king's references to the rooks for the castling move
-        lastGenKing.setUpRooks();
+        lastGenKing.rookSetup();
+        lastGenKing.setGameEndListener(endListener);
 
     }
 

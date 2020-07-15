@@ -5,6 +5,7 @@ package org.oxycblt.chess.game.board.ui;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
+
 import org.oxycblt.chess.game.ChessType;
 
 public class SelectionRect extends Rectangle {

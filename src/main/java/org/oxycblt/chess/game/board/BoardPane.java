@@ -8,13 +8,17 @@ import javafx.scene.shape.Rectangle;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
+
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.pieces.King;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
 import org.oxycblt.chess.game.board.pieces.ChessFactory;
+import org.oxycblt.chess.game.board.pieces.GameEndListener;
+
 import org.oxycblt.chess.game.board.ui.SelectionRect;
 import org.oxycblt.chess.game.board.ui.PromotionMenu;
 import org.oxycblt.chess.game.board.ui.PromotionEndListener;
+
 import org.oxycblt.chess.entity.EntityAdditionListener;
 import org.oxycblt.chess.entity.EntityRemovalListener;
 
@@ -38,6 +42,8 @@ public class BoardPane extends Pane {
     private int cacheSimpleX = -1;
     private int cacheSimpleY = -1;
 
+    private boolean isDisabled = false;
+
     public BoardPane() {
 
         // W/H/X/Y are static
@@ -53,7 +59,7 @@ public class BoardPane extends Pane {
         );
 
         pieces = new ChessList(chessAdditionListener, chessRemovalListener);
-        factory = new ChessFactory(pieces);
+        factory = new ChessFactory(pieces, endListener);
 
         generateCheckerBoard();
         generateChessPieces();
@@ -81,7 +87,7 @@ public class BoardPane extends Pane {
 
         // Left mouse button to select a chess piece/confirm chess piece movement,
         // no selections can occur when a pawn is being promoted.
-        if (button == MouseButton.PRIMARY && promotedPiece == null) {
+        if (button == MouseButton.PRIMARY && !isDisabled && promotedPiece == null) {
 
             normalizePointer(event);
 
@@ -230,6 +236,15 @@ public class BoardPane extends Pane {
     EntityRemovalListener<ChessPiece> chessRemovalListener = removed -> {
 
         getChildren().remove(removed);
+
+    };
+
+    GameEndListener endListener = loserKing -> {
+
+        System.out.println("Checkmate. "
+            + ChessType.inverseOf(loserKing.getColor()).toString() + " Wins.");
+
+        isDisabled = true;
 
     };
 

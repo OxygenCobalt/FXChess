@@ -10,6 +10,8 @@ public class King extends ChessPiece {
     private ChessPiece leftRook;
     private ChessPiece rightRook;
 
+    private GameEndListener endListener;
+
     private ChessPiece checkingPiece = null;
     private boolean isChecked = false;
 
@@ -224,32 +226,41 @@ public class King extends ChessPiece {
     @Override
     public void update(final ChessPiece changedPiece) {
 
-        // FIXME: Other pieces can check their own king, which is illegal, fix that
-
         // WIP Rules:
         // - Checkmate, either from one move from opposing side or failure to counter check
         // - Stalemate, no moves possible on one sides turn.
         // - 50-Move rule, no captures or pawn moves in 50 moves -> automatic draw
 
-        // Check if the current position of the king is safe. If not, then set the king
-        // as checked, and check if theres any way out of the check. If not, its an
-        // automatic checkmate. Is there is a way out, the player must figure it out
-        // within the next move, otherwise its still an auto-checkmate.
+        /*
+        | Check if the current position of the king is safe. If not, then set the king
+        | as checked, and check if theres any way out of the check. If not, its an
+        | automatic checkmate. Is there is a way out, the player must figure it out
+        | within the next move, otherwise its still an auto-checkmate. If you make
+        | a move from another piece that results in a check, its an auto-checkmate as well.
+        | The above is actually illegal to do in formal chess rules, but it would be a
+        | nightmare to implement so its just a checkmate instead ¯\_(ツ)_/¯
+        */
         checkingPiece = findCheckingPieces();
 
         if (checkingPiece != null) {
 
             if (isChecked) {
 
-                System.out.println("Checkmate.");
+                endListener.onCheckmate(this);
 
             } else {
 
                 if (validateCheckmate()) {
 
-                    System.out.println("Checkmate.");
+                    endListener.onCheckmate(this);
 
                 } else {
+
+                    if (changedPiece.getColor() == color) {
+
+                        endListener.onCheckmate(this);
+
+                    }
 
                     System.out.println("Checked.");
 
@@ -259,7 +270,7 @@ public class King extends ChessPiece {
 
             }
 
-        } else {
+        } else if (isChecked) {
 
             System.out.println("Unchecked.");
 
@@ -271,7 +282,7 @@ public class King extends ChessPiece {
 
     // Variant of validateSafe() that returns chesspieces instead of a boolean
     // Returns a chesspiece that checks the king, otherwise nothing
-    private ChessPiece findCheckingPieces() {
+    public ChessPiece findCheckingPieces() {
 
         for (ChessPiece entity : list.getEntities()) {
 
@@ -390,8 +401,15 @@ public class King extends ChessPiece {
 
     }
 
-    // Notify king of the rooks after the home row has been generated
-    public void setUpRooks() {
+    public void setGameEndListener(final GameEndListener listener) {
+
+        endListener = listener;
+
+    }
+
+    // Add the reference to the king to all pieces of the same color, and set up
+    // references to the rooks for castling
+    public void rookSetup() {
 
         leftRook = list.findChessPiece(color, 0, y);
         rightRook = list.findChessPiece(color, 7, y);

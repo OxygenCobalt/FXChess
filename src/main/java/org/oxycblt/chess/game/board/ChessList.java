@@ -3,8 +3,9 @@
 package org.oxycblt.chess.game.board;
 
 import org.oxycblt.chess.game.ChessType;
-import org.oxycblt.chess.entity.EntityList;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
+
+import org.oxycblt.chess.entity.EntityList;
 import org.oxycblt.chess.entity.EntityAdditionListener;
 import org.oxycblt.chess.entity.EntityRemovalListener;
 

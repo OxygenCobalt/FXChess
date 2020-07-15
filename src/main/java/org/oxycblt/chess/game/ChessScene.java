@@ -5,6 +5,7 @@ package org.oxycblt.chess.game;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
+
 import org.oxycblt.chess.game.board.BoardPane;
 
 public class ChessScene extends Scene {
