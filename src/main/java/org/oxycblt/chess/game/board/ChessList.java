@@ -6,16 +6,13 @@ import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
 
 import org.oxycblt.chess.entity.EntityList;
-import org.oxycblt.chess.entity.EntityAdditionListener;
-import org.oxycblt.chess.entity.EntityRemovalListener;
+import org.oxycblt.chess.entity.EntityChangeListener;
 
 public class ChessList extends EntityList<ChessPiece> {
 
-    public ChessList(final EntityAdditionListener<ChessPiece> addListener,
-                     final EntityRemovalListener<ChessPiece> removeListener) {
+    public ChessList(final EntityChangeListener<ChessPiece> listener) {
 
-        this.addListener = addListener;
-        this.removeListener = removeListener;
+        this.listener = listener;
 
     }
 

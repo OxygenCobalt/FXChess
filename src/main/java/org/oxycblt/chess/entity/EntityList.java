@@ -8,8 +8,7 @@ public abstract class EntityList<T> {
 
     protected ArrayList<T> entities;
 
-    protected EntityAdditionListener<T> addListener = null;
-    protected EntityRemovalListener<T> removeListener = null;
+    protected EntityChangeListener<T> listener = null;
 
     public EntityList() {
 
@@ -22,17 +21,16 @@ public abstract class EntityList<T> {
 
         entities.add(entity);
 
-        addListener.onAdded(entity);
+        listener.onAdded(entity);
 
     }
 
     public void removeEntity(final T entity) {
 
-        // Notify any listeners of the entity removal as long
-        // as the entity was actually removed
-        if (entities.remove(entity) && removeListener != null) {
+        // Notify any listeners of the entity removal as long as the entity was actually removed
+        if (entities.remove(entity) && listener != null) {
 
-            removeListener.onRemoved(entity);
+            listener.onRemoved(entity);
 
         }
 

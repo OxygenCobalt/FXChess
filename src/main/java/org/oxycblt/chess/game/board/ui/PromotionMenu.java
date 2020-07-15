@@ -195,13 +195,17 @@ public class PromotionMenu extends Pane {
     }
 
     // Hide the menu
-    private void hide() {
+    public void hide() {
 
-        getChildren().removeAll(choiceViews);
-        toBack();
+        if (isShown) {
 
-        selectRect.setStroke(Color.TRANSPARENT);
-        isShown = false;
+            getChildren().removeAll(choiceViews);
+            toBack();
+
+            selectRect.setStroke(Color.TRANSPARENT);
+            isShown = false;
+
+        }
 
     }
 

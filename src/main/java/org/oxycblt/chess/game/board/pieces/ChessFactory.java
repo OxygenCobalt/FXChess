@@ -4,6 +4,7 @@ package org.oxycblt.chess.game.board.pieces;
 
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.ChessList;
+import org.oxycblt.chess.game.board.GameEndListener;
 
 public class ChessFactory {
 

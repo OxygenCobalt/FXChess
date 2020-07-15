@@ -4,6 +4,8 @@ package org.oxycblt.chess.game.board.pieces;
 
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.ChessList;
+import org.oxycblt.chess.game.board.GameEndListener;
+import org.oxycblt.chess.game.board.GameEndListener.EndType;
 
 public class King extends ChessPiece {
 
@@ -227,7 +229,7 @@ public class King extends ChessPiece {
     public void update(final ChessPiece changedPiece) {
 
         // WIP Rules:
-        // - Checkmate, either from one move from opposing side or failure to counter check
+        // - Checkmate, either from one move from opposing side or failure to counter check [Done]
         // - Stalemate, no moves possible on one sides turn.
         // - 50-Move rule, no captures or pawn moves in 50 moves -> automatic draw
 
@@ -246,19 +248,19 @@ public class King extends ChessPiece {
 
             if (isChecked) {
 
-                endListener.onCheckmate(this);
+                endListener.onEnd(color, EndType.CHECKMATE);
 
             } else {
 
                 if (validateCheckmate()) {
 
-                    endListener.onCheckmate(this);
+                    endListener.onEnd(color, EndType.CHECKMATE);
 
                 } else {
 
                     if (changedPiece.getColor() == color) {
 
-                        endListener.onCheckmate(this);
+                        endListener.onEnd(color, EndType.CHECKMATE);
 
                     }
 

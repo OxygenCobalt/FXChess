@@ -13,16 +13,15 @@ import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.pieces.King;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
 import org.oxycblt.chess.game.board.pieces.ChessFactory;
-import org.oxycblt.chess.game.board.pieces.GameEndListener;
+import org.oxycblt.chess.game.board.GameEndListener.EndType;
 
 import org.oxycblt.chess.game.board.ui.SelectionRect;
 import org.oxycblt.chess.game.board.ui.PromotionMenu;
 import org.oxycblt.chess.game.board.ui.PromotionEndListener;
 
-import org.oxycblt.chess.entity.EntityAdditionListener;
-import org.oxycblt.chess.entity.EntityRemovalListener;
+import org.oxycblt.chess.entity.EntityChangeListener;
 
-public class BoardPane extends Pane {
+public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>, GameEndListener {
 
     private ChessList pieces;
     private ChessFactory factory;
@@ -58,11 +57,43 @@ public class BoardPane extends Pane {
             + "-fx-border-color: #8F8F8F"
         );
 
-        pieces = new ChessList(chessAdditionListener, chessRemovalListener);
-        factory = new ChessFactory(pieces, endListener);
+        pieces = new ChessList(this);
+        factory = new ChessFactory(pieces, this);
 
         generateCheckerBoard();
         generateChessPieces();
+
+    }
+
+    public void onAdded(final ChessPiece added) {
+
+        getChildren().add(added);
+
+    }
+
+    public void onRemoved(final ChessPiece removed) {
+
+        getChildren().remove(removed);
+
+    }
+
+    public void onEnd(final ChessType color, final EndType type) {
+
+        if (type == EndType.CHECKMATE) {
+
+            System.out.println("Checkmate. " + ChessType.inverseOf(color).toString() + " Wins.");
+
+        }
+
+        // Disable the game, and hide the promotion menu, in the case that causes issues.
+        isDisabled = true;
+        promotedPiece = null;
+
+        if (promotionMenu != null) {
+
+            promotionMenu.hide();
+
+        }
 
     }
 
@@ -74,6 +105,7 @@ public class BoardPane extends Pane {
         factory.replaceAt(promotedPiece.getX(), promotedPiece.getY(), newType);
 
         promotedPiece = null;
+        isDisabled = false;
 
         // Also end the players turn, something that didnt originally happen
         // when the move was originally confirmed
@@ -85,9 +117,9 @@ public class BoardPane extends Pane {
 
         MouseButton button = event.getButton();
 
-        // Left mouse button to select a chess piece/confirm chess piece movement,
-        // no selections can occur when a pawn is being promoted.
-        if (button == MouseButton.PRIMARY && !isDisabled && promotedPiece == null) {
+        // Left mouse button to select a chess piece/confirm chess piece movement, no selections
+        // can occur when a pawn is being promoted, or if the game has ended.
+        if (button == MouseButton.PRIMARY && !isDisabled) {
 
             normalizePointer(event);
 
@@ -95,7 +127,6 @@ public class BoardPane extends Pane {
 
                 // Find a chess piece that matches the coordinates and the
                 // current player turn, and select that if there is one
-
                 updateSimpleXY();
 
                 ChessPiece piece = pieces.findChessPiece(turn, simpleX, simpleY);
@@ -142,6 +173,7 @@ public class BoardPane extends Pane {
                             if (selectedPiece.getY() == 0 || selectedPiece.getY() == 7) {
 
                                 promotedPiece = selectedPiece;
+                                isDisabled = true;
 
                                 if (promotionMenu == null) {
 
@@ -223,28 +255,6 @@ public class BoardPane extends Pane {
             }
 
         }
-
-    };
-
-    // Addition/Removal managers
-    EntityAdditionListener<ChessPiece> chessAdditionListener = added -> {
-
-        getChildren().add(added);
-
-    };
-
-    EntityRemovalListener<ChessPiece> chessRemovalListener = removed -> {
-
-        getChildren().remove(removed);
-
-    };
-
-    GameEndListener endListener = loserKing -> {
-
-        System.out.println("Checkmate. "
-            + ChessType.inverseOf(loserKing.getColor()).toString() + " Wins.");
-
-        isDisabled = true;
 
     };
 
