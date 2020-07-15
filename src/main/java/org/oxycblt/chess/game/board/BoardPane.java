@@ -41,6 +41,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     private int cacheSimpleX = -1;
     private int cacheSimpleY = -1;
 
+    private int eventlessMoves = 0;
+
     private boolean isDisabled = false;
 
     public BoardPane() {
@@ -73,6 +75,10 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
     public void onRemoved(final ChessPiece removed) {
 
+        // A piece is only a removed when its captured, so
+        // reset the counter.
+        eventlessMoves = 0;
+
         getChildren().remove(removed);
 
     }
@@ -81,7 +87,17 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
         if (type == EndType.CHECKMATE) {
 
-            System.out.println("Checkmate. " + ChessType.inverseOf(color).toString() + " Wins.");
+            System.out.println("Checkmate, "
+                               + ChessType.inverseOf(color).toString()
+                               + " Wins.");
+
+        } else if (type == EndType.STALEMATE) {
+
+            System.out.println("Stalemate.");
+
+        } else if (type == EndType.DRAW) {
+
+            System.out.println("Draw.");
 
         }
 
@@ -163,6 +179,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
                         selectedPiece.confirmMove(simpleX, simpleY);
 
+                        eventlessMoves++;
+
                         /*
                         | If a pawn has just been promoted however by reaching the end of the board,
                         | disable the entire board and add a listener to the piece to wait until the
@@ -196,6 +214,10 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
                             }
 
+                            // Since a pawn has just moved, reset the eventless
+                            // moves counter to avert a draw.
+                            eventlessMoves = 0;
+
                         }
 
                         selectedPiece = null;
@@ -205,6 +227,14 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
                         if (promotedPiece == null) {
 
                             turn = ChessType.inverseOf(turn);
+
+                        }
+
+                        // If fifty moves have passed without the movement of a pawn
+                        // or a capture, the game is declared a draw.
+                        if (eventlessMoves >= 50) {
+
+                            onEnd(turn, EndType.DRAW);
 
                         }
 

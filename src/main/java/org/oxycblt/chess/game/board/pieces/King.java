@@ -228,11 +228,6 @@ public class King extends ChessPiece {
     @Override
     public void update(final ChessPiece changedPiece) {
 
-        // WIP Rules:
-        // - Checkmate, either from one move from opposing side or failure to counter check [Done]
-        // - Stalemate, no moves possible on one sides turn.
-        // - 50-Move rule, no captures or pawn moves in 50 moves -> automatic draw
-
         /*
         | Check if the current position of the king is safe. If not, then set the king
         | as checked, and check if theres any way out of the check. If not, its an
@@ -272,11 +267,27 @@ public class King extends ChessPiece {
 
             }
 
+            return;
+
         } else if (isChecked) {
 
             System.out.println("Unchecked.");
 
             isChecked = false;
+
+        }
+
+        /*
+        | If the king is current unchecked, the king also has to check if theres any valid moves
+        | left in general [If its the King's turn, that is]. If not, then its a stalemate.
+        */
+        if (changedPiece.getColor() != color) {
+
+            if (!validatePossibleMoves()) {
+
+                endListener.onEnd(color, EndType.STALEMATE);
+
+            }
 
         }
 
@@ -400,6 +411,36 @@ public class King extends ChessPiece {
 
         // If both checks fail, theres no valid moves and a checkmate must be declared.
         return true;
+
+    }
+
+    // Check if any possible moves are remaining for the King's color.
+    // Returns true if yes, false if no.
+    public boolean validatePossibleMoves() {
+
+        for (ChessPiece piece : list.getEntities()) {
+
+            if (piece.getColor() == color) {
+
+                for (int boardX = 0; boardX < 8; boardX++) {
+
+                    for (int boardY = 0; boardY < 8; boardY++) {
+
+                        if (piece.validateMove(boardX, boardY)) {
+
+                            return true;
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return false;
 
     }
 
