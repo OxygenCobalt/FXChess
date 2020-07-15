@@ -43,7 +43,7 @@ public class Rook extends ChessPiece {
     @Override
     public void confirmMove(final int targetX, final int targetY) {
 
-        doMove(targetX, targetY, list.findChessPiece(ChessType.inverseOf(color), x, y));
+        doMove(targetX, targetY, list.findChessPiece(ChessType.inverseOf(color), targetX, targetY));
 
     }
 

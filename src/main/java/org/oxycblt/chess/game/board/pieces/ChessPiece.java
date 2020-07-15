@@ -159,7 +159,6 @@ public abstract class ChessPiece extends Pane {
 
         }
 
-        list.removeEntity(list.findChessPiece(ChessType.inverseOf(color), x, y));
         list.pushChange(this);
 
     }

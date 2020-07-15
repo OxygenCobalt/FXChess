@@ -143,7 +143,7 @@ public class Pawn extends ChessPiece {
 
         }
 
-        doMove(targetX, targetY, list.findChessPiece(ChessType.inverseOf(color), x, y));
+        doMove(targetX, targetY, list.findChessPiece(ChessType.inverseOf(color), targetX, targetY));
 
     }
 
