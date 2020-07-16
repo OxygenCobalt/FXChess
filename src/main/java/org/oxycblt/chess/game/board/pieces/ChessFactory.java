@@ -4,17 +4,17 @@ package org.oxycblt.chess.game.board.pieces;
 
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.ChessList;
-import org.oxycblt.chess.game.board.GameEndListener;
+import org.oxycblt.chess.game.board.EndListener;
 
 public class ChessFactory {
 
     private final ChessList pieces;
-    private final GameEndListener endListener;
+    private final EndListener endListener;
     private ChessType color = ChessType.WHITE;
 
     private King lastGenKing = null;
 
-    public ChessFactory(final ChessList pieces, final GameEndListener endListener) {
+    public ChessFactory(final ChessList pieces, final EndListener endListener) {
 
         this.pieces = pieces;
         this.endListener = endListener;

@@ -4,7 +4,7 @@ package org.oxycblt.chess.game.board;
 
 import org.oxycblt.chess.game.ChessType;
 
-public interface GameEndListener {
+public interface EndListener {
 
     void onEnd(ChessType color, EndType type);
 
@@ -19,7 +19,21 @@ public interface GameEndListener {
     */
     enum EndType {
 
-        CHECKMATE, STALEMATE, DRAW
+        CHECKMATE(0), STALEMATE(1), DRAW(2);
+
+        private final int coordinate;
+
+        EndType(final int coordinate) {
+
+            this.coordinate = coordinate;
+
+        }
+
+        public int getCoordinate() {
+
+            return coordinate;
+
+        }
 
     }
 

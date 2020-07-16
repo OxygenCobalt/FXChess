@@ -2,6 +2,8 @@
 
 package org.oxycblt.chess.game;
 
+import java.util.Random;
+
 public enum ChessType {
 
     // Each enum stores their coordinates on TextureAtlas
@@ -20,6 +22,7 @@ public enum ChessType {
     };
 
     private final int coordinate;
+    private static Random rand = new Random();
 
     ChessType(final int coordinate) {
 
@@ -30,6 +33,18 @@ public enum ChessType {
     public int getCoordinate() {
 
         return coordinate;
+
+    }
+
+    public static ChessType randomColor() {
+
+        if (rand.nextBoolean()) {
+
+            return WHITE;
+
+        }
+
+        return BLACK;
 
     }
 

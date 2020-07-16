@@ -4,15 +4,15 @@ package org.oxycblt.chess.game.board.pieces;
 
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.ChessList;
-import org.oxycblt.chess.game.board.GameEndListener;
-import org.oxycblt.chess.game.board.GameEndListener.EndType;
+import org.oxycblt.chess.game.board.EndListener;
+import org.oxycblt.chess.game.board.EndListener.EndType;
 
 public class King extends ChessPiece {
 
     private ChessPiece leftRook;
     private ChessPiece rightRook;
 
-    private GameEndListener endListener;
+    private EndListener endListener;
 
     private ChessPiece checkingPiece = null;
     private boolean isChecked = false;
@@ -243,23 +243,21 @@ public class King extends ChessPiece {
 
             if (isChecked) {
 
-                endListener.onEnd(color, EndType.CHECKMATE);
+                endListener.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
 
             } else {
 
                 if (validateCheckmate()) {
 
-                    endListener.onEnd(color, EndType.CHECKMATE);
+                    endListener.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
 
                 } else {
 
                     if (changedPiece.getColor() == color) {
 
-                        endListener.onEnd(color, EndType.CHECKMATE);
+                        endListener.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
 
                     }
-
-                    System.out.println("Checked.");
 
                     isChecked = true;
 
@@ -270,8 +268,6 @@ public class King extends ChessPiece {
             return;
 
         } else if (isChecked) {
-
-            System.out.println("Unchecked.");
 
             isChecked = false;
 
@@ -444,7 +440,7 @@ public class King extends ChessPiece {
 
     }
 
-    public void setGameEndListener(final GameEndListener listener) {
+    public void setGameEndListener(final EndListener listener) {
 
         endListener = listener;
 

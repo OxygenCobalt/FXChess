@@ -15,21 +15,24 @@ import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.pieces.King;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
 import org.oxycblt.chess.game.board.pieces.ChessFactory;
-import org.oxycblt.chess.game.board.GameEndListener.EndType;
+import org.oxycblt.chess.game.board.EndListener.EndType;
 
 import org.oxycblt.chess.game.board.ui.SelectionRect;
+import org.oxycblt.chess.game.board.ui.EndScreen;
 import org.oxycblt.chess.game.board.ui.PromotionMenu;
 import org.oxycblt.chess.game.board.ui.PromotionEndListener;
 
 import org.oxycblt.chess.entity.EntityChangeListener;
 
-public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>, GameEndListener {
+public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>, EndListener {
 
     private ChessList pieces;
     private ChessFactory factory;
 
     private ChessPiece selectedPiece = null;
     private ChessPiece promotedPiece = null;
+
+    private EndScreen endScreen = null;
     private SelectionRect selectRect = null;
     private PromotionMenu promotionMenu = null;
 
@@ -90,19 +93,15 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
     public void onEnd(final ChessType color, final EndType type) {
 
-        if (type == EndType.CHECKMATE) {
+        if (endScreen == null) {
 
-            System.out.println("Checkmate, "
-                               + ChessType.inverseOf(color).toString()
-                               + " Wins.");
+            endScreen = new EndScreen(color, type);
 
-        } else if (type == EndType.STALEMATE) {
+            getChildren().add(endScreen);
 
-            System.out.println("Stalemate.");
+        } else {
 
-        } else if (type == EndType.DRAW) {
-
-            System.out.println("Draw.");
+            endScreen.show(color, type);
 
         }
 
@@ -252,13 +251,13 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
                         // a row, then the game is an automatic draw.
                         if (repeatedPositions >= 5) {
 
-                            onEnd(turn, EndType.DRAW);
+                            onEnd(ChessType.randomColor(), EndType.DRAW);
 
                         // If fifty moves have passed without the movement of a pawn
                         // or a capture, the game is declared a draw.
                         } else if (eventlessMoves >= 50) {
 
-                            onEnd(turn, EndType.DRAW);
+                            onEnd(ChessType.randomColor(), EndType.DRAW);
 
                         }
 

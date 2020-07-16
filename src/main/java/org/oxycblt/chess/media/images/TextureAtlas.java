@@ -34,6 +34,21 @@ public final class TextureAtlas {
 
     }
 
+    // Get a texture using the simple X/Y coords & a custom size
+    public static ImageView getTexture(final Texture tex,
+                                             final int x, final int y,
+                                             final int w, final int h) {
+
+        ImageView view = new ImageView(loadFullTexture(tex));
+
+        view.setViewport(new Rectangle2D(
+            x * w, y * h, w, h
+        ));
+
+        return view;
+
+    }
+
     // Get full Image of all the textures of the specified sheet
     private static Image loadFullTexture(final Texture tex) {
 
