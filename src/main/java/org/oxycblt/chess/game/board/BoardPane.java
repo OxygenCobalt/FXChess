@@ -2,6 +2,8 @@
 
 package org.oxycblt.chess.game.board;
 
+import java.util.ArrayList;
+
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -42,6 +44,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     private int cacheSimpleY = -1;
 
     private int eventlessMoves = 0;
+    private int repeatedPositions = 0;
+    private ArrayList<Integer> positions;
 
     private boolean isDisabled = false;
 
@@ -61,6 +65,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
         pieces = new ChessList(this);
         factory = new ChessFactory(pieces, this);
+        positions = new ArrayList<Integer>();
 
         generateCheckerBoard();
         generateChessPieces();
@@ -181,6 +186,19 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
                         eventlessMoves++;
 
+                        // Incremement the amount of repeated positions every time a space is
+                        // re-occupied, otherwise reset the amount of repeated moves.
+                        if (positions.contains(simpleX * 8 + simpleY)) {
+
+                            repeatedPositions++;
+
+                        } else {
+
+                            positions.add(simpleX * 8 + simpleY);
+                            repeatedPositions = 0;
+
+                        }
+
                         /*
                         | If a pawn has just been promoted however by reaching the end of the board,
                         | disable the entire board and add a listener to the piece to wait until the
@@ -230,9 +248,15 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
                         }
 
+                        // If five instances of the same position [See: Move] occur in
+                        // a row, then the game is an automatic draw.
+                        if (repeatedPositions >= 5) {
+
+                            onEnd(turn, EndType.DRAW);
+
                         // If fifty moves have passed without the movement of a pawn
                         // or a capture, the game is declared a draw.
-                        if (eventlessMoves >= 50) {
+                        } else if (eventlessMoves >= 50) {
 
                             onEnd(turn, EndType.DRAW);
 
