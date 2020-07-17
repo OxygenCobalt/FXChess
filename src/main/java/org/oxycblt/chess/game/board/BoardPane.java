@@ -17,8 +17,10 @@ import org.oxycblt.chess.game.board.pieces.ChessPiece;
 import org.oxycblt.chess.game.board.pieces.ChessFactory;
 import org.oxycblt.chess.game.board.EndListener.EndType;
 
-import org.oxycblt.chess.game.board.ui.SelectionRect;
 import org.oxycblt.chess.game.board.ui.EndScreen;
+import org.oxycblt.chess.game.board.ui.ResetButton;
+import org.oxycblt.chess.game.board.ui.ResetListener;
+import org.oxycblt.chess.game.board.ui.SelectionRect;
 import org.oxycblt.chess.game.board.ui.PromotionMenu;
 import org.oxycblt.chess.game.board.ui.PromotionEndListener;
 
@@ -70,6 +72,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         factory = new ChessFactory(pieces, this);
         positions = new ArrayList<Integer>();
 
+        getChildren().add(new ResetButton(resetListener));
+
         generateCheckerBoard();
         generateChessPieces();
 
@@ -117,7 +121,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
     }
 
-    PromotionEndListener confirmListener = newType -> {
+    // Confirmation for promotion
+    PromotionEndListener promotionListener = newType -> {
 
         // Remove the original pawn set to be promoted, and replace
         // it with the type that was chosen by the menu
@@ -130,6 +135,41 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         // Also end the players turn, something that didnt originally happen
         // when the move was originally confirmed
         turn = ChessType.inverseOf(turn);
+
+    };
+
+    // Confirmation for reset
+    ResetListener resetListener = () -> {
+
+        pieces.killAll();
+
+        if (endScreen != null) {
+
+            endScreen.hide();
+
+        }
+
+        if (promotionMenu != null) {
+
+            promotionMenu.hide();
+
+        }
+
+        getChildren().remove(selectRect);
+
+        isDisabled = false;
+
+        selectedPiece = null;
+        promotedPiece = null;
+
+        cacheSimpleX = -1;
+        cacheSimpleY = -1;
+
+        positions.clear();
+        eventlessMoves = 0;
+        repeatedPositions = 0;
+
+        generateChessPieces();
 
     };
 
@@ -213,7 +253,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
                                 if (promotionMenu == null) {
 
                                     promotionMenu = new PromotionMenu(
-                                        confirmListener,
+                                        promotionListener,
                                         promotedPiece.getColor(),
                                         promotedPiece.getX(), promotedPiece.getY()
                                     );
@@ -430,6 +470,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
         }
         */
+
+        turn = ChessType.WHITE;
 
         // Generate each color's pieces
         factory.setColor(ChessType.BLACK);

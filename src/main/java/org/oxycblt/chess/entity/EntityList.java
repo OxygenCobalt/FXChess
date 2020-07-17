@@ -10,9 +10,10 @@ public abstract class EntityList<T> {
 
     protected EntityChangeListener<T> listener = null;
 
-    public EntityList() {
+    public EntityList(final EntityChangeListener<T> listener) {
 
-        entities = new ArrayList<T>();
+        this.entities = new ArrayList<T>();
+        this.listener = listener;
 
     }
 

@@ -12,7 +12,7 @@ public class ChessList extends EntityList<ChessPiece> {
 
     public ChessList(final EntityChangeListener<ChessPiece> listener) {
 
-        this.listener = listener;
+        super(listener);
 
     }
 
@@ -61,6 +61,19 @@ public class ChessList extends EntityList<ChessPiece> {
             piece.update(changedPiece);
 
         }
+
+    }
+
+    // Kill them all.
+    public void killAll() {
+
+        for (ChessPiece piece : entities) {
+
+            listener.onRemoved(piece);
+
+        }
+
+        entities.clear();
 
     }
 
