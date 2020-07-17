@@ -10,18 +10,6 @@ import org.oxycblt.chess.game.ChessType;
 
 public class SelectionRect extends Rectangle {
 
-    // Basic constructor
-    public SelectionRect() {
-
-        super(32, 32);
-
-        setFill(Color.TRANSPARENT);
-        setStrokeWidth(3);
-        setStrokeType(StrokeType.INSIDE);
-
-    }
-
-    // Advanced constructor
     public SelectionRect(final ChessType color, final int x, final int y) {
 
         super(32, 32);
@@ -41,11 +29,11 @@ public class SelectionRect extends Rectangle {
 
         if (color == ChessType.WHITE) {
 
-            super.setStroke(Color.WHITE);
+            super.setStroke(Color.web("eaeaea"));
 
         } else {
 
-            super.setStroke(Color.BLACK);
+            super.setStroke(Color.web("252525"));
 
         }
 

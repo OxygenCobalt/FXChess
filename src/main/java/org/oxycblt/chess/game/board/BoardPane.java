@@ -122,7 +122,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     }
 
     // Confirmation for promotion
-    PromotionEndListener promotionListener = newType -> {
+    private PromotionEndListener promotionListener = newType -> {
 
         // Remove the original pawn set to be promoted, and replace
         // it with the type that was chosen by the menu
@@ -139,7 +139,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     };
 
     // Confirmation for reset
-    ResetListener resetListener = () -> {
+    private ResetListener resetListener = () -> {
 
         pieces.killAll();
 
@@ -173,7 +173,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
     };
 
-    EventHandler<MouseEvent> clickHandler = event -> {
+    // TODO: Maybe switch to a drag/drop system?
+    private EventHandler<MouseEvent> clickHandler = event -> {
 
         MouseButton button = event.getButton();
 
@@ -287,20 +288,16 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
                         }
 
-                        // If five instances of the same position [See: Move] occur in
-                        // a row, then the game is an automatic draw.
-                        if (repeatedPositions >= 5) {
-
-                            onEnd(ChessType.randomColor(), EndType.DRAW);
-
-                        // If fifty moves have passed without the movement of a pawn
-                        // or a capture, the game is declared a draw.
-                        } else if (eventlessMoves >= 50) {
+                        /*
+                        | If the same position is repeated five times in a row, or if there
+                        | has been no pawn movements or captures in 50 moves, then the game
+                        | is a draw.
+                        */
+                        if (repeatedPositions >= 5 || eventlessMoves >= 50) {
 
                             onEnd(ChessType.randomColor(), EndType.DRAW);
 
                         }
-
                     }
 
                 }
@@ -322,7 +319,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
     };
 
-    EventHandler<MouseEvent> hoverHandler = event -> {
+    private EventHandler<MouseEvent> hoverHandler = event -> {
 
         // Ignore if nothing is selected
         if (selectedPiece != null) {
@@ -378,10 +375,10 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     // Update the selection rects position/color
     private void updateSelectionRect() {
 
-       // Create the selection rectangle if it hasnt already been added
+        // Create the selection rectangle if it hasnt already been added
         if (selectRect == null) {
 
-            selectRect = new SelectionRect();
+            selectRect = new SelectionRect(turn, simpleX, simpleY);
 
         }
 
@@ -405,8 +402,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
         }
 
-        // If the move is valid, show the selection color respective to the
-        // current player turn, otherwise mark it as invalid w/a red color
+        // If the move is invalid, mark the selection rect as invalid with a red color, otherwise
+        // just display the same color as the current turn.
         if (selectedPiece.validateMove(simpleX, simpleY)) {
 
             selectRect.setStroke(turn);

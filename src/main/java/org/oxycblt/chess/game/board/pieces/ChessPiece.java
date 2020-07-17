@@ -4,11 +4,13 @@ package org.oxycblt.chess.game.board.pieces;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.image.ImageView;
+
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.ChessList;
+import org.oxycblt.chess.game.board.ui.SelectionRect;
+
 import org.oxycblt.chess.media.images.Texture;
 import org.oxycblt.chess.media.images.TextureAtlas;
-import org.oxycblt.chess.game.board.ui.SelectionRect;
 
 public abstract class ChessPiece extends Pane {
 
@@ -145,19 +147,19 @@ public abstract class ChessPiece extends Pane {
     // Confirm a move
     protected void doMove(final int targetX, final int targetY, final ChessPiece toKill) {
 
-        x = targetX;
-        y = targetY;
-
         hasMoved = true;
 
-        relocate(x * 32, y * 32);
         setSelected(false);
+        relocate(targetX * 32, targetY * 32);
 
         if (toKill != null) {
 
             list.removeEntity(toKill);
 
         }
+
+        x = targetX;
+        y = targetY;
 
         list.pushChange(this);
 

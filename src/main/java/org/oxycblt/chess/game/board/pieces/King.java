@@ -41,7 +41,7 @@ public class King extends ChessPiece {
 
         if (doDistanceLogic(targetX, targetY)) {
 
-            return validateSafe(targetX, targetY);
+            return true;
 
         }
 
@@ -52,7 +52,7 @@ public class King extends ChessPiece {
         | - The king must not have moved or is in check
         | - The rooks must have not moved
         | - There must be no pieces in the path between the king & the rook
-        | - The king must not pass through any pieces that are under attack, or result in a check
+        | - The king must not pass through any pieces that are under attack
         */
         if (yDist == 0 && !hasMoved && checkingPiece == null) {
 
@@ -119,6 +119,36 @@ public class King extends ChessPiece {
 
     }
 
+    // Validate that a path is safe and wont result in a check, used for castling
+    // Returns true if path is safe, false if not
+    public boolean validateSafePath(final int targetX) {
+
+        iterX = x;
+
+        while (iterX != targetX) {
+
+            if (iterX > targetX) {
+
+                iterX--;
+
+            } else if (iterX < targetX) {
+
+                iterX++;
+
+            }
+
+            if (!validateSafe(iterX, y)) {
+
+                return false;
+
+            }
+
+        }
+
+        return true;
+
+    }
+
     // Validate that a prospective move is safe
     // Returns true if yes, false if no
     private boolean validateSafe(final int targetX, final int targetY) {
@@ -156,36 +186,6 @@ public class King extends ChessPiece {
                     }
 
                 }
-
-            }
-
-        }
-
-        return true;
-
-    }
-
-    // Validate that a path is safe and wont result in a check, used for castling
-    // Returns true if path is safe, false if not
-    public boolean validateSafePath(final int targetX) {
-
-        iterX = x;
-
-        while (iterX != targetX) {
-
-            if (iterX > targetX) {
-
-                iterX--;
-
-            } else if (iterX < targetX) {
-
-                iterX++;
-
-            }
-
-            if (!validateSafe(iterX, y)) {
-
-                return false;
 
             }
 
@@ -233,8 +233,8 @@ public class King extends ChessPiece {
         | as checked, and check if theres any way out of the check. If not, its an
         | automatic checkmate. Is there is a way out, the player must figure it out
         | within the next move, otherwise its still an auto-checkmate. If you make
-        | a move from another piece that results in a check, its an auto-checkmate as well.
-        | The above is actually illegal to do in formal chess rules, but it would be a
+        | a move that results in a check, its an auto-checkmate as well. The above 
+        | is actually illegal to do in formal chess rules, but it would be a
         | nightmare to implement so its just a checkmate instead ¯\_(ツ)_/¯
         */
         checkingPiece = findCheckingPieces();
