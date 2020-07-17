@@ -32,7 +32,8 @@ public class King extends ChessPiece {
     public boolean validateMove(final int targetX, final int targetY) {
 
         /*
-        | Kings can move in all directions, as long as the distance moved is one.
+        | Kings can move in all directions, as long as the distance moved is one and the space
+        | is safe [Although that doesnt apply if the king is checked, for added challenge].
         | Kings can also perform a move called castling with a rook, which involve
         | the king moving two spaces, and the rook moving to the space that the king passed.
         */
@@ -41,7 +42,15 @@ public class King extends ChessPiece {
 
         if (doDistanceLogic(targetX, targetY)) {
 
-            return true;
+            if (isChecked) {
+
+                return true;
+
+            } else {
+
+                return validateSafe(targetX, targetY);
+
+            }
 
         }
 
@@ -233,8 +242,8 @@ public class King extends ChessPiece {
         | as checked, and check if theres any way out of the check. If not, its an
         | automatic checkmate. Is there is a way out, the player must figure it out
         | within the next move, otherwise its still an auto-checkmate. If you make
-        | a move that results in a check, its an auto-checkmate as well. The above 
-        | is actually illegal to do in formal chess rules, but it would be a
+        | a move from another piece that results in a check, its an auto-checkmate as well.
+        | The above is actually illegal to do in formal chess rules, but it would be a
         | nightmare to implement so its just a checkmate instead ¯\_(ツ)_/¯
         */
         checkingPiece = findCheckingPieces();
