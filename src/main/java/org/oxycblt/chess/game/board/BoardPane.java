@@ -176,36 +176,28 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
             normalizePointer(event);
 
+            /*
+            | Confirm the move if the X/Y coordinates are valid, the move
+            | itself is valid, and if the piece has meaningfully moved from
+            | its original location.
+            */
             if (validateXY() && validateDrag()) {
 
                 updateSimpleXY();
 
-                /*
-                | Return the piece to its original position if the move is invalid or
-                | if the player has just moved the piece back to its origin square
-                */
-                if (!selectedPiece.validateMove(simpleX, simpleY)
-                ||   selectedPiece.isAt(simpleX, simpleY)) {
-
-                    selectedPiece.recall(mouseX - selX, mouseY - selY);
-
-                } else {
+                if (selectedPiece.validateMove(simpleX, simpleY)
+                && !selectedPiece.isAt(simpleX, simpleY)) {
 
                     doMove();
 
+                    return;
+
                 }
 
-            } else {
-
-                /*
-                | If the mouse pointer is completely out of bounds, default to
-                | the current position of the chess piece in order to have the
-                | recall animation play correctly.
-                */
-                selectedPiece.recall((int) selectedPiece.getLayoutX(),
-                                     (int) selectedPiece.getLayoutY());
-
             }
+
+            // Otherwise, recall the piece to its original location.
+            selectedPiece.recall();
 
         }
 
