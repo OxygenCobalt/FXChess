@@ -192,32 +192,36 @@ public abstract class ChessPiece extends Pane {
     // Return a chess piece to its original location
     public void recall(final int mouseX, final int mouseY) {
 
-        setSelected(false);
+        if (getLayoutX() != x * 32 && getLayoutY() != y * 32) {
 
-        /*
-        | Set up the recall animation if not already, and then recalulate the path to be taken
-        | based on the distance from the original position of the piece and the current mouse
-        | position.
-        */
-        if (recallAnim == null) {
+            /*
+            | Set up the recall animation if not already, and then recalulate the path to be taken
+            | based on the distance from the original position of the piece and the current mouse
+            | position.
+            */
+            if (recallAnim == null) {
 
-            recallAnim = new PathTransition();
-            recallAnim.setDuration(Duration.seconds(0.3));
-            recallAnim.setNode(this);
+                recallAnim = new PathTransition();
+                recallAnim.setDuration(Duration.seconds(0.3));
+                recallAnim.setNode(this);
+
+            }
+
+            recallAnim.setPath(
+                new Path(
+                    new MoveTo(16, 16),
+                    new LineTo(
+                        (((x * 32) + 16) - mouseX),
+                        (((y * 32) + 16) - mouseY)
+                    )
+                )
+            );
+
+            recallAnim.play();
 
         }
 
-        recallAnim.setPath(
-            new Path(
-                new MoveTo(16, 16),
-                new LineTo(
-                    (((x * 32) + 16) - mouseX),
-                    (((y * 32) + 16) - mouseY)
-                )
-            )
-        );
-
-        recallAnim.play();
+        setSelected(false);
 
     }
 
