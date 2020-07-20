@@ -5,6 +5,12 @@ package org.oxycblt.chess.game.board.pieces;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.ImageView;
 
+import javafx.util.Duration;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.animation.PathTransition;
+
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.ChessList;
 import org.oxycblt.chess.game.board.ui.SelectionRect;
@@ -32,6 +38,7 @@ public abstract class ChessPiece extends Pane {
 
     private ImageView chessView;
     private SelectionRect selectRect;
+    private PathTransition recallAnim;
 
     public ChessPiece(final ChessList list,
                       final ChessType type,
@@ -152,6 +159,15 @@ public abstract class ChessPiece extends Pane {
 
                 toFront();
 
+                /*
+                | Reset the translate coordinates and confirm the pieces current
+                | position to prevent weird positioning bugs if a piece is selected
+                | after being recalled to its original position
+                */
+                setTranslateX(0);
+                setTranslateY(0);
+                relocate(x * 32, y * 32);
+
                 // Create selection rectangle if not already created
                 if (selectRect == null) {
 
@@ -174,11 +190,34 @@ public abstract class ChessPiece extends Pane {
     }
 
     // Return a chess piece to its original location
-    public void recall() {
+    public void recall(final int mouseX, final int mouseY) {
 
         setSelected(false);
 
-        relocate(x * 32, y * 32);
+        /*
+        | Set up the recall animation if not already, and then recalulate the path to be taken
+        | based on the distance from the original position of the piece and the current mouse
+        | position.
+        */
+        if (recallAnim == null) {
+
+            recallAnim = new PathTransition();
+            recallAnim.setDuration(Duration.seconds(0.3));
+            recallAnim.setNode(this);
+
+        }
+
+        recallAnim.setPath(
+            new Path(
+                new MoveTo(16, 16),
+                new LineTo(
+                    (((x * 32) + 16) - mouseX),
+                    (((y * 32) + 16) - mouseY)
+                )
+            )
+        );
+
+        recallAnim.play();
 
     }
 

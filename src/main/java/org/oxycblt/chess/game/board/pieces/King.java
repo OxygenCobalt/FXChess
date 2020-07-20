@@ -209,12 +209,10 @@ public class King extends ChessPiece {
             if (xDist < 0) {
 
                 leftRook.confirmMove(targetX + 1, targetY);
-                leftRook.setSelected(false);
 
             } else {
 
                 rightRook.confirmMove(targetX - 1, targetY);
-                rightRook.setSelected(false);
 
             }
 

@@ -118,12 +118,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
             normalizePointer(event);
 
-            if (validateXY()) {
-
-                // Move the selected piece to follow the mouse
-                selectedPiece.relocate(mouseX - selX, mouseY - selY);
-
-            }
+            // Move the selected piece to follow the mouse
+            selectedPiece.relocate(mouseX - selX, mouseY - selY);
 
         }
 
@@ -148,7 +144,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
                 if (!selectedPiece.validateMove(simpleX, simpleY)
                 ||   selectedPiece.isAt(simpleX, simpleY)) {
 
-                    selectedPiece.recall();
+                    selectedPiece.recall(mouseX - selX, mouseY - selY);
 
                 } else {
 
@@ -158,7 +154,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
             } else {
 
-                selectedPiece.recall();
+                selectedPiece.recall(mouseX - selX, mouseY - selY);
 
             }
 
@@ -228,8 +224,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         selectedPiece = null;
 
         if (promotedPiece == null) {
-
-            System.out.println("what");
 
             turn = ChessType.inverseOf(turn);
 
