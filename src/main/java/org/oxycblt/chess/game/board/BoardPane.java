@@ -118,8 +118,52 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
             normalizePointer(event);
 
-            // Move the selected piece to follow the mouse
-            selectedPiece.relocate(mouseX - selX, mouseY - selY);
+            /*
+            | Move the selected piece to the new location of the pointer as long as its still
+            | valid. These are separated so that one axis can still be moved through if the
+            | other is invalid.
+            */
+            if (validateDragX()) {
+
+                selectedPiece.setLayoutX(mouseX - selX);
+
+            } else {
+
+                /*
+                | If the drag location isnt valid, check if the mouse pointer is completely out of
+                | bounds, and default to the location it should be at if so to prevent a bug where
+                | the piece wont be in the right location if the mouse pointer moves too fast.
+                */
+
+                if (mouseX < 0) {
+
+                    selectedPiece.setLayoutX(0);
+
+                } else if (mouseX > 256) {
+
+                    selectedPiece.setLayoutX(224);
+
+                }
+
+            }
+
+            if (validateDragY()) {
+
+                selectedPiece.setLayoutY(mouseY - selY);
+
+            } else {
+
+                if (mouseY < 0) {
+
+                    selectedPiece.setLayoutY(0);
+
+                } else if (mouseY > 256) {
+
+                    selectedPiece.setLayoutY(224);
+
+                }
+
+            }
 
         }
 
@@ -132,14 +176,13 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
             normalizePointer(event);
 
-            if (validateXY()) {
+            if (validateXY() && validateDrag()) {
 
                 updateSimpleXY();
 
                 /*
                 | Return the piece to its original position if the move is invalid or
                 | if the player has just moved the piece back to its origin square
-                | TODO: Give this an animation or something
                 */
                 if (!selectedPiece.validateMove(simpleX, simpleY)
                 ||   selectedPiece.isAt(simpleX, simpleY)) {
@@ -154,7 +197,13 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
             } else {
 
-                selectedPiece.recall(mouseX - selX, mouseY - selY);
+                /*
+                | If the mouse pointer is completely out of bounds, default to
+                | the current position of the chess piece in order to have the
+                | recall animation play correctly.
+                */
+                selectedPiece.recall((int) selectedPiece.getLayoutX(),
+                                     (int) selectedPiece.getLayoutY());
 
             }
 
@@ -162,7 +211,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
     };
 
-    // Confirm amove and run its logic
+    // Confirm a move and run its logic
     private void doMove() {
 
         selectedPiece.confirmMove(simpleX, simpleY);
@@ -255,6 +304,26 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
         return mouseX > 0 && mouseX < getPrefWidth()
             && mouseY > 0 && mouseY < getPrefHeight();
+
+    }
+
+    // Validate that the currently dragged piece is still in the bounds of BoardPane,
+    private boolean validateDrag() {
+
+        return validateDragX() && validateDragY();
+
+    }
+
+    // Sub-components of validateDrag() that are also called
+    private boolean validateDragX() {
+
+        return (32 - selX) + mouseX >= 32 && (32 - selX) + mouseX <= 256;
+
+    }
+
+    private boolean validateDragY() {
+
+        return (32 - selY) + mouseY >= 32 && (32 - selY) + mouseY <= 256;
 
     }
 
