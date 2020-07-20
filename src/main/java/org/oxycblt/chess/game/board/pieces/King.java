@@ -38,8 +38,6 @@ public class King extends ChessPiece {
         | the king moving two spaces, and the rook moving to the space that the king passed.
         */
 
-        deselectRooks();
-
         if (doDistanceLogic(targetX, targetY)) {
 
             if (isChecked) {
@@ -71,8 +69,6 @@ public class King extends ChessPiece {
 
                     if (validateSafePath(targetX)) {
 
-                        leftRook.setSelected(true);
-
                         return true;
 
                     }
@@ -84,8 +80,6 @@ public class King extends ChessPiece {
                 if (!findBlockingPieces(targetX + 1, targetY)) {
 
                     if (validateSafePath(targetX)) {
-
-                        rightRook.setSelected(true);
 
                         return true;
 
@@ -461,14 +455,6 @@ public class King extends ChessPiece {
 
         leftRook = list.findChessPiece(color, 0, y);
         rightRook = list.findChessPiece(color, 7, y);
-
-    }
-
-    // Deselect the stored rooks
-    public void deselectRooks() {
-
-        leftRook.setSelected(false);
-        rightRook.setSelected(false);
 
     }
 

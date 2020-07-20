@@ -64,7 +64,9 @@ public class ChessList extends EntityList<ChessPiece> {
 
     }
 
-    // Kill them all.
+    // "Kill them all."
+    // "..."
+    // "Right on."
     public void killAll() {
 
         for (ChessPiece piece : entities) {

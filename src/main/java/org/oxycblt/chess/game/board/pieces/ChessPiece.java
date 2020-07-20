@@ -62,34 +62,6 @@ public abstract class ChessPiece extends Pane {
 
     }
 
-    // Select/Deselect a chess piece
-    public void setSelected(final boolean selected) {
-
-        if (isSelected != selected) {
-
-            if (selected) {
-
-                // Create selection rectangle if not already created
-                if (selectRect == null) {
-
-                    selectRect = new SelectionRect(color, 0, 0);
-
-                }
-
-                getChildren().add(selectRect);
-
-            } else {
-
-                getChildren().remove(selectRect);
-
-            }
-
-            isSelected = selected;
-
-        }
-
-    }
-
     // Calculate the distance the from the current position to the new position.
     protected void calculateDistance(final int targetX, final int targetY) {
 
@@ -170,6 +142,52 @@ public abstract class ChessPiece extends Pane {
     public abstract boolean validateMove(int targetX, int targetY);
     public abstract void confirmMove(int targetX, int targetY);
     public abstract void update(ChessPiece changedPiece);
+
+    // Select/Deselect a chess piece
+    public void setSelected(final boolean selected) {
+
+        if (isSelected != selected) {
+
+            if (selected) {
+
+                toFront();
+
+                // Create selection rectangle if not already created
+                if (selectRect == null) {
+
+                    selectRect = new SelectionRect(color, 0, 0);
+
+                }
+
+                getChildren().add(selectRect);
+
+            } else {
+
+                getChildren().remove(selectRect);
+
+            }
+
+            isSelected = selected;
+
+        }
+
+    }
+
+    // Return a chess piece to its original location
+    public void recall() {
+
+        setSelected(false);
+
+        relocate(x * 32, y * 32);
+
+    }
+
+    // Find if a chess piece is at a certain position
+    public boolean isAt(final int atX, final int atY) {
+
+        return atX == x && atY == y;
+
+    }
 
     // Getters
     public ChessType getType() {
