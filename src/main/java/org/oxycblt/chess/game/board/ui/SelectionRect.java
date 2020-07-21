@@ -7,8 +7,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
 import org.oxycblt.chess.game.ChessType;
+import org.oxycblt.chess.game.board.animation.SelectionAnimation;
 
 public class SelectionRect extends Rectangle {
+
+    SelectionAnimation selectAnim;
 
     public SelectionRect(final ChessType color, final int x, final int y) {
 
@@ -16,26 +19,34 @@ public class SelectionRect extends Rectangle {
 
         relocate(x * 32, y * 32);
         setFill(Color.TRANSPARENT);
-        setStroke(color);
+
+        show(color);
         setStrokeWidth(3);
         setStrokeType(StrokeType.INSIDE);
 
     }
 
-    // Variation of setStroke that can take ChessType colors
-    public void setStroke(final ChessType color) {
+    public void show(final ChessType color) {
 
-        ChessType.validateColor(color);
+        if (selectAnim == null) {
 
-        if (color == ChessType.WHITE) {
-
-            super.setStroke(Color.web("eaeaea"));
-
-        } else {
-
-            super.setStroke(Color.web("252525"));
+            selectAnim = new SelectionAnimation(this);
 
         }
+
+        selectAnim.fadeIn(color);
+
+    }
+
+    public void hide() {
+
+        selectAnim.fadeOut();
+
+    }
+
+    public void hideNoAnim() {
+
+        setStroke(Color.TRANSPARENT);
 
     }
 

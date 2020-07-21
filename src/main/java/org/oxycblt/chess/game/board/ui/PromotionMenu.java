@@ -83,17 +83,18 @@ public class PromotionMenu extends Pane {
                     if (selectRect == null) {
 
                         selectRect = new SelectionRect(color, simpleX, 0);
+
                         getChildren().add(selectRect);
 
                     } else {
 
                         selectRect.relocate(simpleX * 32, 0);
 
-                        // Change the stroke to its respective color if it has
-                        // been set to a transparent through hide()
+                        // Change the stroke to its respective color if it has been set to a
+                        // transparent through hide()
                         if (selectRect.getStroke() == Color.TRANSPARENT) {
 
-                            selectRect.setStroke(color);
+                            selectRect.show(color);
 
                         }
 
@@ -202,7 +203,7 @@ public class PromotionMenu extends Pane {
             getChildren().removeAll(choiceViews);
             toBack();
 
-            selectRect.setStroke(Color.TRANSPARENT);
+            selectRect.hide();
             isShown = false;
 
         }

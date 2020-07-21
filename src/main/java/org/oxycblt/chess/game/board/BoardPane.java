@@ -179,7 +179,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
             | Confirm the move if the X/Y coordinates are valid, the move itself is valid, and
             | if the piece has meaningfully moved from its starting location.
             */
-            if (validateXY() && validateDrag()) {
+            if (validateXY() || validateDrag()) {
 
                 updateSimpleXY();
 
@@ -340,6 +340,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         */
         factory.setColor(turn);
         factory.replaceAt(promotedPiece.getX(), promotedPiece.getY(), newType);
+
+        pieces.pushChange(pieces.findChessPiece(promotedPiece.getX(), promotedPiece.getY()));
 
         promotedPiece = null;
         isDisabled = false;

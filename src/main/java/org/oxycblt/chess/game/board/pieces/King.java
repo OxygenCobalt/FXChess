@@ -242,51 +242,35 @@ public class King extends ChessPiece {
         */
         checkingPiece = findCheckingPieces();
 
+        if (checkAnim != null) {
+
+            checkAnim.stop();
+
+        }
+
         if (checkingPiece != null) {
 
-            if (isChecked) {
+            if (!isChecked && !validateCheckmate() && changedPiece.getColor() != color) {
 
-                endListener.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
+                if (checkAnim == null) {
 
-                checkAnim.stop();
+                    checkAnim = new CheckAnimation(this);
+
+                }
+
+                checkAnim.start();
+
+                isChecked = true;
 
             } else {
 
-                if (validateCheckmate()) {
-
-                    endListener.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
-
-                    checkAnim.stop();
-
-                } else {
-
-                    if (changedPiece.getColor() == color) {
-
-                        endListener.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
-
-                        checkAnim.stop();
-
-                    }
-
-                    if (checkAnim == null) {
-
-                        checkAnim = new CheckAnimation(this);
-
-                    }
-
-                    checkAnim.start();
-
-                    isChecked = true;
-
-                }
+                endListener.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
 
             }
 
             return;
 
-        } else if (isChecked) {
-
-            checkAnim.stop();
+        } else {
 
             isChecked = false;
 

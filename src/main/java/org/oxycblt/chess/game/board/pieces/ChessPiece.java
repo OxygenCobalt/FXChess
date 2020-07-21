@@ -122,8 +122,9 @@ public abstract class ChessPiece extends Pane {
     protected void doMove(final int targetX, final int targetY, final ChessPiece toKill) {
 
         hasMoved = true;
+        isSelected = false;
 
-        setSelected(false);
+        selectRect.hideNoAnim();
         relocate(targetX * 32, targetY * 32);
 
         if (toKill != null) {
@@ -170,13 +171,17 @@ public abstract class ChessPiece extends Pane {
 
                     selectRect = new SelectionRect(color, 0, 0);
 
-                }
+                    getChildren().add(selectRect);
 
-                getChildren().add(selectRect);
+                } else {
+
+                    selectRect.show(color);
+
+                }
 
             } else {
 
-                getChildren().remove(selectRect);
+                selectRect.hide();
 
             }
 
