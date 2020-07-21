@@ -77,7 +77,7 @@ public class PromotionMenu extends Pane {
 
                 updateSimpleX();
 
-                // Make sure the mouse coordinate has meaninfully changed
+                // Make sure the mouse coordinate has meaningfully changed
                 if (simpleX != cacheSimpleX) {
 
                     if (selectRect == null) {
@@ -113,12 +113,13 @@ public class PromotionMenu extends Pane {
     private void normalizePointer(final MouseEvent event) {
 
         // The menu is positioned relative to BoardPane, so 33 must be added to the actual
-        // positon of the menu in the scene and normalize the pointer correctly
+        // position of the menu in the scene and normalize the pointer correctly
         mouseX = (int) (event.getSceneX() - (getLayoutX() + 33));
 
     }
 
     // Validate that the X coordinate is not out of bounds
+    // Returns true if valid, false if not
     private boolean validateX() {
 
         return mouseX > 0 && mouseX < getPrefWidth();
@@ -137,8 +138,7 @@ public class PromotionMenu extends Pane {
 
         ChessType.validateColor(newColor);
 
-        // The menu is aligned differently depending on which half
-        // of the board the target piece is.
+        // The menu is aligned differently depending on which half of the board pawn is.
         if (x < 4) {
             setLayoutX((x * 32));
         } else {
@@ -146,10 +146,9 @@ public class PromotionMenu extends Pane {
         }
 
         /*
-        | WHITE pieces are promoted when they reach the top of the
-        | board, so align the menu to be on top of them
-        | BLACK pieces are promoted when they reach the bottom of
-        | the board, so the board is aligned to be below them.
+        | WHITE pawns are promoted when they reach the top of the board, so align the menu to be
+        | on top of them. BLACK pawns are promoted when they reach the bottom of the board, so
+        | the menu is aligned to be below them.
         */
         if (newColor == ChessType.WHITE) {
             setLayoutY((y * 32) - 32);
@@ -168,16 +167,17 @@ public class PromotionMenu extends Pane {
     // Populate the menu with ImageViews for each choice
     private void createViews(final ChessType newColor) {
 
-        // If the color has changed or if the list of views hasnt been
-        // created yet, regenerate/create the imageviews using each choice
+        /*
+        | If the color has changed or if the list of views hasn't been created yet,
+        | regenerate/create the ImageViews with each choice
+        */
         if (newColor != color || choiceViews == null) {
 
             choiceViews = new ImageView[4];
 
             for (int i = 0; i < 4; i++) {
 
-                // Add the texture for each chess piece available
-                // in the promotion choices.
+                // Add the texture for each chess piece available in the promotion choices.
                 choiceViews[i] = TextureAtlas.getTexture(
                     Texture.CHESS_PIECES,
                     ChessType.PROMOTION_ORDER[i].getCoordinate(),

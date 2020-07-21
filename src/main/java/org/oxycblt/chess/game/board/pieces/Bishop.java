@@ -19,8 +19,8 @@ public class Bishop extends ChessPiece {
     public boolean validateMove(final int targetX, final int targetY) {
 
         /*
-        | Bishops can only move diagonally, and cannot jump over
-        | other pieces. They have no special moves.
+        | Bishops can only move diagonally, but cannot jump over other pieces. They have no
+        | special moves.
         */
 
         calculateDistance(targetX, targetY);

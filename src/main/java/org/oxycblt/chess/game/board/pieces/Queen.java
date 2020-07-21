@@ -19,8 +19,8 @@ public class Queen extends ChessPiece {
     public boolean validateMove(final int targetX, final int targetY) {
 
         /*
-        | Queens can move without restriction both straight and diagonally,
-        | but cannot jump over other chess pieces. They have no special abilities.
+        | Queens can move without restriction both straight and diagonally, but cannot jump over
+        | other chess pieces. They have no special abilities.
         */
 
         calculateDistance(targetX, targetY);

@@ -96,8 +96,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
                     /*
                     | The position of the mouse relative to the square its in is stored to make
-                    | sure that the chess piece is relocated based on the mouse position, not
-                    | the top left corner of the chess piece.
+                    | sure that the chess piece is relocated based on the mouse position, not the
+                    | top left corner of the chess piece.
                     */
                     selX = mouseX % 32;
                     selY = mouseY % 32;
@@ -119,9 +119,9 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
             normalizePointer(event);
 
             /*
-            | Move the selected piece to the new location of the pointer as long as its still
-            | valid. These are separated so that one axis can still be moved through if the
-            | other is invalid.
+            | Move the selected piece to the new location of the pointer as long as its still valid.
+            | These are separated so that one axis can still be moved through if the other is
+            | invalid.
             */
             if (validateDragX()) {
 
@@ -130,11 +130,10 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
             } else {
 
                 /*
-                | If the drag location isnt valid, check if the mouse pointer is completely out of
+                | If the drag location isn't valid, check if the mouse pointer is completely out of
                 | bounds, and default to the location it should be at if so to prevent a bug where
                 | the piece wont be in the right location if the mouse pointer moves too fast.
                 */
-
                 if (mouseX < 0) {
 
                     selectedPiece.setLayoutX(0);
@@ -177,9 +176,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
             normalizePointer(event);
 
             /*
-            | Confirm the move if the X/Y coordinates are valid, the move
-            | itself is valid, and if the piece has meaningfully moved from
-            | its original location.
+            | Confirm the move if the X/Y coordinates are valid, the move itself is valid, and
+            | if the piece has meaningfully moved from its starting location.
             */
             if (validateXY() && validateDrag()) {
 
@@ -210,8 +208,10 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
         eventlessMoves++;
 
-        // Incremement the amount of repeated positions every time a space is
-        // re-occupied, otherwise reset the amount of repeated moves.
+        /*
+        | Increment the amount of repeated positions every time a space is re-occupied,
+        | otherwise reset the amount of repeated moves.
+        */
         if (positions.contains(simpleX * 8 + simpleY)) {
 
             repeatedPositions++;
@@ -226,7 +226,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         /*
         | If a pawn has just been promoted however by reaching the end of the board,
         | disable the entire board and add a listener to the piece to wait until the
-        | promotion process is done, dont change the turn if this happens.
+        | promotion process is done, don't change the turn if this happens.
         */
         if (selectedPiece.getType() == ChessType.PAWN) {
 
@@ -256,8 +256,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
             }
 
-            // Since a pawn has just moved, reset the eventless
-            // moves counter to avert a draw.
+            // Since a pawn has just moved, reset the event-less moves counter.
             eventlessMoves = 0;
 
         }
@@ -292,6 +291,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     }
 
     // Validate that the X/Y coordinates are not out of bounds
+    // Returns true if valid, false if not
     private boolean validateXY() {
 
         return mouseX > 0 && mouseX < getPrefWidth()
@@ -299,7 +299,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
     }
 
-    // Validate that the currently dragged piece is still in the bounds of BoardPane,
+    // Validate that the currently dragged piece is still in the bounds of BoardPane
+    // Returns true if valid, false if not
     private boolean validateDrag() {
 
         return validateDragX() && validateDragY();
@@ -332,16 +333,17 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     // Confirmation for promotion
     private PromotionEndListener promotionListener = newType -> {
 
-        // Remove the original pawn set to be promoted, and replace
-        // it with the type that was chosen by the menu
+        /*
+        | Remove the original pawn set to be promoted, and replace it with the type that was
+        | chosen by the menu. Also end the players turn, as that didn't happen when the pawn
+        | was originally moved.
+        */
         factory.setColor(turn);
         factory.replaceAt(promotedPiece.getX(), promotedPiece.getY(), newType);
 
         promotedPiece = null;
         isDisabled = false;
 
-        // Also end the players turn, something that didnt originally happen
-        // when the move was originally confirmed
         turn = ChessType.inverseOf(turn);
 
     };
@@ -349,6 +351,10 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     // Confirmation for reset
     private ResetListener resetListener = () -> {
 
+        /*
+        | Reset the chess pieces/references to the chess pieces, clear any specific values, and
+        | hide any menus.
+        */
         pieces.killAll();
 
         if (endScreen != null) {
@@ -416,9 +422,10 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
                 checkerRect = new Rectangle(x, y, 32, 32);
 
-                // If the added simple coordinates [E.G 4X + 7Y]
-                // is divisible by two, than that checker must be
-                // a lighter one. Otherwise it needs to be a dark one
+                /*
+                | If the added simple coordinates [E.G 4X + 7Y] is divisible by two, than that
+                | checker must be a lighter one. Otherwise it must be a dark one.
+                */
                 if (((x / 32) + (y / 32)) % 2 == 0) {
 
                      checkerRect.setFill(Color.web("9F9F9F"));
@@ -478,8 +485,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     // Entity removal
     public void onRemoved(final ChessPiece removed) {
 
-        // A piece is only a removed when its captured, so
-        // reset the counter.
+        // A piece is only removed when its captured, so reset the counter.
         eventlessMoves = 0;
 
         getChildren().remove(removed);

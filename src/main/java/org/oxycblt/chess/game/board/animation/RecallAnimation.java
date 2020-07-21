@@ -19,18 +19,18 @@ public class RecallAnimation {
         internalAnim = new PathTransition();
 
         internalAnim.setNode(piece);
-        internalAnim.setDuration(Duration.seconds(0.5));
+        internalAnim.setDuration(Duration.seconds(0.3));
 
     }
 
     // Start the animation with the current position and the target coordinates
     public void start(final int nowX, final int nowY, final int x, final int y) {
 
-        // Dont run if the piece hasnt meaningfully changed in position
+        // Don't run if the piece hasn't meaningfully changed in position
         if (nowX != x && nowY != y) {
 
             /*
-            | Recalulate the path to be taken based on the distance from the original position of
+            | Recalculate the path to be taken based on the distance from the original position of
             | the piece and the current position of the piece.
             */
             internalAnim.setPath(

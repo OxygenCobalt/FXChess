@@ -20,8 +20,7 @@ public class Rook extends ChessPiece {
 
         /*
         | Rooks can move straight in all directions, but not diagonally. They also cannot hop over
-        | other pieces. Rooks can perform a move called Castling once per game with the king piece,
-        | where the rook will move to the square the king just crossed during the maneuver.
+        | other pieces. Rooks are also involved in the Castling move with the King.
         */
 
         calculateDistance(targetX, targetY);
@@ -50,7 +49,7 @@ public class Rook extends ChessPiece {
     @Override
     public void update(final ChessPiece changedPiece) {
 
-        // The bishop does not need to be notified of any change
+        // The rook does not need to be notified of any change
 
     }
 

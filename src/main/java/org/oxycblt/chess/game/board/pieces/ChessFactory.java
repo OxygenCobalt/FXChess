@@ -49,7 +49,7 @@ public class ChessFactory {
     // Add a piece
     public void addAt(final int x, final int y, final ChessType type) {
 
-        // Create the given types respective piece at the x/y coords
+        // Create the corresponding piece for the given type at the x/y coords
         switch (type) {
 
             case PAWN: new Pawn(pieces, color, x, y); break;

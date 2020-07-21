@@ -32,10 +32,10 @@ public class King extends ChessPiece {
     public boolean validateMove(final int targetX, final int targetY) {
 
         /*
-        | Kings can move in all directions, as long as the distance moved is one and the space
-        | is safe [Although that doesnt apply if the king is checked, for added challenge].
-        | Kings can also perform a move called castling with a rook, which involve
-        | the king moving two spaces, and the rook moving to the space that the king passed.
+        | Kings can move in all directions, as long as the distance moved is one and the space is
+        | safe [Although that doesn't apply if the king is checked, for added challenge]. Kings can
+        | also perform a move called castling with a rook, which involve the king moving two
+        | spaces, and the rook moving to the space that the king passed.
         */
 
         if (doDistanceLogic(targetX, targetY)) {
@@ -95,7 +95,7 @@ public class King extends ChessPiece {
 
     }
 
-    // Distance logic, seperated in order to prevent recursion errors in validateSafe().
+    // Distance logic, separated in order to prevent recursion errors in validateSafe().
     // Returns true if valid, false if not
     public boolean doDistanceLogic(final int targetX, final int targetY) {
 
@@ -290,8 +290,8 @@ public class King extends ChessPiece {
 
     }
 
-    // Variant of validateSafe() that returns chesspieces instead of a boolean
-    // Returns a chesspiece that checks the king, otherwise nothing
+    // Variant of validateSafe() that returns chess pieces instead of a boolean
+    // Returns a chess piece that checks the king, otherwise nothing
     public ChessPiece findCheckingPieces() {
 
         for (ChessPiece entity : list.getEntities()) {
@@ -325,10 +325,13 @@ public class King extends ChessPiece {
     }
 
     // Check for any moves are possible if the king is checked
+    // Returns true if yes, false if no
     public boolean validateCheckmate() {
 
-        // First, iterate through each of the kings moves and check if any of those
-        // will result in the check ending.
+        /*
+        | First, iterate through each of the kings moves and check if any of those will result in
+        | the check ending.
+        */
         for (int nearX = Math.max(x - 1, 0); nearX < Math.min(x + 2, 8); nearX++) {
 
             for (int nearY = Math.max(y - 1, 0); nearY < Math.min(y + 2, 8); nearY++) {
@@ -347,9 +350,11 @@ public class King extends ChessPiece {
 
         }
 
-        // If that fails, check if any of the other pieces of the king's color can
-        // block the advance of the checking piece. This is only possible if the
-        // checking piece is a Rook, Bishop, or Queen
+        /*
+        | If that fails, check if any of the other pieces of the king's color can block the advance
+        | of the checking piece. This is only possible if the checking piece is a Rook, Bishop, or
+        | Queen
+        */
         if (checkingPiece.getType() == ChessType.ROOK
         ||  checkingPiece.getType() == ChessType.BISHOP
         ||  checkingPiece.getType() == ChessType.QUEEN) {
@@ -447,8 +452,7 @@ public class King extends ChessPiece {
 
     }
 
-    // Add the reference to the king to all pieces of the same color, and set up
-    // references to the rooks for castling
+    // Set up references to the rooks for castling
     public void rookSetup() {
 
         leftRook = list.findChessPiece(color, 0, y);

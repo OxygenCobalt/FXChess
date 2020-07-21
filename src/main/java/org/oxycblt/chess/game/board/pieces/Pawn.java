@@ -21,9 +21,10 @@ public class Pawn extends ChessPiece {
 
         super(list, ChessType.PAWN, color, x, y);
 
-        // Determine which placeholder values to use in validateMove() to
-        // make sure that the pawn is always moving foward. Up for white
-        // pieces, down for black pieces.
+        /*
+        | Determine which placeholder values to use in validateMove() to make sure that the pawn is
+        | always moving forward. Up for white pieces, down for black pieces.
+        */
         if (color == ChessType.WHITE) {
 
             relOne = -1;
@@ -42,13 +43,12 @@ public class Pawn extends ChessPiece {
     public boolean validateMove(final int targetX, final int targetY) {
 
         /*
-        | A pawn can move foward to the unoccupied space directly in front of it, or
-        | move two spaces on their first turn. Pawns can however move diagonally one
-        | space at a time to capture  an opponents piece. A pawn can also perform a
-        | move called "En Passant", where a pawn can move into the space that an
-        | opponents pawn just passed during a two-space advance and capture that piece.
+        | A pawn can move forward to the unoccupied space directly in front of it, or move two
+        | spaces on their first turn. Pawns can however move diagonally one space at a time
+        | to capture  an opponents piece. A pawn can also perform a move called "En Passant",
+        | where a pawn can move into the space that an opponents pawn just passed during a
+        | two-space advance and capture that piece.
         */
-
         calculateDistance(targetX, targetY);
 
         if (Math.abs(xDist) == 1 && yDist == relOne) {
@@ -106,9 +106,10 @@ public class Pawn extends ChessPiece {
 
     }
 
-    // Validate a move while assuming that a piece can be captured using diagonal capture,
-    // this is used to check if a King's target destination wont result in a check through
-    // a pawn.
+    /*
+    | Validate a move while assuming that a piece can be captured using diagonal capture, this is
+    | used to check if a King's target destination wont result in a check through a pawn.
+    */
     public boolean validateMoveWithPiece(final int targetX, final int targetY) {
 
         assumePieceExists = true;
@@ -125,11 +126,10 @@ public class Pawn extends ChessPiece {
     public void confirmMove(final int targetX, final int targetY) {
 
         /*
-        | If theres a piece that can be removed via En Passant,
-        | knock that one out, otherwise just search for any chess pieces
-        | that may be on the destinartion square, and knock them out instead
+        | If theres a piece that can be removed via En Passant, knock that one out, otherwise just
+        | search for any chess pieces that may be on the destination square, and knock them out
+        | instead.
         */
-
         if (passPiece != null) {
 
             if (passPiece.getX() == targetX
@@ -151,9 +151,9 @@ public class Pawn extends ChessPiece {
     public void update(final ChessPiece changedPiece) {
 
         /*
-        | If a pawn makes its only 2-square movement, and its the currently updated
-        | pawn shares a Y coordinate & an adjacent X position, then its possible to
-        | take the piece out w/an "En Passant" movement
+        | If a pawn makes its only 2-square movement, and its the currently updated pawn shares
+        | a Y coordinate & an adjacent X position, then its possible to take the piece out w/an
+        | "En Passant" movement
         */
 
         passPiece = null;

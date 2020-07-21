@@ -9,7 +9,7 @@ public interface EndListener {
     void onEnd(ChessType color, EndType type);
 
     /*
-    | Enum for types of game-end scenarios. The three I've impemented are:
+    | Enum for types of game-end scenarios. The three I've implemented are:
     | - Checkmate, either from one move from opposing side or failure to counter check
     | - Stalemate, no moves possible on one sides turn.
     | - 50-Move rule, no captures or pawn moves in 50 moves -> automatic draw

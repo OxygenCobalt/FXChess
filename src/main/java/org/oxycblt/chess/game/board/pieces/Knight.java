@@ -19,8 +19,8 @@ public class Knight extends ChessPiece {
     public boolean validateMove(final int targetX, final int targetY) {
 
         /*
-        | Knights can move in an L-Shape in all directions, regardless of
-        | if any pieces are in the way. They have no special moves.
+        | Knights can move in an L-Shape in all directions, regardless of if any pieces are in the
+        | way. They have no special moves.
         */
 
         calculateDistance(targetX, targetY);

@@ -73,6 +73,7 @@ public abstract class ChessPiece extends Pane {
     }
 
     // Search for any pieces that may be blocking the path to a destination coordinate
+    // Returns true if a blocking piece is found, false if none are found
     protected boolean findBlockingPieces(final int targetX, final int targetY) {
 
         iterX = x;
@@ -100,8 +101,7 @@ public abstract class ChessPiece extends Pane {
 
             }
 
-            // Make sure that any chess pieces at the end arent
-            // counted. The if statement is redundant but oh well
+            // Make sure that any chess pieces at the end aren't counted.
             if (iterX != targetX || iterY != targetY) {
 
                 if (list.findChessPiece(iterX, iterY) != null) {
@@ -139,8 +139,10 @@ public abstract class ChessPiece extends Pane {
 
     }
 
-    // Validate a move, confirm a move, and update a piece of the last
-    // changed piece, all are unique for every implementation for chesspiece
+    /*
+    | Validate a move, confirm a move, and update a piece of the last changed piece, all are
+    | unique for every implementation for chess piece
+    */
     public abstract boolean validateMove(int targetX, int targetY);
     public abstract void confirmMove(int targetX, int targetY);
     public abstract void update(ChessPiece changedPiece);
@@ -155,9 +157,9 @@ public abstract class ChessPiece extends Pane {
                 toFront();
 
                 /*
-                | Reset the translate coordinates and confirm the pieces current
-                | position to prevent weird positioning bugs if a piece is selected
-                | after being recalled to its original position
+                | Reset the translate coordinates and confirm the pieces current position to
+                | prevent weird positioning bugs if a piece is selected after being recalled
+                | to its original position
                 */
                 setTranslateX(0);
                 setTranslateY(0);
@@ -200,6 +202,7 @@ public abstract class ChessPiece extends Pane {
     }
 
     // Find if a chess piece is at a certain position
+    // Returns true if yes, false if no
     public boolean isAt(final int atX, final int atY) {
 
         return atX == x && atY == y;

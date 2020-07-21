@@ -21,7 +21,7 @@ public final class TextureAtlas {
 
     private static HashMap<Texture, Image> loadedImages = new HashMap<Texture, Image>();
 
-    // Get a texture based on the simple X/Y coords [E.G 3X 7Y] and the default size
+    // Returns a texture based on the simple X/Y coords [E.G 3X 7Y] and the default size
     public static ImageView getTexture(final Texture tex, final int x, final int y) {
 
         ImageView view = new ImageView(loadFullTexture(tex));
@@ -34,7 +34,7 @@ public final class TextureAtlas {
 
     }
 
-    // Get a texture using the simple X/Y coords & a custom size
+    // Returns a texture using the simple X/Y coords & a custom size
     public static ImageView getTexture(final Texture tex,
                                        final int x, final int y,
                                        final int w, final int h) {
