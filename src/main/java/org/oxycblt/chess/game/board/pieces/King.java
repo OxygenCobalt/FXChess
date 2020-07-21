@@ -6,6 +6,7 @@ import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.ChessList;
 import org.oxycblt.chess.game.board.EndListener;
 import org.oxycblt.chess.game.board.EndListener.EndType;
+import org.oxycblt.chess.game.board.animation.CheckAnimation;
 
 public class King extends ChessPiece {
 
@@ -15,6 +16,7 @@ public class King extends ChessPiece {
     private EndListener endListener;
 
     private ChessPiece checkingPiece = null;
+    private CheckAnimation checkAnim = null;
     private boolean isChecked = false;
 
     private int checkX = 0;
@@ -246,11 +248,15 @@ public class King extends ChessPiece {
 
                 endListener.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
 
+                checkAnim.stop();
+
             } else {
 
                 if (validateCheckmate()) {
 
                     endListener.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
+
+                    checkAnim.stop();
 
                 } else {
 
@@ -258,7 +264,17 @@ public class King extends ChessPiece {
 
                         endListener.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
 
+                        checkAnim.stop();
+
                     }
+
+                    if (checkAnim == null) {
+
+                        checkAnim = new CheckAnimation(this);
+
+                    }
+
+                    checkAnim.start();
 
                     isChecked = true;
 
@@ -269,6 +285,8 @@ public class King extends ChessPiece {
             return;
 
         } else if (isChecked) {
+
+            checkAnim.stop();
 
             isChecked = false;
 

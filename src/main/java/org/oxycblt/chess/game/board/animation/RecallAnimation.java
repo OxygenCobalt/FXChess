@@ -27,7 +27,7 @@ public class RecallAnimation {
     public void start(final int nowX, final int nowY, final int x, final int y) {
 
         // Don't run if the piece hasn't meaningfully changed in position
-        if (nowX != x && nowY != y) {
+        if (nowX != x || nowY != y) {
 
             /*
             | Recalculate the path to be taken based on the distance from the original position of
