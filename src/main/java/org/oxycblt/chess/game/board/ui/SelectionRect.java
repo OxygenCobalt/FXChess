@@ -7,11 +7,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
 import org.oxycblt.chess.game.ChessType;
-import org.oxycblt.chess.game.board.animation.SelectionAnimation;
+import org.oxycblt.chess.game.board.animation.FadeAnimation;
 
 public class SelectionRect extends Rectangle {
 
-    SelectionAnimation selectAnim;
+    private FadeAnimation fadeAnim;
+    private boolean isShown;
 
     public SelectionRect(final ChessType color, final int x, final int y) {
 
@@ -19,6 +20,8 @@ public class SelectionRect extends Rectangle {
 
         relocate(x * 32, y * 32);
         setFill(Color.TRANSPARENT);
+
+        fadeAnim = new FadeAnimation(this);
 
         show(color);
         setStrokeWidth(3);
@@ -28,25 +31,38 @@ public class SelectionRect extends Rectangle {
 
     public void show(final ChessType color) {
 
-        if (selectAnim == null) {
+        if (color == ChessType.WHITE) {
 
-            selectAnim = new SelectionAnimation(this);
+            setStroke(Color.web("eaeaea"));
+
+        } else {
+
+            setStroke(Color.web("252525"));
 
         }
 
-        selectAnim.fadeIn(color);
+        fadeAnim.fadeIn();
+        isShown = true;
 
     }
 
     public void hide() {
 
-        selectAnim.fadeOut();
+        fadeAnim.fadeOut();
+        isShown = false;
 
     }
 
     public void hideNoAnim() {
 
         setStroke(Color.TRANSPARENT);
+        isShown = true;
+
+    }
+
+    public boolean getShown() {
+
+        return isShown;
 
     }
 

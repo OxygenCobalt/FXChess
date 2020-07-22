@@ -3,13 +3,14 @@
 package org.oxycblt.chess.game.board.ui;
 
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.image.ImageView;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
 
 import org.oxycblt.chess.game.ChessType;
+import org.oxycblt.chess.game.board.animation.FadeAnimation;
+
 import org.oxycblt.chess.media.images.Texture;
 import org.oxycblt.chess.media.images.TextureAtlas;
 
@@ -21,6 +22,7 @@ public class PromotionMenu extends Pane {
     private ChessType color;
 
     private SelectionRect selectRect = null;
+    private FadeAnimation fadeAnim;
     private ImageView[] choiceViews;
 
     private int mouseX = 0;
@@ -38,6 +40,8 @@ public class PromotionMenu extends Pane {
 
         this.listener = listener;
         this.color = color;
+
+        fadeAnim = new FadeAnimation(this);
 
         show(color, x, y);
 
@@ -90,9 +94,7 @@ public class PromotionMenu extends Pane {
 
                         selectRect.relocate(simpleX * 32, 0);
 
-                        // Change the stroke to its respective color if it has been set to a
-                        // transparent through hide()
-                        if (selectRect.getStroke() == Color.TRANSPARENT) {
+                        if (!selectRect.getShown()) {
 
                             selectRect.show(color);
 
@@ -158,6 +160,7 @@ public class PromotionMenu extends Pane {
         }
 
         createViews(newColor);
+        fadeAnim.fadeIn();
 
         color = newColor;
         cacheSimpleX = -1;
@@ -191,6 +194,7 @@ public class PromotionMenu extends Pane {
 
         }
 
+        getChildren().removeAll(choiceViews);
         getChildren().addAll(choiceViews);
 
     }
@@ -200,10 +204,10 @@ public class PromotionMenu extends Pane {
 
         if (isShown) {
 
-            getChildren().removeAll(choiceViews);
             toBack();
 
             selectRect.hide();
+            fadeAnim.fadeOut();
             isShown = false;
 
         }

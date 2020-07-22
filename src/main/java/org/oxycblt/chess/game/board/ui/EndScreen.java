@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.EndListener.EndType;
+import org.oxycblt.chess.game.board.animation.FadeAnimation;
 
 import org.oxycblt.chess.media.images.Texture;
 import org.oxycblt.chess.media.images.TextureAtlas;
@@ -14,8 +15,9 @@ import org.oxycblt.chess.media.images.TextureAtlas;
 public class EndScreen extends Pane {
 
     private ImageView endView = null;
-    private ChessType color = null;
-    private EndType type = null;
+    private FadeAnimation fadeAnim;
+    private ChessType color;
+    private EndType type;
 
     public EndScreen(final ChessType color, final EndType type) {
 
@@ -24,6 +26,8 @@ public class EndScreen extends Pane {
 
         this.color = color;
         this.type = type;
+
+        fadeAnim = new FadeAnimation(this);
 
         show(color, type);
 
@@ -52,10 +56,14 @@ public class EndScreen extends Pane {
 
         getChildren().add(endView);
 
+        fadeAnim.fadeIn();
+
     }
 
     // Hide the screen
     public void hide() {
+
+        // Possibly add the fadeout here [maybe]
 
         getChildren().remove(endView);
         toBack();

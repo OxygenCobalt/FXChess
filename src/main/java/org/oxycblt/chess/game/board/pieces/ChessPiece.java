@@ -189,8 +189,6 @@ public abstract class ChessPiece extends Pane {
 
         }
 
-        System.out.println(isSelected);
-
     }
 
     // Return a chess piece to its original location
