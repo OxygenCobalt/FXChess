@@ -7,27 +7,29 @@ import javafx.scene.image.ImageView;
 
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.EndListener.EndType;
-import org.oxycblt.chess.game.board.animation.FadeAnimation;
+import org.oxycblt.chess.game.board.animation.EndAnimation;
 
 import org.oxycblt.chess.media.images.Texture;
 import org.oxycblt.chess.media.images.TextureAtlas;
 
 public class EndScreen extends Pane {
 
-    private ImageView endView = null;
-    private FadeAnimation fadeAnim;
+    private boolean isShown = false;
     private ChessType color;
     private EndType type;
+
+    private ImageView endView = null;
+    private EndAnimation endAnim;
 
     public EndScreen(final ChessType color, final EndType type) {
 
         setPrefSize(124, 12);
-        relocate(66, 122);
+        relocate(66, 144);
 
         this.color = color;
         this.type = type;
 
-        fadeAnim = new FadeAnimation(this);
+        endAnim = new EndAnimation(this);
 
         show(color, type);
 
@@ -36,8 +38,16 @@ public class EndScreen extends Pane {
     // Show the screen
     public void show(final ChessType newColor, final EndType newType) {
 
+        System.out.println(newType);
+
         // Generate the text if the color/type has changed or if the text hasn't been created yet
         if (newColor != color || newType != type || endView == null) {
+
+            if (endView != null) {
+
+                getChildren().remove(endView);
+
+            }
 
             /*
             | Load the specific text sprite to use based on the type of Ending and the Color
@@ -46,27 +56,33 @@ public class EndScreen extends Pane {
             | - Draw just shows a random color
             */
             endView = TextureAtlas.getTexture(
-                Texture.END_SCREEN, color.getCoordinate(), type.getCoordinate(), 124, 12
+                Texture.END_SCREEN, newColor.getCoordinate(), newType.getCoordinate(), 124, 12
             );
 
             color = newColor;
             type = newType;
 
+            getChildren().add(endView);
+
         }
 
-        getChildren().add(endView);
+        toFront();
+        endAnim.in();
 
-        fadeAnim.fadeIn();
+        isShown = true;
 
     }
 
     // Hide the screen
     public void hide() {
 
-        // Possibly add the fadeout here [maybe]
+        if (isShown) {
 
-        getChildren().remove(endView);
-        toBack();
+            endAnim.out();
+
+            isShown = false;
+
+        }
 
     }
 

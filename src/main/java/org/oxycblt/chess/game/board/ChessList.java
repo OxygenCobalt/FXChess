@@ -64,6 +64,8 @@ public class ChessList extends EntityList<ChessPiece> {
 
     }
 
+    // TODO: Add cool looking reset functionality
+
     // "Kill them all."
     // "..."
     // "Right on."

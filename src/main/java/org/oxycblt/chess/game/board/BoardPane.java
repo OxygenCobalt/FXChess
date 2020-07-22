@@ -169,6 +169,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     };
 
     // Drag confirmation
+    // TODO: Do move confirmation using chesspiece rect, not mouse pointer
     private EventHandler<MouseEvent> releaseHandler = event -> {
 
         if (selectedPiece != null) {
@@ -355,34 +356,39 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     // Confirmation for reset
     private ResetListener resetListener = () -> {
 
-        /*
-        | Reset the chess pieces/references to the chess pieces, clear any specific values, and
-        | hide any menus.
-        */
-        pieces.killAll();
+        // Dont reset if *nothing* has actually happened
+        if (positions.size() > 0) {
 
-        if (endScreen != null) {
+            /*
+            | Reset the chess pieces/references to the chess pieces, clear any specific values, and
+            | hide any menus.
+            */
+            pieces.killAll();
 
-            endScreen.hide();
+            if (endScreen != null) {
+
+                endScreen.hide();
+
+            }
+
+            if (promotionMenu != null) {
+
+                promotionMenu.hide();
+
+            }
+
+            isDisabled = false;
+
+            selectedPiece = null;
+            promotedPiece = null;
+
+            positions.clear();
+            eventlessMoves = 0;
+            repeatedPositions = 0;
+
+            generateChessPieces();
 
         }
-
-        if (promotionMenu != null) {
-
-            promotionMenu.hide();
-
-        }
-
-        isDisabled = false;
-
-        selectedPiece = null;
-        promotedPiece = null;
-
-        positions.clear();
-        eventlessMoves = 0;
-        repeatedPositions = 0;
-
-        generateChessPieces();
 
     };
 

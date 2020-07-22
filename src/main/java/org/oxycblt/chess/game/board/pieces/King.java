@@ -266,6 +266,9 @@ public class King extends ChessPiece {
 
                 endListener.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
 
+                checkingPiece = null;
+                isChecked = false;
+
             }
 
             return;

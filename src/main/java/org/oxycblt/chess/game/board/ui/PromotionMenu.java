@@ -177,6 +177,12 @@ public class PromotionMenu extends Pane {
         */
         if (newColor != color || choiceViews == null) {
 
+            if (choiceViews != null) {
+
+                getChildren().removeAll(choiceViews);
+
+            }
+
             choiceViews = new ImageView[4];
 
             for (int i = 0; i < 4; i++) {
@@ -192,10 +198,9 @@ public class PromotionMenu extends Pane {
 
             }
 
-        }
+            getChildren().addAll(choiceViews);
 
-        getChildren().removeAll(choiceViews);
-        getChildren().addAll(choiceViews);
+        }
 
     }
 
