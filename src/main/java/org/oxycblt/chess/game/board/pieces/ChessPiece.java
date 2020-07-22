@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import org.oxycblt.chess.game.ChessType;
 import org.oxycblt.chess.game.board.ChessList;
 import org.oxycblt.chess.game.board.ui.SelectionRect;
+import org.oxycblt.chess.game.board.animation.FadeAnimation;
 import org.oxycblt.chess.game.board.animation.RecallAnimation;
 
 import org.oxycblt.chess.media.images.Texture;
@@ -15,9 +16,12 @@ import org.oxycblt.chess.media.images.TextureAtlas;
 
 public abstract class ChessPiece extends Pane {
 
-    protected ChessType type;
-    protected ChessType color;
-    protected ChessList list;
+    protected final ChessType type;
+    protected final ChessType color;
+    protected final ChessList list;
+
+    private final int originX;
+    private final int originY;
 
     protected int x = 0;
     protected int y = 0;
@@ -34,6 +38,7 @@ public abstract class ChessPiece extends Pane {
     private ImageView chessView;
     private SelectionRect selectRect;
     private RecallAnimation recallAnim;
+    private FadeAnimation fadeAnim;
 
     public ChessPiece(final ChessList list,
                       final ChessType type,
@@ -45,6 +50,8 @@ public abstract class ChessPiece extends Pane {
 
         this.type = type;
         this.color = color;
+        this.originX = x;
+        this.originY = y;
         this.x = x;
         this.y = y;
 
@@ -191,6 +198,40 @@ public abstract class ChessPiece extends Pane {
 
     }
 
+    // Reset a chess piece
+    public void reset() {
+
+        if (hasMoved) {
+
+            x = originX;
+            y = originY;
+
+            hasMoved = false;
+
+            recall();
+
+        }
+
+        setSelected(false);
+
+    }
+
+    // Reset a piece while re-adding it to the main list of chesspieces
+    public void unkill() {
+
+        reset();
+
+        if (fadeAnim == null) {
+
+            fadeAnim = new FadeAnimation(this);
+
+        }
+
+        fadeAnim.fadeIn();
+        list.addEntity(this);
+
+    }
+
     // Return a chess piece to its original location
     public void recall() {
 
@@ -231,6 +272,18 @@ public abstract class ChessPiece extends Pane {
     public ChessType getColor() {
 
         return color;
+
+    }
+
+    public int getOriginX() {
+
+        return originX;
+
+    }
+
+    public int getOriginY() {
+
+        return originY;
 
     }
 

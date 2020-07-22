@@ -2,7 +2,10 @@
 
 package org.oxycblt.chess.game.board;
 
+import java.util.ArrayList;
+
 import org.oxycblt.chess.game.ChessType;
+import org.oxycblt.chess.game.board.pieces.King;
 import org.oxycblt.chess.game.board.pieces.ChessPiece;
 
 import org.oxycblt.chess.entity.EntityList;
@@ -10,9 +13,23 @@ import org.oxycblt.chess.entity.EntityChangeListener;
 
 public class ChessList extends EntityList<ChessPiece> {
 
+    private ArrayList<ChessPiece> killedPieces;
+
     public ChessList(final EntityChangeListener<ChessPiece> listener) {
 
         super(listener);
+
+        killedPieces = new ArrayList<ChessPiece>();
+
+    }
+
+    // Override of removeEntity that also adds the piece to a list of killed pieces
+    @Override
+    public void removeEntity(final ChessPiece piece) {
+
+        super.removeEntity(piece);
+
+        killedPieces.add(piece);
 
     }
 
@@ -66,18 +83,32 @@ public class ChessList extends EntityList<ChessPiece> {
 
     // TODO: Add cool looking reset functionality
 
-    // "Kill them all."
-    // "..."
-    // "Right on."
-    public void killAll() {
+    // Reset all pieces
+    public void resetAll() {
 
         for (ChessPiece piece : entities) {
 
-            listener.onRemoved(piece);
+            piece.reset();
+
+            /*
+            | Also make sure that the kings get their checked status reset as well to prevent any
+            | weird bugs with end conditions and animations
+            */
+            if (piece.getType() == ChessType.KING) {
+
+                ((King) piece).resetChecked();
+
+            }
 
         }
 
-        entities.clear();
+        killedPieces.clear();
+
+    }
+
+    public ArrayList<ChessPiece> getKilledPieces() {
+
+        return killedPieces;
 
     }
 

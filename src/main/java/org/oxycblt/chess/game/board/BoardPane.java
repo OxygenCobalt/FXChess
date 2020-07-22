@@ -200,6 +200,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
             // Otherwise, recall the piece to its original location.
             selectedPiece.recall();
 
+            selectedPiece = null;
+
         }
 
     };
@@ -363,7 +365,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
             | Reset the chess pieces/references to the chess pieces, clear any specific values, and
             | hide any menus.
             */
-            pieces.killAll();
+            factory.replaceKilled();
+            pieces.resetAll();
 
             if (endScreen != null) {
 
@@ -385,8 +388,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
             positions.clear();
             eventlessMoves = 0;
             repeatedPositions = 0;
-
-            generateChessPieces();
 
         }
 

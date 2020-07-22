@@ -38,8 +38,6 @@ public class EndScreen extends Pane {
     // Show the screen
     public void show(final ChessType newColor, final EndType newType) {
 
-        System.out.println(newType);
-
         // Generate the text if the color/type has changed or if the text hasn't been created yet
         if (newColor != color || newType != type || endView == null) {
 

@@ -71,6 +71,17 @@ public class ChessFactory {
 
     }
 
+    // Replace any killed pieces
+    public void replaceKilled() {
+
+        for (ChessPiece piece : pieces.getKilledPieces()) {
+
+            piece.unkill();
+
+        }
+
+    }
+
     // Update the color of the generated pieces
     public void setColor(final ChessType newColor) {
 
