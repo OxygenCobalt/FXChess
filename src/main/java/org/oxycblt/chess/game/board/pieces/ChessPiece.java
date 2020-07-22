@@ -255,7 +255,7 @@ public abstract class ChessPiece extends Pane {
 
     }
 
-    // Relocate the interal view, used by CheckAnimation
+    // Relocate the internal view, used by CheckAnimation
     public void offsetView(final int offset) {
 
         chessView.setLayoutX(chessView.getLayoutX() - offset);

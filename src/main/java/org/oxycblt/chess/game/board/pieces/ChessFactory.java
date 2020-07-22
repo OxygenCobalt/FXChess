@@ -71,7 +71,7 @@ public class ChessFactory {
 
     }
 
-    // Replace any killed pieces
+    // Unkill any killed pieces
     public void replaceKilled() {
 
         for (ChessPiece piece : pieces.getKilledPieces()) {

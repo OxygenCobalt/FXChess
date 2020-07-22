@@ -209,9 +209,13 @@ public class PromotionMenu extends Pane {
 
         if (isShown) {
 
-            toBack();
+            if (selectRect != null) {
 
-            selectRect.hide();
+                selectRect.hide();
+
+            }
+
+            toBack();
             fadeAnim.fadeOut();
             isShown = false;
 

@@ -4,8 +4,8 @@ package org.oxycblt.chess.game.board.animation;
 
 import javafx.util.Duration;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.VLineTo;
 import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.VLineTo;
 import javafx.animation.PathTransition;
 
 import org.oxycblt.chess.game.board.ui.EndScreen;
