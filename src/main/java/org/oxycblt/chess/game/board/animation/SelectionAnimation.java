@@ -34,6 +34,8 @@ public class SelectionAnimation {
 
         }
 
+        internalAnim.stop();
+
         internalAnim.setFromValue(Color.TRANSPARENT);
         internalAnim.setToValue(currentColor);
 
@@ -42,6 +44,8 @@ public class SelectionAnimation {
     }
 
     public void fadeOut() {
+
+        internalAnim.stop();
 
         internalAnim.setFromValue(currentColor);
         internalAnim.setToValue(Color.TRANSPARENT);

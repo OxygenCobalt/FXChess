@@ -176,14 +176,16 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
             normalizePointer(event);
 
             /*
-            | Confirm the move if the X/Y coordinates are valid, the move itself is valid, and
-            | if the piece has meaningfully moved from its starting location.
+            | Confirm the move if the X/Y coordinates are valid, the move itself is valid, there
+            | are no pieces of the same color at the destination, and if the piece has meaningfully
+            | moved from its starting location.
             */
             if (validateXY() || validateDrag()) {
 
                 updateSimpleXY();
 
-                if (selectedPiece.validateMove(simpleX, simpleY)
+                if (pieces.findChessPiece(turn, simpleX, simpleY) == null
+                &&  selectedPiece.validateMove(simpleX, simpleY)
                 && !selectedPiece.isAt(simpleX, simpleY)) {
 
                     doMove();
