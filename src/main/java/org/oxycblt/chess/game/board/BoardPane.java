@@ -2,6 +2,7 @@
 
 package org.oxycblt.chess.game.board;
 
+import java.util.Random;
 import java.util.ArrayList;
 
 import javafx.scene.layout.Pane;
@@ -44,6 +45,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     private int selX = 0;
     private int selY = 0;
 
+    private Random rand;
     private int eventlessMoves = 0;
     private int repeatedPositions = 0;
     private ArrayList<Integer> positions;
@@ -64,6 +66,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
             + "-fx-border-color: #8F8F8F"
         );
 
+        rand = new Random();
         pieces = new ChessList(this);
         factory = new ChessFactory(pieces, this);
         positions = new ArrayList<Integer>();
@@ -270,7 +273,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
         if (promotedPiece == null) {
 
-            turn = ChessType.inverseOf(turn);
+            changeTurn();
 
         }
 
@@ -351,7 +354,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         promotedPiece = null;
         isDisabled = false;
 
-        turn = ChessType.inverseOf(turn);
+        changeTurn();
 
     };
 
@@ -388,6 +391,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
             positions.clear();
             eventlessMoves = 0;
             repeatedPositions = 0;
+
+            randomizeTurn();
 
         }
 
@@ -458,22 +463,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     // Generate the chess pieces
     private void generateChessPieces() {
 
-        // First, randomly determine which turn will be first.
-
-        // TODO: Readd once the game itself is complete
-        /*
-        if (new Random().nextBoolean()) {
-
-            turn = ChessType.WHITE;
-
-        } else {
-
-            turn = ChessType.BLACK;
-
-        }
-        */
-
-        turn = ChessType.WHITE;
+        // Randomly determine which turn will be first.
+        randomizeTurn();
 
         // Generate each color's pieces
         factory.setColor(ChessType.BLACK);
@@ -483,6 +474,28 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         factory.setColor(ChessType.WHITE);
         factory.genPawnRow(6);
         factory.genHomeRow(7);
+
+    }
+
+    // Randomize the turn
+    public void randomizeTurn() {
+
+        if (new Random().nextBoolean()) {
+
+            turn = ChessType.WHITE;
+
+        } else {
+
+            turn = ChessType.BLACK;
+
+        }
+
+    }
+
+    // Change the turn
+    public void changeTurn() {
+
+        turn = ChessType.inverseOf(turn);
 
     }
 

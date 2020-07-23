@@ -23,9 +23,8 @@ public class ChessList extends EntityList<ChessPiece> {
 
     }
 
-    // Override of removeEntity that also adds the piece to a list of killed pieces
-    @Override
-    public void removeEntity(final ChessPiece piece) {
+    // Variant of removeEntity that also adds the piece to a list of killed pieces
+    public void killPiece(final ChessPiece piece) {
 
         super.removeEntity(piece);
 

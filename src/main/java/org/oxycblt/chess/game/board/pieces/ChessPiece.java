@@ -136,7 +136,7 @@ public abstract class ChessPiece extends Pane {
 
         if (toKill != null) {
 
-            list.removeEntity(toKill);
+            list.killPiece(toKill);
 
         }
 
