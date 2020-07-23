@@ -46,10 +46,9 @@ public class ChessFactory {
 
     }
 
-    // Add a piece
+        // Create the corresponding piece for the given type at the x/y coords
     public void addAt(final int x, final int y, final ChessType type) {
 
-        // Create the corresponding piece for the given type at the x/y coords
         switch (type) {
 
             case PAWN: new Pawn(pieces, color, x, y); break;
@@ -64,9 +63,10 @@ public class ChessFactory {
     }
 
     // Replace a piece
-    public void replaceAt(final int x, final int y, final ChessType type) {
+    public void promote(final int x, final int y, final ChessType type) {
 
-        pieces.removeEntity(pieces.findChessPiece(x, y));
+        pieces.killPiece(pieces.findChessPiece(x, y));
+
         addAt(x, y, type);
 
     }

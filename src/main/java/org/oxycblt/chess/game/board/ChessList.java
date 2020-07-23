@@ -14,21 +14,32 @@ import org.oxycblt.chess.entity.EntityChangeListener;
 public class ChessList extends EntityList<ChessPiece> {
 
     private ArrayList<ChessPiece> killedPieces;
+    private ArrayList<ChessPiece> promotedPieces;
 
     public ChessList(final EntityChangeListener<ChessPiece> listener) {
 
         super(listener);
 
         killedPieces = new ArrayList<ChessPiece>();
+        promotedPieces = new ArrayList<ChessPiece>();
 
     }
 
-    // Variant of removeEntity that also adds the piece to a list of killed pieces
+    // Kill a piece, adding it to a list of killed pieces
     public void killPiece(final ChessPiece piece) {
 
         super.removeEntity(piece);
 
         killedPieces.add(piece);
+
+    }
+
+    // Add a newly promoted piece
+    public void addPromotedPiece(final ChessPiece piece) {
+
+        promotedPieces.add(piece);
+
+        pushChange(piece);
 
     }
 
@@ -80,10 +91,17 @@ public class ChessList extends EntityList<ChessPiece> {
 
     }
 
-    // TODO: Add cool looking reset functionality
-
     // Reset all pieces
     public void resetAll() {
+
+        // Remove all promoted pieces first, as the pawns they game from will be unkilled
+        for (ChessPiece piece : promotedPieces) {
+
+            piece.kill();
+
+            super.removeEntity(piece);
+
+        }
 
         for (ChessPiece piece : entities) {
 
@@ -105,6 +123,7 @@ public class ChessList extends EntityList<ChessPiece> {
 
     }
 
+    // Getters
     public ArrayList<ChessPiece> getKilledPieces() {
 
         return killedPieces;

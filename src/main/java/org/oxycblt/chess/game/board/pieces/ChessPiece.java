@@ -216,6 +216,20 @@ public abstract class ChessPiece extends Pane {
 
     }
 
+    // "Kill" a piece. Not actually used by doMove(), but is used to clear promoted pieces.
+    public void kill() {
+
+        if (fadeAnim == null) {
+
+            fadeAnim = new FadeAnimation(this);
+
+        }
+
+        fadeAnim.fadeOut();
+        list.removeEntity(this);
+
+    }
+
     // Reset a piece while re-adding it to the main list of chesspieces
     public void unkill() {
 

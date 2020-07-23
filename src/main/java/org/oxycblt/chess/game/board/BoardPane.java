@@ -347,9 +347,9 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         | was originally moved.
         */
         factory.setColor(turn);
-        factory.replaceAt(promotedPiece.getX(), promotedPiece.getY(), newType);
+        factory.promote(promotedPiece.getX(), promotedPiece.getY(), newType);
 
-        pieces.pushChange(pieces.findChessPiece(promotedPiece.getX(), promotedPiece.getY()));
+        pieces.addPromotedPiece(pieces.findChessPiece(promotedPiece.getX(), promotedPiece.getY()));
 
         promotedPiece = null;
         isDisabled = false;
