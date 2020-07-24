@@ -58,7 +58,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     public BoardPane() {
 
         // W/H/X/Y are static
-        relocate(10, 54);
+        relocate(10, 59);
         setPrefSize(256, 256);
         setOnMouseDragged(dragHandler);
         setOnMousePressed(pressHandler);

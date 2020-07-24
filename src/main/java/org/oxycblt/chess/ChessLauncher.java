@@ -4,6 +4,13 @@ package org.oxycblt.chess;
 
 public final class ChessLauncher {
 
+    // TODO:
+    // Add the upper/lower statbars
+    // Refactor Game End stuff into the statbars
+    // Add a forfiet option
+    // Add a custom timer
+    // Add custom names
+
     private ChessLauncher() {
 
         // Not called

@@ -6,6 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.Stop;
+
 import org.oxycblt.chess.game.board.BoardPane;
 
 public class ChessScene extends Scene {
@@ -13,7 +17,12 @@ public class ChessScene extends Scene {
     public ChessScene(final Group root) {
 
         super(root, 276, 374);
-        setFill(Color.rgb(50, 50, 50));
+        setFill(new LinearGradient(
+            0, 19, 0, 355, false,
+            CycleMethod.NO_CYCLE,
+            new Stop(0, Color.web("252525")),
+            new Stop(1, Color.web("eaeaea"))
+        ));
 
         BoardPane chess = new BoardPane();
 
