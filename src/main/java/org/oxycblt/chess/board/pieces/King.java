@@ -1,12 +1,13 @@
 // King Chess Piece
 
-package org.oxycblt.chess.game.board.pieces;
+package org.oxycblt.chess.board.pieces;
 
-import org.oxycblt.chess.game.ChessType;
-import org.oxycblt.chess.game.board.ChessList;
-import org.oxycblt.chess.game.board.EndListener;
-import org.oxycblt.chess.game.board.EndListener.EndType;
-import org.oxycblt.chess.game.board.animation.CheckAnimation;
+import org.oxycblt.chess.shared.ChessType;
+
+import org.oxycblt.chess.board.ChessList;
+import org.oxycblt.chess.board.EndListener;
+import org.oxycblt.chess.board.EndListener.EndType;
+import org.oxycblt.chess.board.animation.CheckAnimation;
 
 public class King extends ChessPiece {
 

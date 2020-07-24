@@ -1,12 +1,13 @@
 // List of chess pieces
 
-package org.oxycblt.chess.game.board;
+package org.oxycblt.chess.board;
 
 import java.util.ArrayList;
 
-import org.oxycblt.chess.game.ChessType;
-import org.oxycblt.chess.game.board.pieces.King;
-import org.oxycblt.chess.game.board.pieces.ChessPiece;
+import org.oxycblt.chess.shared.ChessType;
+
+import org.oxycblt.chess.board.pieces.King;
+import org.oxycblt.chess.board.pieces.ChessPiece;
 
 import org.oxycblt.chess.entity.EntityList;
 import org.oxycblt.chess.entity.EntityChangeListener;

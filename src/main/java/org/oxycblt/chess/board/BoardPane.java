@@ -1,6 +1,6 @@
 // Pane that houses the chess pieces and handles their interactions
 
-package org.oxycblt.chess.game.board;
+package org.oxycblt.chess.board;
 
 import java.util.Random;
 import java.util.ArrayList;
@@ -12,16 +12,19 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
 
-import org.oxycblt.chess.game.ChessType;
-import org.oxycblt.chess.game.board.pieces.ChessPiece;
-import org.oxycblt.chess.game.board.pieces.ChessFactory;
-import org.oxycblt.chess.game.board.EndListener.EndType;
+import org.oxycblt.chess.shared.ChessType;
 
-import org.oxycblt.chess.game.board.ui.EndScreen;
-//import org.oxycblt.chess.game.board.ui.ResetButton;
-import org.oxycblt.chess.game.board.ui.ResetListener;
-import org.oxycblt.chess.game.board.ui.PromotionMenu;
-import org.oxycblt.chess.game.board.ui.PromotionEndListener;
+import org.oxycblt.chess.board.pieces.ChessPiece;
+import org.oxycblt.chess.board.pieces.ChessFactory;
+import org.oxycblt.chess.board.EndListener.EndType;
+
+import org.oxycblt.chess.board.ui.EndScreen;
+//import org.oxycblt.chess.board.ui.ResetButton;
+import org.oxycblt.chess.board.ui.ResetListener;
+import org.oxycblt.chess.board.ui.PromotionMenu;
+import org.oxycblt.chess.board.ui.PromotionEndListener;
+
+import org.oxycblt.chess.stats.StatPane;
 
 import org.oxycblt.chess.media.images.Texture;
 import org.oxycblt.chess.media.images.TextureAtlas;
@@ -40,6 +43,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     private PromotionMenu promotionMenu = null;
 
     private ChessType turn = ChessType.WHITE;
+    private StatPane stats;
 
     private int mouseX = 0;
     private int mouseY = 0;
@@ -55,7 +59,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
     private boolean isDisabled = false;
 
-    public BoardPane() {
+    public BoardPane(final StatPane stats) {
 
         // W/H/X/Y are static
         relocate(10, 59);
@@ -63,6 +67,11 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         setOnMouseDragged(dragHandler);
         setOnMousePressed(pressHandler);
         setOnMouseReleased(releaseHandler);
+
+        // Add a reference to BoardPane to the given StatPane so that the two panes can
+        // communicate with eachother without ChessScene as an intermediary.
+        stats.addBoard(this);
+        this.stats = stats;
 
         rand = new Random();
         pieces = new ChessList(this);
@@ -491,12 +500,16 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
         }
 
+        stats.changeTurn(turn);
+
     }
 
     // Change the turn
     public void changeTurn() {
 
         turn = ChessType.inverseOf(turn);
+
+        stats.changeTurn(turn);
 
     }
 
@@ -514,6 +527,12 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         eventlessMoves = 0;
 
         getChildren().remove(removed);
+
+    }
+
+    public void addStats(final StatPane newStats) {
+
+        stats = newStats;
 
     }
 

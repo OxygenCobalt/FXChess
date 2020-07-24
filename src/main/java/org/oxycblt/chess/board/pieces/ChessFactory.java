@@ -1,10 +1,11 @@
 // Factory for generating chess pieces
 
-package org.oxycblt.chess.game.board.pieces;
+package org.oxycblt.chess.board.pieces;
 
-import org.oxycblt.chess.game.ChessType;
-import org.oxycblt.chess.game.board.ChessList;
-import org.oxycblt.chess.game.board.EndListener;
+import org.oxycblt.chess.shared.ChessType;
+
+import org.oxycblt.chess.board.ChessList;
+import org.oxycblt.chess.board.EndListener;
 
 public class ChessFactory {
 

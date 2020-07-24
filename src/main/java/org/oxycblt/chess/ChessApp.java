@@ -5,7 +5,6 @@ package org.oxycblt.chess;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Group;
-import org.oxycblt.chess.game.ChessScene;
 
 public class ChessApp extends Application {
 

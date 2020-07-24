@@ -1,15 +1,16 @@
 // Base class for all chess pieces
 
-package org.oxycblt.chess.game.board.pieces;
+package org.oxycblt.chess.board.pieces;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.image.ImageView;
 
-import org.oxycblt.chess.game.ChessType;
-import org.oxycblt.chess.game.board.ChessList;
-import org.oxycblt.chess.game.board.ui.SelectionRect;
-import org.oxycblt.chess.game.board.animation.FadeAnimation;
-import org.oxycblt.chess.game.board.animation.RecallAnimation;
+import org.oxycblt.chess.shared.ChessType;
+
+import org.oxycblt.chess.board.ChessList;
+import org.oxycblt.chess.board.ui.SelectionRect;
+import org.oxycblt.chess.board.animation.FadeAnimation;
+import org.oxycblt.chess.board.animation.RecallAnimation;
 
 import org.oxycblt.chess.media.images.Texture;
 import org.oxycblt.chess.media.images.TextureAtlas;

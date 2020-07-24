@@ -1,6 +1,6 @@
 // Main chess game scene
 
-package org.oxycblt.chess.game;
+package org.oxycblt.chess;
 
 import javafx.scene.Scene;
 import javafx.scene.Group;
@@ -10,7 +10,8 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.Stop;
 
-import org.oxycblt.chess.game.board.BoardPane;
+import org.oxycblt.chess.board.BoardPane;
+import org.oxycblt.chess.stats.StatPane;
 
 public class ChessScene extends Scene {
 
@@ -24,9 +25,10 @@ public class ChessScene extends Scene {
             new Stop(1, Color.web("eaeaea"))
         ));
 
-        BoardPane chess = new BoardPane();
+        StatPane stats = new StatPane();
+        BoardPane board = new BoardPane(stats);
 
-        root.getChildren().addAll(chess);
+        root.getChildren().addAll(stats, board);
 
     }
 

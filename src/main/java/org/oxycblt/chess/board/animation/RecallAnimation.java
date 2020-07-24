@@ -1,6 +1,6 @@
 // Recall animation
 
-package org.oxycblt.chess.game.board.animation;
+package org.oxycblt.chess.board.animation;
 
 import javafx.util.Duration;
 import javafx.scene.shape.Path;
@@ -8,7 +8,7 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.animation.PathTransition;
 
-import org.oxycblt.chess.game.board.pieces.ChessPiece;
+import org.oxycblt.chess.board.pieces.ChessPiece;
 
 public class RecallAnimation {
 

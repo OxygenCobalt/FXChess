@@ -1,6 +1,6 @@
 // Basic fade-in animation for SelectionRect, EndScreen, & PromotionMenu
 
-package org.oxycblt.chess.game.board.animation;
+package org.oxycblt.chess.board.animation;
 
 import javafx.scene.Node;
 import javafx.util.Duration;

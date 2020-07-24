@@ -1,17 +1,17 @@
-// Bishop Chess Piece
+// Knight Chess Piece
 
-package org.oxycblt.chess.game.board.pieces;
+package org.oxycblt.chess.board.pieces;
 
-import org.oxycblt.chess.game.ChessType;
-import org.oxycblt.chess.game.board.ChessList;
+import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.board.ChessList;
 
-public class Bishop extends ChessPiece {
+public class Knight extends ChessPiece {
 
-    public Bishop(final ChessList list,
+    public Knight(final ChessList list,
                   final ChessType color,
                   final int x, final int y) {
 
-        super(list, ChessType.BISHOP, color, x, y);
+        super(list, ChessType.KNIGHT, color, x, y);
 
     }
 
@@ -19,8 +19,8 @@ public class Bishop extends ChessPiece {
     public boolean validateMove(final int targetX, final int targetY) {
 
         /*
-        | Bishops can only move diagonally, but cannot jump over other pieces. They have no
-        | special moves.
+        | Knights can move in an L-Shape in all directions, regardless of if any pieces are in the
+        | way. They have no special moves.
         */
 
         calculateDistance(targetX, targetY);
@@ -28,13 +28,9 @@ public class Bishop extends ChessPiece {
         xDist = Math.abs(xDist);
         yDist = Math.abs(yDist);
 
-        if (xDist == yDist) {
+        if ((xDist == 1 && yDist == 2) || (xDist == 2 && yDist == 1)) {
 
-            if (!findBlockingPieces(targetX, targetY)) {
-
-                return true;
-
-            }
+            return true;
 
         }
 
@@ -52,7 +48,7 @@ public class Bishop extends ChessPiece {
     @Override
     public void update(final ChessPiece changedPiece) {
 
-        // The bishop does not need to be notified of any change
+        // The knight does not need to be notified of any change
 
     }
 

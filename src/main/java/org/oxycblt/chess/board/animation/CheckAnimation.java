@@ -1,10 +1,10 @@
 // Animation for checking
 
-package org.oxycblt.chess.game.board.animation;
+package org.oxycblt.chess.board.animation;
 
 import javafx.animation.AnimationTimer;
 
-import org.oxycblt.chess.game.board.pieces.King;
+import org.oxycblt.chess.board.pieces.King;
 
 public class CheckAnimation extends AnimationTimer {
 

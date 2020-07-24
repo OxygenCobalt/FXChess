@@ -1,9 +1,9 @@
 // Pawn chess piece
 
-package org.oxycblt.chess.game.board.pieces;
+package org.oxycblt.chess.board.pieces;
 
-import org.oxycblt.chess.game.ChessType;
-import org.oxycblt.chess.game.board.ChessList;
+import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.board.ChessList;
 
 public class Pawn extends ChessPiece {
 

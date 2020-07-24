@@ -1,8 +1,8 @@
 // Interface for listening for the end of the game
 
-package org.oxycblt.chess.game.board;
+package org.oxycblt.chess.board;
 
-import org.oxycblt.chess.game.ChessType;
+import org.oxycblt.chess.shared.ChessType;
 
 public interface EndListener {
 

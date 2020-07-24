@@ -1,6 +1,6 @@
 // Slide + Fade animation used by EndScreen
 
-package org.oxycblt.chess.game.board.animation;
+package org.oxycblt.chess.board.animation;
 
 import javafx.util.Duration;
 import javafx.scene.shape.Path;
@@ -8,7 +8,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.VLineTo;
 import javafx.animation.PathTransition;
 
-import org.oxycblt.chess.game.board.ui.EndScreen;
+import org.oxycblt.chess.board.ui.EndScreen;
 
 public class EndAnimation extends FadeAnimation {
 

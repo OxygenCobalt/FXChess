@@ -10,6 +10,7 @@ public final class ChessLauncher {
     // Add a forfiet option
     // Add a custom timer
     // Add custom names
+    // ??? Fix the checking your own king issue?
 
     private ChessLauncher() {
 

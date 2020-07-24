@@ -1,6 +1,6 @@
 // Enum of all chess piece types, chess colors, and player turns. Also has helper functions.
 
-package org.oxycblt.chess.game;
+package org.oxycblt.chess.shared;
 
 import java.util.Random;
 
@@ -52,6 +52,21 @@ public enum ChessType {
         validateColor(color);
 
         return color == WHITE ? BLACK : WHITE;
+    }
+
+    // Turn a chesstype color into a hex color
+    public static String toHex(final ChessType color) {
+
+        validateColor(color);
+
+        if (color == WHITE) {
+
+            return "eaeaea";
+
+        }
+
+        return "252525";
+
     }
 
     // Function used to make sure that a given color is actually BLACK or WHITE

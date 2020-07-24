@@ -1,13 +1,14 @@
 // Decorative rectangle shown when selecting something
 
-package org.oxycblt.chess.game.board.ui;
+package org.oxycblt.chess.board.ui;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
-import org.oxycblt.chess.game.ChessType;
-import org.oxycblt.chess.game.board.animation.FadeAnimation;
+import org.oxycblt.chess.shared.ChessType;
+
+import org.oxycblt.chess.board.animation.FadeAnimation;
 
 public class SelectionRect extends Rectangle {
 
@@ -31,15 +32,7 @@ public class SelectionRect extends Rectangle {
 
     public void show(final ChessType color) {
 
-        if (color == ChessType.WHITE) {
-
-            setStroke(Color.web("eaeaea"));
-
-        } else {
-
-            setStroke(Color.web("252525"));
-
-        }
+        setStroke(Color.web(ChessType.toHex(color)));
 
         fadeAnim.fadeIn();
         isShown = true;

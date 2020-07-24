@@ -1,6 +1,6 @@
 // Menu used for pawn promotion
 
-package org.oxycblt.chess.game.board.ui;
+package org.oxycblt.chess.board.ui;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.image.ImageView;
@@ -8,8 +8,9 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
 
-import org.oxycblt.chess.game.ChessType;
-import org.oxycblt.chess.game.board.animation.FadeAnimation;
+import org.oxycblt.chess.shared.ChessType;
+
+import org.oxycblt.chess.board.animation.FadeAnimation;
 
 import org.oxycblt.chess.media.images.Texture;
 import org.oxycblt.chess.media.images.TextureAtlas;
