@@ -23,6 +23,9 @@ import org.oxycblt.chess.game.board.ui.ResetListener;
 import org.oxycblt.chess.game.board.ui.PromotionMenu;
 import org.oxycblt.chess.game.board.ui.PromotionEndListener;
 
+import org.oxycblt.chess.media.images.Texture;
+import org.oxycblt.chess.media.images.TextureAtlas;
+
 import org.oxycblt.chess.entity.EntityChangeListener;
 
 public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>, EndListener {
@@ -60,18 +63,16 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         setOnMouseDragged(dragHandler);
         setOnMousePressed(pressHandler);
         setOnMouseReleased(releaseHandler);
-        setStyle(
-              "-fx-border-style: solid outside;"
-            + "-fx-border-width: 6px;"
-            + "-fx-border-color: #8F8F8F"
-        );
 
         rand = new Random();
         pieces = new ChessList(this);
         factory = new ChessFactory(pieces, this);
         positions = new ArrayList<Integer>();
 
-        getChildren().add(new ResetButton(resetListener));
+        getChildren().addAll(
+            new ResetButton(resetListener),
+            TextureAtlas.getTexture(Texture.BORDER, 0, 0, 268, 268, -6, -6)
+        );
 
         generateCheckerBoard();
         generateChessPieces();

@@ -49,8 +49,26 @@ public final class TextureAtlas {
 
     }
 
+    // Returns a texture using the simple X/Y coords, a custom size, and relocated to a position
+    public static ImageView getTexture(final Texture tex,
+                                       final int x, final int y,
+                                       final int w, final int h,
+                                       final int rx, final int ry) {
+
+        ImageView view = new ImageView(loadFullTexture(tex));
+
+        view.setViewport(new Rectangle2D(
+            x * w, y * h, w, h
+        ));
+
+        view.relocate(rx, ry);
+
+        return view;
+
+    }
+
     // Get full Image of all the textures of the specified sheet
-    private static Image loadFullTexture(final Texture tex) {
+    public static Image loadFullTexture(final Texture tex) {
 
         // Check if image is loaded, load it if not
         if (!loadedImages.containsKey(tex)) {
