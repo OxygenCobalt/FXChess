@@ -18,7 +18,7 @@ import org.oxycblt.chess.game.board.pieces.ChessFactory;
 import org.oxycblt.chess.game.board.EndListener.EndType;
 
 import org.oxycblt.chess.game.board.ui.EndScreen;
-import org.oxycblt.chess.game.board.ui.ResetButton;
+//import org.oxycblt.chess.game.board.ui.ResetButton;
 import org.oxycblt.chess.game.board.ui.ResetListener;
 import org.oxycblt.chess.game.board.ui.PromotionMenu;
 import org.oxycblt.chess.game.board.ui.PromotionEndListener;
@@ -58,7 +58,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     public BoardPane() {
 
         // W/H/X/Y are static
-        relocate(33, 49);
+        relocate(10, 54);
         setPrefSize(256, 256);
         setOnMouseDragged(dragHandler);
         setOnMousePressed(pressHandler);
@@ -70,7 +70,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         positions = new ArrayList<Integer>();
 
         getChildren().addAll(
-            new ResetButton(resetListener),
+            //new ResetButton(resetListener), To be readded later
             TextureAtlas.getTexture(Texture.BORDER, 0, 0, 268, 268, -6, -6)
         );
 

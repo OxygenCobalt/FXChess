@@ -12,6 +12,7 @@ public class Pawn extends ChessPiece {
     private final int relOne;
     private final int relTwo;
 
+    private boolean did2Step = false;
     private boolean vmwpReturn = false;
     private boolean assumePieceExists = false;
 
@@ -62,14 +63,12 @@ public class Pawn extends ChessPiece {
 
                 }
 
-            } else {
+            }
 
-                if (list.findChessPiece(ChessType.inverseOf(color), targetX, targetY) != null
-                    || assumePieceExists) {
+            if (list.findChessPiece(ChessType.inverseOf(color), targetX, targetY) != null
+                || assumePieceExists) {
 
-                    return true;
-
-                }
+                return true;
 
             }
 
@@ -126,6 +125,20 @@ public class Pawn extends ChessPiece {
     public void confirmMove(final int targetX, final int targetY) {
 
         /*
+        | If the piece has just made a 2-step advance, set did2Step to true so that other
+        | pieces can perform en passant properly. This variable is set back to false in
+        | the next move.
+        */
+
+        did2Step = false;
+
+        if (Math.abs(yDist) == 2) {
+
+            did2Step = true;
+
+        }
+
+        /*
         | If theres a piece that can be removed via En Passant, knock that one out, otherwise just
         | search for any chess pieces that may be on the destination square, and knock them out
         | instead.
@@ -159,10 +172,10 @@ public class Pawn extends ChessPiece {
         passPiece = null;
 
         if (changedPiece.getType() == ChessType.PAWN
-        && changedPiece.getColor() == ChessType.inverseOf(color)) {
+        && changedPiece.getColor() != color) {
 
             if (Math.abs(changedPiece.getX() - x) == 1
-            && Math.abs(changedPiece.getYDist()) == 2
+            && ((Pawn) changedPiece).get2Step()
             && changedPiece.getY() == y) {
 
                 passPiece = changedPiece;
@@ -170,6 +183,12 @@ public class Pawn extends ChessPiece {
             }
 
         }
+
+    }
+
+    public boolean get2Step() {
+
+        return did2Step;
 
     }
 

@@ -313,12 +313,6 @@ public abstract class ChessPiece extends Pane {
 
     }
 
-    public int getYDist() {
-
-        return yDist;
-
-    }
-
     public boolean getMoved() {
 
         return hasMoved;

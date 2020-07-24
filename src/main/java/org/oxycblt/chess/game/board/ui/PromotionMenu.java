@@ -26,6 +26,7 @@ public class PromotionMenu extends Pane {
     private ImageView[] choiceViews;
 
     private int mouseX = 0;
+    private int mouseY = 0;
     private int simpleX = 0;
     private int cacheSimpleX = -1;
 
@@ -55,7 +56,7 @@ public class PromotionMenu extends Pane {
 
             normalizePointer(event);
 
-            if (validateX()) {
+            if (validateXY()) {
 
                 // Find the choice that matches the current position of the mouse and confirm
                 // that, hiding the menu in the process
@@ -77,7 +78,7 @@ public class PromotionMenu extends Pane {
 
             normalizePointer(event);
 
-            if (validateX()) {
+            if (validateXY()) {
 
                 updateSimpleX();
 
@@ -106,6 +107,17 @@ public class PromotionMenu extends Pane {
 
                 }
 
+            // Hide the selection rect if the mouse is outside of the menu
+            } else if (selectRect != null)  {
+
+                if (selectRect.getShown()) {
+
+                    selectRect.hide();
+
+                    cacheSimpleX = -1;
+
+                }
+
             }
 
         }
@@ -115,17 +127,19 @@ public class PromotionMenu extends Pane {
     // Normalize a mouse pointer so that the coordinates are solely within the bounds of the menu
     private void normalizePointer(final MouseEvent event) {
 
-        // The menu is positioned relative to BoardPane, so 33 must be added to the actual
-        // position of the menu in the scene and normalize the pointer correctly
-        mouseX = (int) (event.getSceneX() - (getLayoutX() + 33));
+        // The menu is positioned relative to BoardPane, so 10/55 must be added to the actual
+        // position of the pointer in the scene and normalize the pointer correctly
+        mouseX = (int) (event.getSceneX() - (getLayoutX() + 10));
+        mouseY = (int) (event.getSceneY() - (getLayoutY() + 54));
 
     }
 
     // Validate that the X coordinate is not out of bounds
     // Returns true if valid, false if not
-    private boolean validateX() {
+    private boolean validateXY() {
 
-        return mouseX > 0 && mouseX < getPrefWidth();
+        return mouseX > 0 && mouseX < getPrefWidth()
+            && mouseY > 0 && mouseY < getPrefHeight();
 
     }
 
@@ -154,9 +168,9 @@ public class PromotionMenu extends Pane {
         | the menu is aligned to be below them.
         */
         if (newColor == ChessType.WHITE) {
-            setLayoutY((y * 32) - 32);
+            setLayoutY((y * 32) - 38);
         } else {
-            setLayoutY((y * 32) + 32);
+            setLayoutY((y * 32) + 38);
         }
 
         createViews(newColor);

@@ -12,7 +12,7 @@ public class ChessScene extends Scene {
 
     public ChessScene(final Group root) {
 
-        super(root, 322, 354);
+        super(root, 276, 374);
         setFill(Color.rgb(50, 50, 50));
 
         BoardPane chess = new BoardPane();
