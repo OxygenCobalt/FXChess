@@ -5,12 +5,13 @@ package org.oxycblt.chess.stats;
 import javafx.scene.layout.Pane;
 
 import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.media.text.TextLoader;
 
 public class StatBar extends Pane {
 
     private boolean isSelected = false;
 
-    public StatBar(final ChessType color) {
+    public StatBar(final ChessType color, final String name) {
 
         setPrefSize(276, 20);
 
@@ -23,6 +24,10 @@ public class StatBar extends Pane {
         }
 
         setStyle("-fx-background-color: #" + ChessType.toHex(color));
+
+        getChildren().addAll(TextLoader.createText(
+            name, ChessType.inverseOf(color), 5, 5
+        ));
 
     }
 

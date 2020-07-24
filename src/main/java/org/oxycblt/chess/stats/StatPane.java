@@ -17,8 +17,8 @@ public class StatPane extends Pane {
 
     public StatPane() {
 
-        blackBar = new StatBar(ChessType.BLACK);
-        whiteBar = new StatBar(ChessType.WHITE);
+        blackBar = new StatBar(ChessType.BLACK, "Player 1"); // Remove these placeholders!
+        whiteBar = new StatBar(ChessType.WHITE, "Player 2");
 
         getChildren().addAll(blackBar, whiteBar);
 
