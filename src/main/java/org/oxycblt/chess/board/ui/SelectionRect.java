@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
-import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.model.ChessType;
 
 import org.oxycblt.chess.board.animation.FadeAnimation;
 

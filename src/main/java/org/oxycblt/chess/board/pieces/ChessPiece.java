@@ -5,7 +5,7 @@ package org.oxycblt.chess.board.pieces;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.ImageView;
 
-import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.model.ChessType;
 
 import org.oxycblt.chess.board.ChessList;
 import org.oxycblt.chess.board.ui.SelectionRect;

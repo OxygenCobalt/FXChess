@@ -2,11 +2,11 @@
 
 package org.oxycblt.chess.board.pieces;
 
-import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.model.ChessType;
+import org.oxycblt.chess.model.EndType;
 
 import org.oxycblt.chess.board.ChessList;
-import org.oxycblt.chess.board.EndListener;
-import org.oxycblt.chess.board.EndListener.EndType;
+import org.oxycblt.chess.board.BoardPane;
 import org.oxycblt.chess.board.animation.CheckAnimation;
 
 public class King extends ChessPiece {
@@ -14,7 +14,7 @@ public class King extends ChessPiece {
     private ChessPiece leftRook;
     private ChessPiece rightRook;
 
-    private EndListener endListener;
+    private BoardPane board;
 
     private ChessPiece checkingPiece = null;
     private CheckAnimation checkAnim = null;
@@ -25,9 +25,12 @@ public class King extends ChessPiece {
 
     public King(final ChessList list,
                 final ChessType color,
-                final int x, final int y) {
+                final int x, final int y,
+                final BoardPane board) {
 
         super(list, ChessType.KING, color, x, y);
+
+        this.board = board;
 
     }
 
@@ -189,7 +192,7 @@ public class King extends ChessPiece {
 
             } else {
 
-                endListener.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
+                board.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
 
             }
 
@@ -198,20 +201,6 @@ public class King extends ChessPiece {
         } else {
 
             isChecked = false;
-
-        }
-
-        /*
-        | If the king is current unchecked, the king also has to check if theres any valid moves
-        | left in general [If its the King's turn, that is]. If not, then its a stalemate.
-        */
-        if (changedPiece.getColor() != color) {
-
-            if (!validatePossibleMoves()) {
-
-                endListener.onEnd(color, EndType.STALEMATE);
-
-            }
 
         }
 
@@ -419,42 +408,6 @@ public class King extends ChessPiece {
 
     }
 
-    // Check if any possible moves are remaining for the King's color.
-    // Returns true if yes, false if no.
-    public boolean validatePossibleMoves() {
-
-        for (ChessPiece piece : list.getEntities()) {
-
-            if (piece.getColor() == color) {
-
-                for (int boardX = 0; boardX < 8; boardX++) {
-
-                    for (int boardY = 0; boardY < 8; boardY++) {
-
-                        if (piece.validateMove(boardX, boardY)) {
-
-                            return true;
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        return false;
-
-    }
-
-    public void setGameEndListener(final EndListener listener) {
-
-        endListener = listener;
-
-    }
-
     // Set up references to the rooks for castling
     public void rookSetup() {
 
@@ -473,6 +426,12 @@ public class King extends ChessPiece {
             checkAnim.stop();
 
         }
+
+    }
+
+    public boolean getChecked() {
+
+        return isChecked;
 
     }
 

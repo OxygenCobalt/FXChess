@@ -4,7 +4,7 @@ package org.oxycblt.chess.stats;
 
 import javafx.scene.layout.Pane;
 
-import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.model.ChessType;
 
 import org.oxycblt.chess.board.BoardPane;
 

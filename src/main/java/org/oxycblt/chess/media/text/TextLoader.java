@@ -4,7 +4,7 @@ package org.oxycblt.chess.media.text;
 
 import javafx.scene.image.ImageView;
 
-import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.model.ChessType;
 
 import org.oxycblt.chess.media.images.Texture;
 import org.oxycblt.chess.media.images.TextureAtlas;

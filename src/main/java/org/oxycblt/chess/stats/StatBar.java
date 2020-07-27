@@ -6,12 +6,13 @@ import javafx.scene.layout.Pane;
 
 import org.oxycblt.chess.stats.ui.Name;
 
-import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.model.ChessType;
 
 public class StatBar extends Pane {
 
     private Name name;
 
+    private ChessType color;
     private boolean isSelected = false;
 
     public StatBar(final ChessType color) {
@@ -26,6 +27,8 @@ public class StatBar extends Pane {
         }
 
         ChessType.validateColor(color);
+
+        this.color = color;
 
         name = new Name(color);
 

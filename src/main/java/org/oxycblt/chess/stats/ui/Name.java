@@ -5,7 +5,7 @@ package org.oxycblt.chess.stats.ui;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.ImageView;
 
-import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.model.ChessType;
 import org.oxycblt.chess.media.text.TextLoader;
 
 public class Name extends Pane {
@@ -22,6 +22,12 @@ public class Name extends Pane {
         );
 
         getChildren().addAll(text);
+
+    }
+
+    public void updateName() {
+
+        // Stub
 
     }
 

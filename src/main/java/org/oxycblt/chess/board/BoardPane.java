@@ -3,7 +3,6 @@
 package org.oxycblt.chess.board;
 
 import java.util.Random;
-import java.util.ArrayList;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -12,13 +11,12 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
 
-import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.model.EndType;
+import org.oxycblt.chess.model.ChessType;
 
 import org.oxycblt.chess.board.pieces.ChessPiece;
 import org.oxycblt.chess.board.pieces.ChessFactory;
-import org.oxycblt.chess.board.EndListener.EndType;
 
-import org.oxycblt.chess.board.ui.EndScreen;
 //import org.oxycblt.chess.board.ui.ResetButton;
 import org.oxycblt.chess.board.ui.ResetListener;
 import org.oxycblt.chess.board.ui.PromotionMenu;
@@ -31,19 +29,21 @@ import org.oxycblt.chess.media.images.TextureAtlas;
 
 import org.oxycblt.chess.entity.EntityChangeListener;
 
-public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>, EndListener {
+public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> {
 
     private ChessList pieces;
     private ChessFactory factory;
 
+    private StatPane stats;
+
     private ChessPiece selectedPiece = null;
     private ChessPiece promotedPiece = null;
 
-    private EndScreen endScreen = null;
     private PromotionMenu promotionMenu = null;
 
     private ChessType turn = ChessType.WHITE;
-    private StatPane stats;
+
+    private int moves = 0;
 
     private int mouseX = 0;
     private int mouseY = 0;
@@ -53,9 +53,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     private int selY = 0;
 
     private Random rand;
-    private int eventlessMoves = 0;
-    private int repeatedPositions = 0;
-    private ArrayList<Integer> positions;
 
     private boolean isDisabled = false;
 
@@ -76,7 +73,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         rand = new Random();
         pieces = new ChessList(this);
         factory = new ChessFactory(pieces, this);
-        positions = new ArrayList<Integer>();
 
         getChildren().addAll(
             //new ResetButton(resetListener), To be readded later
@@ -219,87 +215,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
     };
 
-    // Confirm a move and run its logic
-    private void doMove() {
-
-        selectedPiece.confirmMove(simpleX, simpleY);
-
-        eventlessMoves++;
-
-        /*
-        | Increment the amount of repeated positions every time a space is re-occupied,
-        | otherwise reset the amount of repeated moves.
-        */
-        if (positions.contains(simpleX * 8 + simpleY)) {
-
-            repeatedPositions++;
-
-        } else {
-
-            positions.add(simpleX * 8 + simpleY);
-            repeatedPositions = 0;
-
-        }
-
-        /*
-        | If a pawn has just been promoted however by reaching the end of the board,
-        | disable the entire board and add a listener to the piece to wait until the
-        | promotion process is done, don't change the turn if this happens.
-        */
-        if (selectedPiece.getType() == ChessType.PAWN) {
-
-            if (selectedPiece.getY() == 0 || selectedPiece.getY() == 7) {
-
-                promotedPiece = selectedPiece;
-                isDisabled = true;
-
-                if (promotionMenu == null) {
-
-                    promotionMenu = new PromotionMenu(
-                        promotionListener,
-                        promotedPiece.getColor(),
-                        promotedPiece.getX(), promotedPiece.getY()
-                    );
-
-                    getChildren().add(promotionMenu);
-
-                } else {
-
-                    promotionMenu.show(
-                        promotedPiece.getColor(),
-                        promotedPiece.getX(), promotedPiece.getY()
-                    );
-
-                }
-
-            }
-
-            // Since a pawn has just moved, reset the event-less moves counter.
-            eventlessMoves = 0;
-
-        }
-
-        selectedPiece = null;
-
-        if (promotedPiece == null) {
-
-            changeTurn();
-
-        }
-
-        /*
-        | If the same position is repeated five times in a row, or if there
-        | has been no pawn movements or captures in 50 moves, then the game
-        | is a draw.
-        */
-        if (repeatedPositions >= 5 || eventlessMoves >= 50) {
-
-            onEnd(ChessType.WHITE, EndType.DRAW);
-
-        }
-
-    }
-
     // Normalize a mouse pointer so that the coordinates are solely within the bounds of BoardPane
     private void normalizePointer(final MouseEvent event) {
 
@@ -346,6 +261,68 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
     }
 
+    // --- MOVE MANAGEMENT ---
+
+    // Confirm a move and run its logic
+    private void doMove() {
+
+        selectedPiece.confirmMove(simpleX, simpleY);
+
+        /*
+        | If a pawn has just been promoted however by reaching the end of the board,
+        | disable the entire board and add a listener to the piece to wait until the
+        | promotion process is done, don't change the turn if this happens.
+        */
+        if (selectedPiece.getType() == ChessType.PAWN) {
+
+            if (selectedPiece.getY() == 0 || selectedPiece.getY() == 7) {
+
+                promotedPiece = selectedPiece;
+                isDisabled = true;
+
+                if (promotionMenu == null) {
+
+                    promotionMenu = new PromotionMenu(
+                        promotionListener,
+                        promotedPiece.getColor(),
+                        promotedPiece.getX(), promotedPiece.getY()
+                    );
+
+                    getChildren().add(promotionMenu);
+
+                } else {
+
+                    promotionMenu.show(
+                        promotedPiece.getColor(),
+                        promotedPiece.getX(), promotedPiece.getY()
+                    );
+
+                }
+
+            }
+
+        }
+
+        if (promotedPiece == null) {
+
+            changeTurn();
+
+        }
+
+        moves++;
+
+        if (moves == 30) {
+
+            enableDraw();
+
+            // Stub: Draw should enable once 30 moves pass.
+
+        }
+
+        selectedPiece = null;
+
+    }
+
     // --- GAME EVENT LISTENERS ---
 
     // Confirmation for promotion
@@ -372,7 +349,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     private ResetListener resetListener = () -> {
 
         // Dont reset if *nothing* has actually happened
-        if (positions.size() > 0) {
+        if (moves != 0) {
 
             /*
             | Reset the chess pieces/references to the chess pieces, clear any specific values, and
@@ -380,12 +357,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
             */
             factory.replaceKilled();
             pieces.resetAll();
-
-            if (endScreen != null) {
-
-                endScreen.hide();
-
-            }
 
             if (promotionMenu != null) {
 
@@ -398,10 +369,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
             selectedPiece = null;
             promotedPiece = null;
 
-            positions.clear();
-            eventlessMoves = 0;
-            repeatedPositions = 0;
-
             randomizeTurn();
 
         }
@@ -410,18 +377,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
     // Game ending
     public void onEnd(final ChessType color, final EndType type) {
-
-        if (endScreen == null) {
-
-            endScreen = new EndScreen(color, type);
-
-            getChildren().add(endScreen);
-
-        } else {
-
-            endScreen.show(color, type);
-
-        }
 
         // Disable the game, and hide the promotion menu, in the case that causes issues.
         isDisabled = true;
@@ -432,6 +387,12 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
             promotionMenu.hide();
 
         }
+
+    }
+
+    public void enableDraw() {
+
+        // Stub: Draw should enable after 30 moves
 
     }
 
@@ -522,9 +483,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
 
     // Entity removal
     public void onRemoved(final ChessPiece removed) {
-
-        // A piece is only removed when its captured, so reset the counter.
-        eventlessMoves = 0;
 
         getChildren().remove(removed);
 

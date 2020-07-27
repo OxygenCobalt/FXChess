@@ -1,6 +1,6 @@
 // Enum of all chess piece types, chess colors, and player turns. Also has helper functions.
 
-package org.oxycblt.chess.shared;
+package org.oxycblt.chess.model;
 
 public enum ChessType {
 

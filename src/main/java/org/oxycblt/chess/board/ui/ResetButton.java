@@ -7,7 +7,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
 
-import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.model.ChessType;
 
 import org.oxycblt.chess.media.images.Texture;
 import org.oxycblt.chess.media.images.TextureAtlas;

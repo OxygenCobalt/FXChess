@@ -2,7 +2,7 @@
 
 package org.oxycblt.chess.board.ui;
 
-import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.model.ChessType;
 
 public interface PromotionEndListener {
 

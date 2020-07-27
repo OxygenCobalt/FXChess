@@ -2,23 +2,24 @@
 
 package org.oxycblt.chess.board.pieces;
 
-import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.model.ChessType;
 
 import org.oxycblt.chess.board.ChessList;
-import org.oxycblt.chess.board.EndListener;
+import org.oxycblt.chess.board.BoardPane;
 
 public class ChessFactory {
 
     private final ChessList pieces;
-    private final EndListener endListener;
+    private final BoardPane board;
+
     private ChessType color = ChessType.WHITE;
 
     private King lastGenKing = null;
 
-    public ChessFactory(final ChessList pieces, final EndListener endListener) {
+    public ChessFactory(final ChessList pieces, final BoardPane board) {
 
         this.pieces = pieces;
-        this.endListener = endListener;
+        this.board = board;
 
     }
 
@@ -43,8 +44,6 @@ public class ChessFactory {
         }
 
         lastGenKing.rookSetup();
-        lastGenKing.setGameEndListener(endListener);
-
     }
 
         // Create the corresponding piece for the given type at the x/y coords
@@ -57,7 +56,7 @@ public class ChessFactory {
             case KNIGHT: new Knight(pieces, color, x, y); break;
             case BISHOP: new Bishop(pieces, color, x, y); break;
             case QUEEN: new Queen(pieces, color, x, y); break;
-            case KING: lastGenKing = new King(pieces, color, x, y); break;
+            case KING: lastGenKing = new King(pieces, color, x, y, board); break;
 
         }
 

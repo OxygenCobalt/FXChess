@@ -4,7 +4,7 @@ package org.oxycblt.chess.board;
 
 import java.util.ArrayList;
 
-import org.oxycblt.chess.shared.ChessType;
+import org.oxycblt.chess.model.ChessType;
 
 import org.oxycblt.chess.board.pieces.King;
 import org.oxycblt.chess.board.pieces.ChessPiece;
@@ -78,6 +78,24 @@ public class ChessList extends EntityList<ChessPiece> {
         }
 
         return null;
+
+    }
+
+    // Check if a turn's king is checked
+    public boolean isTurnChecked(final ChessType turn) {
+
+        for (ChessPiece piece : entities) {
+
+            if (piece.getType() == ChessType.KING
+            &&  piece.getColor() == turn) {
+
+                return ((King) piece).getChecked();
+
+            }
+
+        }
+
+        return false;
 
     }
 
