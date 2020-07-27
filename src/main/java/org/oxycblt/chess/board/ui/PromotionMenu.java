@@ -96,26 +96,11 @@ public class PromotionMenu extends Pane {
 
                         selectRect.relocate(simpleX * 32, 0);
 
-                        if (!selectRect.getShown()) {
-
-                            selectRect.show(color);
-
-                        }
+                        selectRect.show(color);
 
                     }
 
                     cacheSimpleX = simpleX;
-
-                }
-
-            // Hide the selection rect if the mouse is outside of the menu
-            } else if (selectRect != null)  {
-
-                if (selectRect.getShown()) {
-
-                    selectRect.hide();
-
-                    cacheSimpleX = -1;
 
                 }
 

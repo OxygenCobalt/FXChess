@@ -294,7 +294,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
         */
         if (repeatedPositions >= 5 || eventlessMoves >= 50) {
 
-            onEnd(ChessType.randomColor(), EndType.DRAW);
+            onEnd(ChessType.WHITE, EndType.DRAW);
 
         }
 
@@ -490,7 +490,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece>,
     // Randomize the turn
     public void randomizeTurn() {
 
-        if (new Random().nextBoolean()) {
+        if (rand.nextBoolean()) {
 
             turn = ChessType.WHITE;
 

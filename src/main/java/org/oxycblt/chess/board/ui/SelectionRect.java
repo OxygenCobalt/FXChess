@@ -32,30 +32,36 @@ public class SelectionRect extends Rectangle {
 
     public void show(final ChessType color) {
 
-        setStroke(Color.web(ChessType.toHex(color)));
+        if (!isShown) {
 
-        fadeAnim.fadeIn();
-        isShown = true;
+            setStroke(Color.web(ChessType.toHex(color)));
+
+            fadeAnim.fadeIn();
+            isShown = true;
+
+        }
 
     }
 
     public void hide() {
 
-        fadeAnim.fadeOut();
-        isShown = false;
+        if (isShown) {
+
+            fadeAnim.fadeOut();
+            isShown = false;
+
+        }
 
     }
 
     public void hideNoAnim() {
 
-        setStroke(Color.TRANSPARENT);
-        isShown = true;
+        if (isShown) {
 
-    }
+            setStroke(Color.TRANSPARENT);
+            isShown = true;
 
-    public boolean getShown() {
-
-        return isShown;
+        }
 
     }
 

@@ -2,8 +2,6 @@
 
 package org.oxycblt.chess.shared;
 
-import java.util.Random;
-
 public enum ChessType {
 
     // Each enum stores their coordinates on TextureAtlas
@@ -20,7 +18,6 @@ public enum ChessType {
     };
 
     private final int coordinate;
-    private static Random rand = new Random();
 
     ChessType(final int coordinate) {
 
@@ -34,18 +31,6 @@ public enum ChessType {
 
     }
 
-    public static ChessType randomColor() {
-
-        if (rand.nextBoolean()) {
-
-            return WHITE;
-
-        }
-
-        return BLACK;
-
-    }
-
     // Return the opposite of the given color
     public static ChessType inverseOf(final ChessType color) {
 
@@ -54,18 +39,12 @@ public enum ChessType {
         return color == WHITE ? BLACK : WHITE;
     }
 
-    // Turn a chesstype color into a hex color
+    // Turn a ChessType color into a hex code
     public static String toHex(final ChessType color) {
 
         validateColor(color);
 
-        if (color == WHITE) {
-
-            return "eaeaea";
-
-        }
-
-        return "252525";
+        return color == WHITE ? "eaeaea" : "252525";
 
     }
 

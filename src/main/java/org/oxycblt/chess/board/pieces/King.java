@@ -125,82 +125,6 @@ public class King extends ChessPiece {
 
     }
 
-    // Validate that a path is safe and wont result in a check, used for castling
-    // Returns true if path is safe, false if not
-    public boolean validateSafePath(final int targetX) {
-
-        iterX = x;
-
-        while (iterX != targetX) {
-
-            if (iterX > targetX) {
-
-                iterX--;
-
-            } else if (iterX < targetX) {
-
-                iterX++;
-
-            }
-
-            if (!validateSafe(iterX, y)) {
-
-                return false;
-
-            }
-
-        }
-
-        return true;
-
-    }
-
-    // Validate that a prospective move is safe
-    // Returns true if yes, false if no
-    private boolean validateSafe(final int targetX, final int targetY) {
-
-        for (ChessPiece entity : list.getEntities()) {
-
-            if (entity.getColor() != color) {
-
-                // Pawns need to assume that the king is already at the location
-                // it wants to go to in order to check for diagonal captures.
-                if (entity.getType() == ChessType.PAWN) {
-
-                    if (((Pawn) entity).validateMoveWithPiece(targetX, targetY)) {
-
-                        return false;
-
-                    }
-
-                // If checking a king, only do the distance logic to prevent endless
-                // recursive calls to validateSafe()
-                } else if (entity.getType() == ChessType.KING) {
-
-                    if (((King) entity).doDistanceLogic(targetX, targetY)) {
-
-                        return false;
-
-                    }
-
-                } else {
-
-                    if (entity.validateMove(targetX, targetY)) {
-
-                        return false;
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        return true;
-
-    }
-
     @Override
     public void confirmMove(final int targetX, final int targetY) {
 
@@ -290,6 +214,82 @@ public class King extends ChessPiece {
             }
 
         }
+
+    }
+
+    // Validate that a prospective move is safe
+    // Returns true if yes, false if no
+    private boolean validateSafe(final int targetX, final int targetY) {
+
+        for (ChessPiece entity : list.getEntities()) {
+
+            if (entity.getColor() != color) {
+
+                // Pawns need to assume that the king is already at the location
+                // it wants to go to in order to check for diagonal captures.
+                if (entity.getType() == ChessType.PAWN) {
+
+                    if (((Pawn) entity).validateMoveWithPiece(targetX, targetY)) {
+
+                        return false;
+
+                    }
+
+                // If checking a king, only do the distance logic to prevent endless
+                // recursive calls to validateSafe()
+                } else if (entity.getType() == ChessType.KING) {
+
+                    if (((King) entity).doDistanceLogic(targetX, targetY)) {
+
+                        return false;
+
+                    }
+
+                } else {
+
+                    if (entity.validateMove(targetX, targetY)) {
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return true;
+
+    }
+
+    // Validate that a path is safe and wont result in a check, used for castling
+    // Returns true if path is safe, false if not
+    public boolean validateSafePath(final int targetX) {
+
+        iterX = x;
+
+        while (iterX != targetX) {
+
+            if (iterX > targetX) {
+
+                iterX--;
+
+            } else if (iterX < targetX) {
+
+                iterX++;
+
+            }
+
+            if (!validateSafe(iterX, y)) {
+
+                return false;
+
+            }
+
+        }
+
+        return true;
 
     }
 

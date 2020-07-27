@@ -5,12 +5,37 @@ package org.oxycblt.chess;
 public final class ChessLauncher {
 
     // TODO:
-    // Add the upper/lower statbars
-    // Refactor Game End stuff into the statbars
-    // Add a forfiet option
-    // Add a custom timer
-    // Add custom names
-    // ??? Fix the checking your own king issue?
+
+    // StatBar stuff
+    //    - Move text stuff to sub-object
+    //    - Add text editing to TextLoader to lower the amount of created ImageViews
+
+    //    - Find a better way to measure time that doesnt require using the UNIX EPOCH
+    //    - Add a basic timer
+
+    //    - Rewrite alot of the game-end stuff to work with statbar
+    //        - Rework Draws to only give the option, not for it to be mandatory
+    //    - Update text sub-object to use that game-end stuff
+
+    //    - Rework resetbutton to work on statbars
+    //    - Add Draw/Forfiet buttons
+
+    // Title Screen:
+
+    //    - Add a basic title screen with the logo
+
+    //    - Add semi-configuration class that statbars read from to get values
+    //    - Create textfields for the config values [Not sure if to use custom font or not]
+    //       - Player 1 name
+    //       - Player 2 name
+    //       - Time Control
+
+    //    - Add a return button to StatBar that goes back to the title screen
+
+    // Other:
+
+    //    - Why are you using a custom font loader, please experiment with JavaFX fonts.
+    //    - Fix Checking your own king issue?
 
     private ChessLauncher() {
 

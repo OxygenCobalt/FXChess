@@ -28,14 +28,15 @@ public final class TextLoader {
 
         ImageView[] views = new ImageView[text.length()];
 
+        // There are only uppercase letters in the font texture, so change the array to fit that.
         chars = text.toUpperCase().toCharArray();
 
         for (int i = 0; i < views.length; i++) {
 
-            index = VALID_CHARS.indexOf(chars[i]);
-
             // Add the corresponding texture for each character in the string, if the character
             // is not valid, use a fallback texture instead.
+            index = VALID_CHARS.indexOf(chars[i]);
+
             if (index != -1) {
 
                 views[i] = TextureAtlas.getTexture(
