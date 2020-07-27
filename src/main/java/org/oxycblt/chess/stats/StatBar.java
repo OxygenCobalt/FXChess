@@ -39,7 +39,7 @@ public class StatBar extends Pane {
         this.color = color;
 
         nameText = TextLoader.createText(
-            name, ChessType.inverseOf(color), 4, 5
+            name, ChessType.inverseOf(color), 5, 5
         );
 
         timer = new Timer(color);
@@ -75,22 +75,36 @@ public class StatBar extends Pane {
 
     }
 
+    // Update the StatBar of a game end
     public void onEnd(final ChessType winColor, final EndType type) {
 
         getChildren().removeAll(nameText);
 
-        if (winColor == color) {
+        /*
+        | If the game ended in a draw, append "Draw" onto the current player name. Otherwise
+        | append "Won" or "Lost" depending if the winning color matches the color of the StatBar.
+        */
+        if (type == EndType.DRAW) {
 
-            name += type.getWinText();
+            name += " (Draw)";
+
 
         } else {
 
-            name += type.getLoseText();
+            if (winColor == color) {
+
+                name += " (Won)";
+
+            } else {
+
+                name += " (Lost)";
+
+            }
 
         }
 
         nameText = TextLoader.createText(
-            name, ChessType.inverseOf(color), 4, 5
+            name, ChessType.inverseOf(color), 5, 5
         );
 
         getChildren().addAll(nameText);

@@ -1,4 +1,4 @@
-// Basic timer
+// A Time Control timer/Move indicator
 
 package org.oxycblt.chess.stats.ui;
 
@@ -33,6 +33,7 @@ public class Timer extends Pane {
 
     }
 
+    // Start the timer
     public void start() {
 
         setStyle("-fx-background-color: #026ced");
@@ -41,16 +42,18 @@ public class Timer extends Pane {
 
     }
 
+    // Stop the timer
     public void stop() {
 
         setStyle("-fx-background-color: #" + ChessType.toHex(color));
 
     }
 
+    // Generate the digits [Placeholder function]
     private void generateDigits() {
 
         digits = TextLoader.createText(
-            "10:00", ChessType.inverseOf(color), 4, 5
+            "02:00", ChessType.inverseOf(color), 5, 5
         );
 
         getChildren().addAll(digits);

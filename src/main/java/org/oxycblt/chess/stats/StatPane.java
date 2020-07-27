@@ -11,12 +11,12 @@ import org.oxycblt.chess.board.BoardPane;
 
 public class StatPane extends Pane {
 
-    private BoardPane board = null;
+    private BoardPane board;
 
     private StatBar blackBar;
     private StatBar whiteBar;
 
-    private boolean isDisabled;
+    private boolean isDisabled = false;
 
     public StatPane() {
 
@@ -27,8 +27,13 @@ public class StatPane extends Pane {
 
     }
 
+    // Change the turn/the currently selected StatBar
     public void changeTurn(final ChessType color) {
 
+        /*
+        | Dont change the turn if the Pane has been disabled through onEnd(), to prevent a bug where
+        | it will change turn even after delecting both StatBars.
+        */
         if (!isDisabled) {
 
             if (color == ChessType.WHITE) {
@@ -47,6 +52,7 @@ public class StatPane extends Pane {
 
     }
 
+    // Update the StatBar of a game end
     public void onEnd(final ChessType winColor, final EndType type) {
 
         blackBar.onEnd(winColor, type);
@@ -56,6 +62,7 @@ public class StatPane extends Pane {
 
     }
 
+    // Add the reference to BoardPane
     public void addBoard(final BoardPane newBoard) {
 
         board = newBoard;

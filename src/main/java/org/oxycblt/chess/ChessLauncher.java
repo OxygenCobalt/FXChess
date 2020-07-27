@@ -34,6 +34,7 @@ public final class ChessLauncher {
     // Other:
 
     //    - Fix Checking your own king issue?
+    //    - Merge EntityList w/ChessList since it wont be used in other places?
 
     private ChessLauncher() {
 
