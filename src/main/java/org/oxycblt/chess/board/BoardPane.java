@@ -376,7 +376,9 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
     };
 
     // Game ending
-    public void onEnd(final ChessType color, final EndType type) {
+    public void onEnd(final ChessType winColor, final EndType type) {
+
+        stats.onEnd(winColor, type);
 
         // Disable the game, and hide the promotion menu, in the case that causes issues.
         isDisabled = true;

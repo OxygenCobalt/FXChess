@@ -5,6 +5,7 @@ package org.oxycblt.chess.stats;
 import javafx.scene.layout.Pane;
 
 import org.oxycblt.chess.model.ChessType;
+import org.oxycblt.chess.model.EndType;
 
 import org.oxycblt.chess.board.BoardPane;
 
@@ -37,6 +38,13 @@ public class StatPane extends Pane {
             blackBar.select();
 
         }
+
+    }
+
+    public void onEnd(final ChessType winColor, final EndType type) {
+
+        blackBar.onEnd(winColor, type);
+        whiteBar.onEnd(winColor, type);
 
     }
 

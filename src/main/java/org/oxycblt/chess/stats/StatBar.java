@@ -3,16 +3,20 @@
 package org.oxycblt.chess.stats;
 
 import javafx.scene.layout.Pane;
-
-import org.oxycblt.chess.stats.ui.Name;
+import javafx.scene.image.ImageView;
 
 import org.oxycblt.chess.model.ChessType;
+import org.oxycblt.chess.model.EndType;
+
+import org.oxycblt.chess.media.text.TextLoader;
 
 public class StatBar extends Pane {
 
-    private Name name;
-
+    private String name;
     private ChessType color;
+
+    private ImageView[] nameText;
+
     private boolean isSelected = false;
 
     public StatBar(final ChessType color) {
@@ -28,16 +32,18 @@ public class StatBar extends Pane {
 
         ChessType.validateColor(color);
 
+        this.name = "Placeholder";
         this.color = color;
 
-        name = new Name(color);
-
-        getChildren().addAll(
-            name
+        nameText = TextLoader.createText(
+            name, ChessType.inverseOf(color), 5, 5
         );
+
+        getChildren().addAll(nameText);
 
     }
 
+    // Select the statbar, // TODO // Starting the timer as well.
     public void select() {
 
         if (!isSelected) {
@@ -50,6 +56,7 @@ public class StatBar extends Pane {
 
     }
 
+    // Delect the statbar, // TODO // Stopping the timer.
     public void deselect() {
 
         if (isSelected) {
@@ -59,6 +66,28 @@ public class StatBar extends Pane {
             isSelected = false;
 
         }
+
+    }
+
+    public void onEnd(final ChessType winColor, final EndType type) {
+
+        getChildren().remove(nameText);
+
+        if (winColor == color) {
+
+            name += type.getWinText();
+
+        } else {
+
+            name += type.getLoseText();
+
+        }
+
+        nameText = TextLoader.createText(
+            name, ChessType.inverseOf(color), 5, 5
+        );
+
+        getChildren().addAll(nameText);
 
     }
 

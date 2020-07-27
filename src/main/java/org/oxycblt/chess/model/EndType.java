@@ -4,32 +4,32 @@ package org.oxycblt.chess.model;
 
 public enum EndType {
 
-    CHECKMATE("Won", "Lost"),
-    RESIGN("Won", "Resigned"),
-    TIME("Won", "Out of time"),
-    DRAW("Draw", "Draw");
+    CHECKMATE(" (Won)", " (Lost)"),
+    RESIGN(" (Won)", " (Resigned)"),
+    TIME(" (Won)", " (No Time)"),
+    DRAW(" (Draw)", " (Draw)");
 
-    private final String winnerText;
-    private final String gooberText; // Don't ask
+    private final String winText;
+    private final String loseText;
 
-    EndType(final String winnerText, final String gooberText) {
+    EndType(final String winText, final String loseText) {
 
-        this.winnerText = winnerText;
-        this.gooberText = gooberText;
+        this.winText = winText;
+        this.loseText = loseText;
 
     }
 
     // Get the winning StatBar's text
-    public String getWinnerText() {
+    public String getWinText() {
 
-        return winnerText;
+        return winText;
 
     }
 
     // Get the losing StatBars text
-    public String getGooberText() {
+    public String getLoseText() {
 
-        return gooberText;
+        return loseText;
 
     }
 
