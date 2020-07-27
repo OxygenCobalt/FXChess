@@ -17,7 +17,7 @@ public class ChessScene extends Scene {
 
     public ChessScene(final Group root) {
 
-        super(root, 276, 374);
+        super(root, 330, 374);
         setFill(new LinearGradient(
             0, 19, 0, 355, false,
             CycleMethod.NO_CYCLE,

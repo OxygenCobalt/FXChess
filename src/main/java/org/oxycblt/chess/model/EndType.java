@@ -4,10 +4,10 @@ package org.oxycblt.chess.model;
 
 public enum EndType {
 
-    CHECKMATE(" (Won)", " (Lost)"),
-    RESIGN(" (Won)", " (Resigned)"),
-    TIME(" (Won)", " (No Time)"),
-    DRAW(" (Draw)", " (Draw)");
+    CHECKMATE(" [Won]", " [Lost]"),
+    RESIGN(" [Won]", " [Resigned]"),
+    TIME(" [Won]", " [No Time]"),
+    DRAW(" [Draw]", " [Draw]");
 
     private final String winText;
     private final String loseText;

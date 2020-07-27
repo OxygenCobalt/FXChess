@@ -16,6 +16,8 @@ public class StatPane extends Pane {
     private StatBar blackBar;
     private StatBar whiteBar;
 
+    private boolean isDisabled;
+
     public StatPane() {
 
         blackBar = new StatBar(ChessType.BLACK);
@@ -27,15 +29,19 @@ public class StatPane extends Pane {
 
     public void changeTurn(final ChessType color) {
 
-        if (color == ChessType.WHITE) {
+        if (!isDisabled) {
 
-            blackBar.deselect();
-            whiteBar.select();
+            if (color == ChessType.WHITE) {
 
-        } else {
+                blackBar.deselect();
+                whiteBar.select();
 
-            whiteBar.deselect();
-            blackBar.select();
+            } else {
+
+                whiteBar.deselect();
+                blackBar.select();
+
+            }
 
         }
 
@@ -45,6 +51,8 @@ public class StatPane extends Pane {
 
         blackBar.onEnd(winColor, type);
         whiteBar.onEnd(winColor, type);
+
+        isDisabled = true;
 
     }
 

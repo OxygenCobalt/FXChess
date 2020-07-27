@@ -59,7 +59,7 @@ public class SelectionRect extends Rectangle {
         if (isShown) {
 
             setStroke(Color.TRANSPARENT);
-            isShown = true;
+            isShown = false;
 
         }
 

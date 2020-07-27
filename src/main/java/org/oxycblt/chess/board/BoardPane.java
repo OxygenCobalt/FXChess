@@ -59,7 +59,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
     public BoardPane(final StatPane stats) {
 
         // W/H/X/Y are static
-        relocate(10, 59);
+        relocate(37, 59);
         setPrefSize(256, 256);
         setOnMouseDragged(dragHandler);
         setOnMousePressed(pressHandler);
@@ -261,8 +261,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
 
     }
 
-    // --- MOVE MANAGEMENT ---
-
     // Confirm a move and run its logic
     private void doMove() {
 
@@ -314,8 +312,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
         if (moves == 30) {
 
             enableDraw();
-
-            // Stub: Draw should enable once 30 moves pass.
 
         }
 
@@ -394,7 +390,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
 
     public void enableDraw() {
 
-        // Stub: Draw should enable after 30 moves
+        // TODO: Draw should enable after 30 moves
 
     }
 

@@ -113,9 +113,9 @@ public class PromotionMenu extends Pane {
     // Normalize a mouse pointer so that the coordinates are solely within the bounds of the menu
     private void normalizePointer(final MouseEvent event) {
 
-        // The menu is positioned relative to BoardPane, so 10/59 must be added to the actual
+        // The menu is positioned relative to BoardPane, so 37/59 must be added to the actual
         // position of the pointer in the scene and normalize the pointer correctly
-        mouseX = (int) (event.getSceneX() - (getLayoutX() + 10));
+        mouseX = (int) (event.getSceneX() - (getLayoutX() + 37));
         mouseY = (int) (event.getSceneY() - (getLayoutY() + 59));
 
     }

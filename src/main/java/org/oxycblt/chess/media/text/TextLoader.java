@@ -17,7 +17,7 @@ public final class TextLoader {
 
     }
 
-    private static final String VALID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -:,!?()";
+    private static final String VALID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-:,!?()[]";
 
     private static char[] chars;
     private static int index = 0;
@@ -34,26 +34,14 @@ public final class TextLoader {
         for (int i = 0; i < views.length; i++) {
 
             // Add the corresponding texture for each character in the string, if the character
-            // is not valid, use a fallback texture instead.
+            // is not valid, dont load a texture.
             index = VALID_CHARS.indexOf(chars[i]);
 
-            if (index != -1) {
-
-                views[i] = TextureAtlas.getTexture(
-                    Texture.TEXT,
-                    index % 9, (index / 9) + (color.getCoordinate() * 5),
-                    8, 10, (i * 9 + x), y
-                );
-
-            } else {
-
-                views[i] = TextureAtlas.getTexture(
-                    Texture.TEXT,
-                    8, 10 + (color.getCoordinate() * 5),
-                    8, 10, (i * 9 + x), y
-                );
-
-            }
+            views[i] = TextureAtlas.getTexture(
+                Texture.TEXT,
+                index % 9, (index / 9) + (color.getCoordinate() * 5),
+                8, 10, (i * 9 + x), y
+            );
 
         }
 
