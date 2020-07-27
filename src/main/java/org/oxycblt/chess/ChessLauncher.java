@@ -6,11 +6,10 @@ public final class ChessLauncher {
 
     // TODO:
 
-    // StatBar stuff
-    //    - Move text stuff to sub-object
+    // StatBar stuff:
     //    - Add text editing to TextLoader to lower the amount of created ImageViews
 
-    //    - Find a better way to measure time that doesnt require using the UNIX EPOCH
+    //    - Find a better way to measure time that doesnt require using the U N I X  E P O C H
     //    - Add a basic timer
 
     //    - Rewrite alot of the game-end stuff to work with statbar
@@ -34,7 +33,6 @@ public final class ChessLauncher {
 
     // Other:
 
-    //    - Why are you using a custom font loader, please experiment with JavaFX fonts.
     //    - Fix Checking your own king issue?
 
     private ChessLauncher() {

@@ -4,30 +4,34 @@ package org.oxycblt.chess.stats;
 
 import javafx.scene.layout.Pane;
 
+import org.oxycblt.chess.stats.ui.Name;
+
 import org.oxycblt.chess.shared.ChessType;
-import org.oxycblt.chess.media.text.TextLoader;
 
 public class StatBar extends Pane {
 
+    private Name name;
+
     private boolean isSelected = false;
 
-    public StatBar(final ChessType color, final String name) {
+    public StatBar(final ChessType color) {
 
         setPrefSize(276, 20);
 
-        ChessType.validateColor(color);
-
+        // The black StatBar remains at the top of the screen, the white one is moved to the bottom.
         if (color == ChessType.WHITE) {
 
             setLayoutY(354);
 
         }
 
-        setStyle("-fx-background-color: #" + ChessType.toHex(color));
+        ChessType.validateColor(color);
 
-        getChildren().addAll(TextLoader.createText(
-            name, ChessType.inverseOf(color), 5, 5
-        ));
+        name = new Name(color);
+
+        getChildren().addAll(
+            name
+        );
 
     }
 
