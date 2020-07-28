@@ -3,22 +3,17 @@
 package org.oxycblt.chess.stats;
 
 import javafx.scene.layout.Pane;
-import javafx.scene.image.ImageView;
 
 import org.oxycblt.chess.model.ChessType;
 import org.oxycblt.chess.model.EndType;
 
-import org.oxycblt.chess.media.text.TextLoader;
+import org.oxycblt.chess.stats.ui.Name;
 
 public class StatBar extends Pane {
 
-    private String name;
-    private String oldName;
-    private ChessType color;
-
-    private ImageView[] nameText;
-
     private boolean isSelected = false;
+
+    private Name name;
 
     public StatBar(final ChessType color) {
 
@@ -33,15 +28,9 @@ public class StatBar extends Pane {
 
         ChessType.validateColor(color);
 
-        this.name = "Player"; // Remove this placeholder!
-        this.color = color;
+        name = new Name(color);
 
-        // Generate the name, the maximum amount of characters is 14.
-        nameText = TextLoader.createText(
-            name, ChessType.inverseOf(color), 5, 5
-        );
-
-        getChildren().addAll(nameText);
+        getChildren().add(name);
 
     }
 
@@ -49,6 +38,8 @@ public class StatBar extends Pane {
     public void select() {
 
         if (!isSelected) {
+
+            name.select();
 
             isSelected = true;
 
@@ -61,6 +52,8 @@ public class StatBar extends Pane {
 
         if (isSelected) {
 
+            name.deselect();
+
             isSelected = false;
 
         }
@@ -70,35 +63,7 @@ public class StatBar extends Pane {
     // Update the StatBar of a game end
     public void onEnd(final ChessType winColor, final EndType type) {
 
-        getChildren().removeAll(nameText);
-
-        /*
-        | If the game ended in a draw, append "Draw" onto the current player name. Otherwise
-        | append "Won" or "Lost" depending if the winning color matches the color of the StatBar.
-        */
-        if (type == EndType.DRAW) {
-
-            name += " (Draw)";
-
-        } else {
-
-            if (winColor == color) {
-
-                name += " (Won)";
-
-            } else {
-
-                name += " (Lost)";
-
-            }
-
-        }
-
-        nameText = TextLoader.createText(
-            name, ChessType.inverseOf(color), 5, 5
-        );
-
-        getChildren().addAll(nameText);
+        name.onEnd(winColor, type);
 
     }
 
