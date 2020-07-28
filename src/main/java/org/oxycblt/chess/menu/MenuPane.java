@@ -10,14 +10,17 @@ import org.oxycblt.chess.model.EndType;
 import org.oxycblt.chess.board.BoardPane;
 
 import org.oxycblt.chess.menu.ui.ResetButton;
+import org.oxycblt.chess.menu.ui.TurnIndicator;
 
 public class MenuPane extends Pane {
 
     private BoardPane board;
 
+    private TurnIndicator turn = null;
+
     public MenuPane() {
 
-        setPrefSize(276, 32);
+        setPrefSize(276, 35);
 
         getChildren().addAll(
             new ResetButton(this)
@@ -28,10 +31,21 @@ public class MenuPane extends Pane {
     // Change the turn indicator of the MenuPane
     public void changeTurn(final ChessType newColor) {
 
+        if (turn == null) {
 
+            turn = new TurnIndicator(newColor);
+
+            getChildren().add(turn);
+
+        } else {
+
+            turn.update(newColor);
+
+        }
 
     }
 
+    // Reset the MenuPane & the Board
     public void onReset() {
 
         board.onReset();

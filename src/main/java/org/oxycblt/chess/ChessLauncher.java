@@ -7,9 +7,6 @@ public final class ChessLauncher {
     // TODO:
 
     // StatBar stuff:
-    // Remove top StatBar, reduce it down to just a top one.
-    // Remove names, just have the result on the top.
-    // Add Reset/Draw buttons.
 
     // Other:
 
