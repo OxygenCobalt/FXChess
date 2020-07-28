@@ -9,9 +9,6 @@ public final class ChessLauncher {
     // StatBar stuff:
     //    - Add text editing to TextLoader to lower the amount of created ImageViews
 
-    //    - Find a better way to measure time that doesnt require using the U N I X  E P O C H
-    //    - Add a basic timer
-
     //    - Rewrite alot of the game-end stuff to work with statbar
     //        - Rework Draws to only give the option, not for it to be mandatory
     //    - Update text sub-object to use that game-end stuff
@@ -27,7 +24,6 @@ public final class ChessLauncher {
     //    - Create textfields for the config values [Not sure if to use custom font or not]
     //       - Player 1 name
     //       - Player 2 name
-    //       - Time Control
 
     //    - Add a return button to StatBar that goes back to the title screen
 

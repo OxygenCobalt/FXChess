@@ -5,8 +5,6 @@ package org.oxycblt.chess.stats;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.ImageView;
 
-import org.oxycblt.chess.stats.ui.Timer;
-
 import org.oxycblt.chess.model.ChessType;
 import org.oxycblt.chess.model.EndType;
 
@@ -15,10 +13,10 @@ import org.oxycblt.chess.media.text.TextLoader;
 public class StatBar extends Pane {
 
     private String name;
+    private String oldName;
     private ChessType color;
 
     private ImageView[] nameText;
-    private Timer timer;
 
     private boolean isSelected = false;
 
@@ -35,26 +33,22 @@ public class StatBar extends Pane {
 
         ChessType.validateColor(color);
 
-        this.name = "Player";
+        this.name = "Player"; // Remove this placeholder!
         this.color = color;
 
+        // Generate the name, the maximum amount of characters is 14.
         nameText = TextLoader.createText(
             name, ChessType.inverseOf(color), 5, 5
         );
 
-        timer = new Timer(color);
-
         getChildren().addAll(nameText);
-        getChildren().add(timer);
 
     }
 
-    // Select the statbar, // TODO // Starting the timer as well.
+    // Select the statbar
     public void select() {
 
         if (!isSelected) {
-
-            timer.start();
 
             isSelected = true;
 
@@ -62,12 +56,10 @@ public class StatBar extends Pane {
 
     }
 
-    // Delect the statbar, // TODO // Stopping the timer.
+    // Delect the statbar
     public void deselect() {
 
         if (isSelected) {
-
-            timer.stop();
 
             isSelected = false;
 
@@ -88,7 +80,6 @@ public class StatBar extends Pane {
 
             name += " (Draw)";
 
-
         } else {
 
             if (winColor == color) {
@@ -108,8 +99,6 @@ public class StatBar extends Pane {
         );
 
         getChildren().addAll(nameText);
-
-        timer.stop();
 
     }
 
