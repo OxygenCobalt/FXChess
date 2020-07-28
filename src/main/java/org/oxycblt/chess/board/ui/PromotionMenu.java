@@ -51,9 +51,7 @@ public class PromotionMenu extends Pane {
 
     EventHandler<MouseEvent> confirmHandler = event -> {
 
-        MouseButton button = event.getButton();
-
-        if (button == MouseButton.PRIMARY && isShown) {
+        if (event.getButton() == MouseButton.PRIMARY && isShown) {
 
             normalizePointer(event);
 
@@ -113,10 +111,10 @@ public class PromotionMenu extends Pane {
     // Normalize a mouse pointer so that the coordinates are solely within the bounds of the menu
     private void normalizePointer(final MouseEvent event) {
 
-        // The menu is positioned relative to BoardPane, so 10/59 must be added to the actual
+        // The menu is positioned relative to BoardPane, so 33/49 must be added to the actual
         // position of the pointer in the scene and normalize the pointer correctly
-        mouseX = (int) (event.getSceneX() - (getLayoutX() + 10));
-        mouseY = (int) (event.getSceneY() - (getLayoutY() + 59));
+        mouseX = (int) (event.getSceneX() - (getLayoutX() + 33));
+        mouseY = (int) (event.getSceneY() - (getLayoutY() + 49));
 
     }
 

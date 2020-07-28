@@ -17,12 +17,11 @@ import org.oxycblt.chess.model.ChessType;
 import org.oxycblt.chess.board.pieces.ChessPiece;
 import org.oxycblt.chess.board.pieces.ChessFactory;
 
-//import org.oxycblt.chess.board.ui.ResetButton;
 import org.oxycblt.chess.board.ui.ResetListener;
 import org.oxycblt.chess.board.ui.PromotionMenu;
 import org.oxycblt.chess.board.ui.PromotionEndListener;
 
-import org.oxycblt.chess.stats.StatPane;
+import org.oxycblt.chess.menu.MenuPane;
 
 import org.oxycblt.chess.media.images.Texture;
 import org.oxycblt.chess.media.images.TextureAtlas;
@@ -34,7 +33,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
     private ChessList pieces;
     private ChessFactory factory;
 
-    private StatPane stats;
+    private MenuPane menu;
 
     private ChessPiece selectedPiece = null;
     private ChessPiece promotedPiece = null;
@@ -56,27 +55,30 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
 
     private boolean isDisabled = false;
 
-    public BoardPane(final StatPane stats) {
+    public BoardPane(final MenuPane menu) {
 
         // W/H/X/Y are static
-        relocate(10, 59);
+        relocate(33, 49);
         setPrefSize(256, 256);
         setOnMouseDragged(dragHandler);
         setOnMousePressed(pressHandler);
         setOnMouseReleased(releaseHandler);
 
-        // Add a reference to BoardPane to the given StatPane so that the two panes can
-        // communicate with eachother without ChessScene as an intermediary.
-        stats.addBoard(this);
-        this.stats = stats;
+        /*
+        | Add a reference to BoardPane to the given MenuPane so that the two panes can
+        | communicate with eachother without ChessScene as an intermediary.
+        */
+        this.menu = menu;
 
         rand = new Random();
         pieces = new ChessList(this);
         factory = new ChessFactory(pieces, this);
 
-        getChildren().addAll(
-            //new ResetButton(resetListener), To be readded later
-            TextureAtlas.getTexture(Texture.BORDER, 0, 0, 268, 268, -6, -6)
+        getChildren().add(
+            TextureAtlas.getTexture(
+                Texture.BORDER,
+                0, 0, 268, 268, -6, -6
+            )
         );
 
         generateCheckerBoard();
@@ -374,7 +376,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
     // Game ending
     public void onEnd(final ChessType winColor, final EndType type) {
 
-        stats.onEnd(winColor, type);
+        menu.onEnd(winColor, type);
 
         // Disable the game, and hide the promotion menu, in the case that causes issues.
         isDisabled = true;
@@ -459,7 +461,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
 
         }
 
-        stats.changeTurn(turn);
+        menu.changeTurn(turn);
 
     }
 
@@ -468,7 +470,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
 
         turn = ChessType.inverseOf(turn);
 
-        stats.changeTurn(turn);
+        menu.changeTurn(turn);
 
     }
 
@@ -486,9 +488,9 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
 
     }
 
-    public void addStats(final StatPane newStats) {
+    public void addmenu(final MenuPane newmenu) {
 
-        stats = newStats;
+        menu = newmenu;
 
     }
 

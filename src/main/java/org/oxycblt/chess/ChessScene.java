@@ -11,13 +11,13 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.Stop;
 
 import org.oxycblt.chess.board.BoardPane;
-import org.oxycblt.chess.stats.StatPane;
+import org.oxycblt.chess.menu.MenuPane;
 
 public class ChessScene extends Scene {
 
     public ChessScene(final Group root) {
 
-        super(root, 276, 374);
+        super(root, 322, 354);
         setFill(new LinearGradient(
             0, 19, 0, 355, false,
             CycleMethod.NO_CYCLE,
@@ -25,7 +25,7 @@ public class ChessScene extends Scene {
             new Stop(1, Color.web("eaeaea"))
         ));
 
-        StatPane stats = new StatPane();
+        MenuPane stats = new MenuPane();
         BoardPane board = new BoardPane(stats);
 
         root.getChildren().addAll(stats, board);
