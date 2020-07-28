@@ -25,10 +25,10 @@ public class ChessScene extends Scene {
             new Stop(1, Color.web("eaeaea"))
         ));
 
-        MenuPane stats = new MenuPane();
-        BoardPane board = new BoardPane(stats);
+        MenuPane menu = new MenuPane();
+        BoardPane board = new BoardPane(menu);
 
-        root.getChildren().addAll(stats, board);
+        root.getChildren().addAll(menu, board);
 
     }
 

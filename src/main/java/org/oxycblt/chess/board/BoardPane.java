@@ -16,10 +16,7 @@ import org.oxycblt.chess.model.ChessType;
 
 import org.oxycblt.chess.board.pieces.ChessPiece;
 import org.oxycblt.chess.board.pieces.ChessFactory;
-
-import org.oxycblt.chess.board.ui.ResetListener;
 import org.oxycblt.chess.board.ui.PromotionMenu;
-import org.oxycblt.chess.board.ui.PromotionEndListener;
 
 import org.oxycblt.chess.menu.MenuPane;
 
@@ -42,7 +39,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
 
     private ChessType turn = ChessType.WHITE;
 
-    private int moves = 0;
+    private boolean hasMoved = false;
 
     private int mouseX = 0;
     private int mouseY = 0;
@@ -69,6 +66,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
         | communicate with eachother without ChessScene as an intermediary.
         */
         this.menu = menu;
+        this.menu.addBoard(this);
 
         rand = new Random();
         pieces = new ChessList(this);
@@ -283,7 +281,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
                 if (promotionMenu == null) {
 
                     promotionMenu = new PromotionMenu(
-                        promotionListener,
+                        this,
                         promotedPiece.getColor(),
                         promotedPiece.getX(), promotedPiece.getY()
                     );
@@ -309,13 +307,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
 
         }
 
-        moves++;
-
-        if (moves == 30) {
-
-            enableDraw();
-
-        }
+        hasMoved = true;
 
         selectedPiece = null;
 
@@ -324,7 +316,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
     // --- GAME EVENT LISTENERS ---
 
     // Confirmation for promotion
-    private PromotionEndListener promotionListener = newType -> {
+    public void onPromotionEnd(final ChessType newType) {
 
         /*
         | Remove the original pawn set to be promoted, and replace it with the type that was
@@ -344,10 +336,10 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
     };
 
     // Confirmation for reset
-    private ResetListener resetListener = () -> {
+    public void onReset() {
 
         // Dont reset if *nothing* has actually happened
-        if (moves != 0) {
+        if (hasMoved) {
 
             /*
             | Reset the chess pieces/references to the chess pieces, clear any specific values, and
@@ -387,12 +379,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
             promotionMenu.hide();
 
         }
-
-    }
-
-    public void enableDraw() {
-
-        // TODO: Draw should enable after 30 moves
 
     }
 

@@ -1,6 +1,6 @@
 // Button that resets the board
 
-package org.oxycblt.chess.board.ui;
+package org.oxycblt.chess.menu.ui;
 
 import javafx.scene.layout.Pane;
 import javafx.event.EventHandler;
@@ -12,20 +12,23 @@ import org.oxycblt.chess.model.ChessType;
 import org.oxycblt.chess.media.images.Texture;
 import org.oxycblt.chess.media.images.TextureAtlas;
 
+import org.oxycblt.chess.board.ui.SelectionRect;
+import org.oxycblt.chess.menu.MenuPane;
+
 public class ResetButton extends Pane {
 
-    private ResetListener listener;
+    private MenuPane parent;
     private SelectionRect selectRect = null;
 
-    public ResetButton(final ResetListener listener) {
+    public ResetButton(final MenuPane parent) {
 
-        relocate(-30, -46);
+        relocate(3, 3);
         setPrefSize(32, 32);
         setOnMouseClicked(confirmHandler);
         setOnMouseEntered(enterHandler);
         setOnMouseExited(exitHandler);
 
-        this.listener = listener;
+        this.parent = parent;
 
         getChildren().add(TextureAtlas.getTexture(Texture.BUTTON, 0, 0));
 
@@ -35,7 +38,7 @@ public class ResetButton extends Pane {
 
         if (event.getButton() == MouseButton.PRIMARY) {
 
-            listener.onReset();
+            parent.onReset();
 
         }
 
@@ -47,9 +50,13 @@ public class ResetButton extends Pane {
 
             selectRect = new SelectionRect(ChessType.WHITE, 0, 0);
 
-        }
+            getChildren().add(selectRect);
 
-        getChildren().add(selectRect);
+        } else {
+
+            selectRect.show(ChessType.WHITE);
+
+        }
 
     };
 
@@ -57,7 +64,7 @@ public class ResetButton extends Pane {
 
         if (selectRect != null) {
 
-            getChildren().remove(selectRect);
+            selectRect.hide();
 
         }
 

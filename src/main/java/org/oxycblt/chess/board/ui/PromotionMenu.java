@@ -10,6 +10,7 @@ import javafx.scene.input.MouseButton;
 
 import org.oxycblt.chess.model.ChessType;
 
+import org.oxycblt.chess.board.BoardPane;
 import org.oxycblt.chess.board.animation.FadeAnimation;
 
 import org.oxycblt.chess.media.images.Texture;
@@ -19,7 +20,7 @@ public class PromotionMenu extends Pane {
 
     private boolean isShown = false;
 
-    private PromotionEndListener listener;
+    private BoardPane parent;
     private ChessType color;
 
     private SelectionRect selectRect = null;
@@ -31,7 +32,7 @@ public class PromotionMenu extends Pane {
     private int simpleX = 0;
     private int cacheSimpleX = -1;
 
-    public PromotionMenu(final PromotionEndListener listener,
+    public PromotionMenu(final BoardPane parent,
                          final ChessType color,
                          final int x, final int y) {
 
@@ -40,7 +41,7 @@ public class PromotionMenu extends Pane {
         setOnMouseMoved(hoverHandler);
         setOnMouseDragged(hoverHandler);
 
-        this.listener = listener;
+        this.parent = parent;
         this.color = color;
 
         fadeAnim = new FadeAnimation(this);
@@ -61,7 +62,7 @@ public class PromotionMenu extends Pane {
                 // that, hiding the menu in the process
                 updateSimpleX();
 
-                listener.onPromotionEnd(ChessType.PROMOTION_ORDER[simpleX]);
+                parent.onPromotionEnd(ChessType.PROMOTION_ORDER[simpleX]);
 
                 hide();
 
