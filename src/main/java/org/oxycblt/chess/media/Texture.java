@@ -1,13 +1,13 @@
 // Enum of textures used by TextureAtlas
 
-package org.oxycblt.chess.media.images;
+package org.oxycblt.chess.media;
 
 public enum Texture {
 
     CHESS_PIECES("/org/oxycblt/chess/textures/chesspieces.png"),
-    BUTTON("/org/oxycblt/chess/textures/buttons.png"),
+    ENDSCREEN("/org/oxycblt/chess/textures/endscreen.png"),
     BORDER("/org/oxycblt/chess/textures/border.png"),
-    TEXT("/org/oxycblt/chess/textures/text.png");
+    RESET("/org/oxycblt/chess/textures/reset.png");
 
     private final String path;
 

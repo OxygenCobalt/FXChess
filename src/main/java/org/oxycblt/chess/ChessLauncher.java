@@ -6,13 +6,14 @@ public final class ChessLauncher {
 
     // TODO:
 
-    // StatBar stuff:
+    // MenuPane stuff:
+    //    - Reintegrate EndScreen into the MenuPane
+    //    - Add some basic animations to polish it
 
     // Other:
 
-    //    - Fix Checking your own king issue?
     //    - Add sounds
-    //    - Merge EntityList w/ChessList since it wont be used in other places?
+    //    - Fix Checking your own king issue
 
     private ChessLauncher() {
 

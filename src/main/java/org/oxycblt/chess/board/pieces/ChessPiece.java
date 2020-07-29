@@ -12,8 +12,8 @@ import org.oxycblt.chess.board.ui.SelectionRect;
 import org.oxycblt.chess.board.animation.FadeAnimation;
 import org.oxycblt.chess.board.animation.RecallAnimation;
 
-import org.oxycblt.chess.media.images.Texture;
-import org.oxycblt.chess.media.images.TextureAtlas;
+import org.oxycblt.chess.media.Texture;
+import org.oxycblt.chess.media.TextureAtlas;
 
 public abstract class ChessPiece extends Pane {
 

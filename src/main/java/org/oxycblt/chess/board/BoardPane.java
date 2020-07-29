@@ -20,8 +20,8 @@ import org.oxycblt.chess.board.ui.PromotionMenu;
 
 import org.oxycblt.chess.menu.MenuPane;
 
-import org.oxycblt.chess.media.images.Texture;
-import org.oxycblt.chess.media.images.TextureAtlas;
+import org.oxycblt.chess.media.Texture;
+import org.oxycblt.chess.media.TextureAtlas;
 
 import org.oxycblt.chess.entity.EntityChangeListener;
 

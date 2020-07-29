@@ -1,6 +1,6 @@
 // Texture loading for the spritesheets in resources
 
-package org.oxycblt.chess.media.images;
+package org.oxycblt.chess.media;
 
 import java.util.HashMap;
 import javafx.scene.image.Image;

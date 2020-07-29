@@ -9,8 +9,8 @@ import javafx.scene.input.MouseButton;
 
 import org.oxycblt.chess.model.ChessType;
 
-import org.oxycblt.chess.media.images.Texture;
-import org.oxycblt.chess.media.images.TextureAtlas;
+import org.oxycblt.chess.media.Texture;
+import org.oxycblt.chess.media.TextureAtlas;
 
 import org.oxycblt.chess.board.ui.SelectionRect;
 import org.oxycblt.chess.menu.MenuPane;
@@ -30,7 +30,7 @@ public class ResetButton extends Pane {
 
         this.parent = parent;
 
-        getChildren().add(TextureAtlas.getTexture(Texture.BUTTON, 0, 0));
+        getChildren().add(TextureAtlas.getTexture(Texture.RESET, 0, 0));
 
     }
 

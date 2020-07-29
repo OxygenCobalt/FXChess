@@ -13,8 +13,8 @@ import org.oxycblt.chess.model.ChessType;
 import org.oxycblt.chess.board.BoardPane;
 import org.oxycblt.chess.board.animation.FadeAnimation;
 
-import org.oxycblt.chess.media.images.Texture;
-import org.oxycblt.chess.media.images.TextureAtlas;
+import org.oxycblt.chess.media.Texture;
+import org.oxycblt.chess.media.TextureAtlas;
 
 public class PromotionMenu extends Pane {
 
