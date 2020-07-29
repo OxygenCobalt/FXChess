@@ -7,7 +7,6 @@ public final class ChessLauncher {
     // TODO:
 
     // MenuPane stuff:
-    //    - Reintegrate EndScreen into the MenuPane
     //    - Add some basic animations to polish it
 
     // Other:

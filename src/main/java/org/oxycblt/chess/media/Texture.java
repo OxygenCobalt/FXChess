@@ -5,7 +5,7 @@ package org.oxycblt.chess.media;
 public enum Texture {
 
     CHESS_PIECES("/org/oxycblt/chess/textures/chesspieces.png"),
-    ENDSCREEN("/org/oxycblt/chess/textures/endscreen.png"),
+    END_SCREEN("/org/oxycblt/chess/textures/endscreens.png"),
     BORDER("/org/oxycblt/chess/textures/border.png"),
     RESET("/org/oxycblt/chess/textures/reset.png");
 

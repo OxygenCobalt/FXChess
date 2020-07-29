@@ -354,6 +354,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
 
             }
 
+            hasMoved = false;
             isDisabled = false;
 
             selectedPiece = null;
