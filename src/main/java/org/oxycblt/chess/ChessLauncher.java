@@ -6,11 +6,6 @@ public final class ChessLauncher {
 
     // TODO:
 
-    // MenuPane stuff:
-    //    - Add some basic animations to polish it
-
-    // Other:
-
     //    - Add sounds
     //    - Fix Checking your own king issue
 

@@ -11,7 +11,6 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
 
-import org.oxycblt.chess.model.EndType;
 import org.oxycblt.chess.model.ChessType;
 
 import org.oxycblt.chess.board.pieces.ChessPiece;
@@ -367,9 +366,9 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
     };
 
     // Game ending
-    public void onEnd(final ChessType winColor, final EndType type) {
+    public void onEnd(final ChessType winColor) {
 
-        menu.onEnd(winColor, type);
+        menu.onEnd(winColor);
 
         // Disable the game, and hide the promotion menu, in the case that causes issues.
         isDisabled = true;

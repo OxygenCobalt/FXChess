@@ -3,7 +3,6 @@
 package org.oxycblt.chess.board.pieces;
 
 import org.oxycblt.chess.model.ChessType;
-import org.oxycblt.chess.model.EndType;
 
 import org.oxycblt.chess.board.ChessList;
 import org.oxycblt.chess.board.BoardPane;
@@ -192,7 +191,7 @@ public class King extends ChessPiece {
 
             } else {
 
-                board.onEnd(ChessType.inverseOf(color), EndType.CHECKMATE);
+                board.onEnd(ChessType.inverseOf(color));
 
             }
 

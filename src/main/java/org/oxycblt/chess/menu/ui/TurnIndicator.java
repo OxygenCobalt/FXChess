@@ -7,10 +7,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
 import org.oxycblt.chess.model.ChessType;
+import org.oxycblt.chess.menu.animation.ChangeAnimation;
 
 public class TurnIndicator extends Rectangle {
 
     private ChessType color;
+
+    private ChangeAnimation changeAnim = null;
 
     public TurnIndicator(final ChessType color) {
 
@@ -32,7 +35,13 @@ public class TurnIndicator extends Rectangle {
 
         if (color != newColor) {
 
-            setFill(Color.web(ChessType.toHex(newColor)));
+            if (changeAnim == null) {
+
+                changeAnim = new ChangeAnimation(this);
+
+            }
+
+            changeAnim.change(Color.web(ChessType.toHex(newColor)));
 
             color = newColor;
 

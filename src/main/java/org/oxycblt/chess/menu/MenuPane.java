@@ -5,7 +5,6 @@ package org.oxycblt.chess.menu;
 import javafx.scene.layout.Pane;
 
 import org.oxycblt.chess.model.ChessType;
-import org.oxycblt.chess.model.EndType;
 
 import org.oxycblt.chess.board.BoardPane;
 
@@ -61,7 +60,7 @@ public class MenuPane extends Pane {
     }
 
     // Update the MenuPane of a game end
-    public void onEnd(final ChessType winColor, final EndType type) {
+    public void onEnd(final ChessType winColor) {
 
         if (endScreen == null) {
 
