@@ -81,24 +81,6 @@ public class ChessList extends EntityList<ChessPiece> {
 
     }
 
-    // Check if a turn's king is checked
-    public boolean isTurnChecked(final ChessType turn) {
-
-        for (ChessPiece piece : entities) {
-
-            if (piece.getType() == ChessType.KING
-            &&  piece.getColor() == turn) {
-
-                return ((King) piece).getChecked();
-
-            }
-
-        }
-
-        return false;
-
-    }
-
     // Update other chess pieces of a changed piece
     public void pushChange(final ChessPiece changedPiece) {
 
@@ -113,7 +95,7 @@ public class ChessList extends EntityList<ChessPiece> {
     // Reset all pieces
     public void resetAll() {
 
-        // Remove all promoted pieces first, as the pawns they game from will be unkilled
+        // Remove all promoted pieces first, as the pawns they came from will be unkilled
         for (ChessPiece piece : promotedPieces) {
 
             piece.kill();

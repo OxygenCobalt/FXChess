@@ -1,4 +1,4 @@
-// Bar for the main buttons and the end screen
+// Bar for the other UI elements in the game
 
 package org.oxycblt.chess.menu;
 
@@ -51,6 +51,7 @@ public class MenuPane extends Pane {
 
         board.onReset();
 
+        // Also make sure to hide the endScreen if its shown
         if (endScreen != null) {
 
             endScreen.hide();
@@ -76,6 +77,7 @@ public class MenuPane extends Pane {
 
     }
 
+    // Add a reference to BoardPane
     public void addBoard(final BoardPane newBoard) {
 
         board = newBoard;

@@ -46,7 +46,7 @@ public class ChessFactory {
         lastGenKing.rookSetup();
     }
 
-        // Create the corresponding piece for the given type at the x/y coords
+    // Create the corresponding piece for the given type at the x/y coords
     public void addAt(final int x, final int y, final ChessType type) {
 
         switch (type) {

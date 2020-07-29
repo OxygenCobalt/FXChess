@@ -18,6 +18,8 @@ public class ChessScene extends Scene {
     public ChessScene(final Group root) {
 
         super(root, 322, 354);
+
+        // Set up the background gradient
         setFill(new LinearGradient(
             0, 19, 0, 355, false,
             CycleMethod.NO_CYCLE,

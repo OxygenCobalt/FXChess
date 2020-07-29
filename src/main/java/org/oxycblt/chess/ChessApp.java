@@ -13,6 +13,7 @@ import org.oxycblt.chess.media.AudioLoader;
 
 public class ChessApp extends Application {
 
+    // Main init function
     public void start(final Stage primaryStage) {
 
         AudioLoader.init();

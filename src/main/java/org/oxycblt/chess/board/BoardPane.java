@@ -68,7 +68,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
 
         /*
         | Add a reference to BoardPane to the given MenuPane so that the two panes can
-        | communicate with eachother without ChessScene as an intermediary.
+        | communicate with each other without ChessScene as an intermediary.
         */
         this.menu = menu;
         this.menu.addBoard(this);
@@ -183,7 +183,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
     };
 
     // Drag confirmation
-    // TODO: Do move confirmation using chesspiece rect, not mouse pointer
     private EventHandler<MouseEvent> releaseHandler = event -> {
 
         if (selectedPiece != null) {
@@ -246,6 +245,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
     }
 
     // Sub-components of validateDrag() that are also called
+    // Returns the same as validateDrag()
     private boolean validateDragX() {
 
         return (32 - selX) + mouseX >= 32 && (32 - selX) + mouseX <= 256;
@@ -313,7 +313,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
         }
 
         hasMoved = true;
-
         selectedPiece = null;
 
     }
@@ -343,7 +342,7 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
     // Confirmation for reset
     public void onReset() {
 
-        // Dont reset if *nothing* has actually happened
+        // Don't reset if *nothing* has actually happened
         if (hasMoved) {
 
             /*
@@ -485,12 +484,6 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
     public void onRemoved(final ChessPiece removed) {
 
         getChildren().remove(removed);
-
-    }
-
-    public void addmenu(final MenuPane newmenu) {
-
-        menu = newmenu;
 
     }
 

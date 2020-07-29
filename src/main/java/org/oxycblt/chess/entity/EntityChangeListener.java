@@ -1,4 +1,4 @@
-// Interface for detecting changed in an entitylist
+// Interface for detecting changes in an EntityList
 
 package org.oxycblt.chess.entity;
 

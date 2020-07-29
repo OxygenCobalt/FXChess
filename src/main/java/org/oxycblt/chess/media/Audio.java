@@ -29,6 +29,7 @@ public enum Audio {
 
     }
 
+    // Get the file path of an Audio clip
     public String getPath() {
 
         return path;

@@ -67,7 +67,7 @@ public final class TextureAtlas {
 
     }
 
-    // Get full Image of all the textures of the specified sheet
+    // Returns a full Image of all the textures of the specified sheet
     public static Image loadFullTexture(final Texture tex) {
 
         // Check if image is loaded, load it if not

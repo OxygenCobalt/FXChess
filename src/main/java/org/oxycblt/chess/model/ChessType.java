@@ -39,7 +39,7 @@ public enum ChessType {
         return color == WHITE ? BLACK : WHITE;
     }
 
-    // Turn a ChessType color into a hex code
+    // Returns the hex variant of a ChessType color
     public static String toHex(final ChessType color) {
 
         validateColor(color);

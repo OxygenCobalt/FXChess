@@ -34,15 +34,7 @@ public class ResetButton extends Pane {
 
     }
 
-    private EventHandler<MouseEvent> confirmHandler = event -> {
-
-        if (event.getButton() == MouseButton.PRIMARY) {
-
-            parent.onReset();
-
-        }
-
-    };
+    // --- MOUSE HANDLERS ---
 
     private EventHandler<MouseEvent> enterHandler = event -> {
 
@@ -65,6 +57,17 @@ public class ResetButton extends Pane {
         if (selectRect != null) {
 
             selectRect.hide();
+
+        }
+
+    };
+
+    private EventHandler<MouseEvent> confirmHandler = event -> {
+
+        if (event.getButton() == MouseButton.PRIMARY) {
+
+            // Call the reset function on BoardPane when clicked
+            parent.onReset();
 
         }
 

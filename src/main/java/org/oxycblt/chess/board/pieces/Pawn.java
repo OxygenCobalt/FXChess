@@ -126,10 +126,9 @@ public class Pawn extends ChessPiece {
 
         /*
         | If the piece has just made a 2-step advance, set did2Step to true so that other
-        | pieces can perform en passant properly. This variable is set back to false in
+        | pieces can perform En Passant properly. This variable is set back to false in
         | the next move.
         */
-
         did2Step = false;
 
         if (Math.abs(yDist) == 2) {
@@ -186,6 +185,7 @@ public class Pawn extends ChessPiece {
 
     }
 
+    // Getters
     public boolean get2Step() {
 
         return did2Step;

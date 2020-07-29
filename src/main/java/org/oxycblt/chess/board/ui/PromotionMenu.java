@@ -58,8 +58,10 @@ public class PromotionMenu extends Pane {
 
             if (validateXY()) {
 
-                // Find the choice that matches the current position of the mouse and confirm
-                // that, hiding the menu in the process
+                /*
+                | Find the choice that matches the current position of the mouse and confirm
+                | that, hiding the menu in the process
+                */
                 updateSimpleX();
 
                 parent.onPromotionEnd(ChessType.PROMOTION_ORDER[simpleX]);
@@ -112,8 +114,10 @@ public class PromotionMenu extends Pane {
     // Normalize a mouse pointer so that the coordinates are solely within the bounds of the menu
     private void normalizePointer(final MouseEvent event) {
 
-        // The menu is positioned relative to BoardPane, so 33/49 must be added to the actual
-        // position of the pointer in the scene and normalize the pointer correctly
+        /*
+        | The menu is positioned relative to BoardPane, so 33/49 must be added to the actual
+        | position of the pointer in the scene and normalize the pointer correctly
+        */
         mouseX = (int) (event.getSceneX() - (getLayoutX() + 33));
         mouseY = (int) (event.getSceneY() - (getLayoutY() + 49));
 

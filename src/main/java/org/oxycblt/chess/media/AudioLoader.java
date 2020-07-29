@@ -19,7 +19,10 @@ public final class AudioLoader {
 
     }
 
-    // Load all the sounds initally on a seperate thread to decrease startup times.
+    /*
+    | Load all the sounds initially on a separate thread to decrease
+    | startup times and avoid long freezes when the clips are first played
+    */
     public static void init() {
 
         Task<HashMap<Audio, AudioClip>> load = new Task<HashMap<Audio, AudioClip>>() {
@@ -77,6 +80,7 @@ public final class AudioLoader {
 
     }
 
+    // Get a sound, returns the respective AudioClip.
     public static AudioClip getSound(final Audio name) {
 
         return clips.get(name);

@@ -152,7 +152,7 @@ public abstract class ChessPiece extends Pane {
 
         list.pushChange(this);
 
-        // Due to AudioLoader being multithreaded, the move sound is only assigned later on
+        // Due to AudioLoader being multi-threaded, the move sound is only assigned later on
         // on the chess piece's first move.
         if (moveClip == null) {
 
@@ -253,7 +253,7 @@ public abstract class ChessPiece extends Pane {
 
     }
 
-    // Reset a piece while re-adding it to the main list of chesspieces
+    // Reset a piece while re-adding it to the main list of ChessPieces
     public void unkill() {
 
         reset();
@@ -309,18 +309,6 @@ public abstract class ChessPiece extends Pane {
     public ChessType getColor() {
 
         return color;
-
-    }
-
-    public int getOriginX() {
-
-        return originX;
-
-    }
-
-    public int getOriginY() {
-
-        return originY;
 
     }
 

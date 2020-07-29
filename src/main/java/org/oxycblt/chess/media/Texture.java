@@ -18,6 +18,7 @@ public enum Texture {
 
     }
 
+    // Get the file path of a Texture
     public String getPath() {
 
         return path;

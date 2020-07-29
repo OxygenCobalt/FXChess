@@ -10,6 +10,7 @@ public final class ChessLauncher {
 
     }
 
+    // Launch the program
     public static void main(final String[] args) {
 
         ChessApp.run(args);
