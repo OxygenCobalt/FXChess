@@ -7,7 +7,6 @@ public final class ChessLauncher {
     // TODO:
 
     //    - Add sounds
-    //    - Fix Checking your own king issue
 
     private ChessLauncher() {
 

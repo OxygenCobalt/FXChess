@@ -4,6 +4,7 @@ package org.oxycblt.chess.board.pieces;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.AudioClip;
 
 import org.oxycblt.chess.model.ChessType;
 
@@ -14,6 +15,9 @@ import org.oxycblt.chess.board.animation.RecallAnimation;
 
 import org.oxycblt.chess.media.Texture;
 import org.oxycblt.chess.media.TextureAtlas;
+
+import org.oxycblt.chess.media.Audio;
+import org.oxycblt.chess.media.AudioLoader;
 
 public abstract class ChessPiece extends Pane {
 
@@ -38,8 +42,11 @@ public abstract class ChessPiece extends Pane {
 
     private ImageView chessView;
     private SelectionRect selectRect;
-    private RecallAnimation recallAnim;
+
     private FadeAnimation fadeAnim;
+    private RecallAnimation recallAnim;
+
+    private AudioClip moveClip = null;
 
     public ChessPiece(final ChessList list,
                       final ChessType type,
@@ -132,7 +139,6 @@ public abstract class ChessPiece extends Pane {
         hasMoved = true;
         isSelected = false;
 
-        selectRect.hideNoAnim();
         relocate(targetX * 32, targetY * 32);
 
         if (toKill != null) {
@@ -145,6 +151,22 @@ public abstract class ChessPiece extends Pane {
         y = targetY;
 
         list.pushChange(this);
+
+        // Due to AudioLoader being multithreaded, the move sound is only assigned later on
+        // on the chess piece's first move.
+        if (moveClip == null) {
+
+            moveClip = AudioLoader.getSound(Audio.MOVE);
+
+        }
+
+        moveClip.play();
+
+        if (selectRect != null) {
+
+            selectRect.hideNoAnim();
+
+        }
 
     }
 

@@ -10,6 +10,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
+import javafx.scene.media.AudioClip;
 
 import org.oxycblt.chess.model.ChessType;
 
@@ -21,6 +22,9 @@ import org.oxycblt.chess.menu.MenuPane;
 
 import org.oxycblt.chess.media.Texture;
 import org.oxycblt.chess.media.TextureAtlas;
+
+import org.oxycblt.chess.media.Audio;
+import org.oxycblt.chess.media.AudioLoader;
 
 import org.oxycblt.chess.entity.EntityChangeListener;
 
@@ -35,6 +39,8 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
     private ChessPiece promotedPiece = null;
 
     private PromotionMenu promotionMenu = null;
+
+    private AudioClip resetClip = null;
 
     private ChessType turn = ChessType.WHITE;
 
@@ -360,6 +366,14 @@ public class BoardPane extends Pane implements EntityChangeListener<ChessPiece> 
             promotedPiece = null;
 
             randomizeTurn();
+
+            if (resetClip == null) {
+
+                resetClip = AudioLoader.getSound(Audio.RESET);
+
+            }
+
+            resetClip.play();
 
         }
 

@@ -6,9 +6,13 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Group;
 
+import org.oxycblt.chess.media.AudioLoader;
+
 public class ChessApp extends Application {
 
     public void start(final Stage primaryStage) {
+
+        AudioLoader.init();
 
         primaryStage.setTitle("FXChess");
         primaryStage.setResizable(false);
