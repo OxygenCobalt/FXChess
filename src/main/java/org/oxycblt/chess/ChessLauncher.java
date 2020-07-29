@@ -4,10 +4,6 @@ package org.oxycblt.chess;
 
 public final class ChessLauncher {
 
-    // TODO:
-
-    //    - Add sounds
-
     private ChessLauncher() {
 
         // Not called
