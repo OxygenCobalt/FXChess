@@ -1,9 +1,9 @@
 [<img src="markdown/logo.png">](markdown/logo.png)
 ------
 
-FXChess is a basic chess game I created as a learning project.
+FXChess is a basic chess game in Java/JavaFX that I created as a learning project.
 
-It has all the major rules of chess aside from some endgame aspects, along with a Reset Button/Turn Indicator.
+It has all the major rules of chess aside from some endgame aspects.
 
 [<img src="markdown/boardStart.png" width=190>](markdown/boardStart.png)
 [<img src="markdown/boardMid.png" width=190>](markdown/boardMid.png)
